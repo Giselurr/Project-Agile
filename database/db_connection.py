@@ -11,6 +11,6 @@ class db_connection:
 
     def connect(self):
         """ Makes the connection to the database and return the database curser """
-        self.my_con = mysql.connector.connect(**self.con)
-        self.curser = mysql.connector.cursor(self.my_con)
-        return self.curser
+        my_con = mysql.connector.connect(**self.con)
+        cursor = my_con.cursor()
+        return cursor
