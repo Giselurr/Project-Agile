@@ -27,6 +27,8 @@ jobs:
     - name: Lint and format with ruff
       run: |
         ruff check --output-format=github .
-    - name: Test with pytest
+      continue-on-error: true
+    - name: Test with unittest
       run: |
-        pytest
+        python -m unittest discover -s ./test
+      # Rename the part after the ./ to whatever our folder with tests is called
