@@ -8,9 +8,11 @@ class db_connection:
         """ Initialize the db_connection class with the connection login information """
         self.con = {"user": user, "password": password, "host": "localhost", "port": 3306, 
         "database": "breathe", "raise_on_warnings": True}
+        self.my_con = None
+        self.cursor = None
 
     def connect(self):
         """ Makes the connection to the database and return the database curser """
-        my_con = mysql.connector.connect(**self.con)
-        cursor = my_con.cursor()
-        return cursor
+        self.my_con = mysql.connector.connect(**self.con)
+        self.cursor = self.my_con.cursor()
+        return self.cursor
