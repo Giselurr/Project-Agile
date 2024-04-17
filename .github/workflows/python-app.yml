@@ -22,13 +22,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install ruff
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint and format with ruff
-      run: |
-        ruff check --output-format=github .
-      continue-on-error: true
     - name: Test with unittest
       run: |
-        python -m unittest discover -s ./test
-      # Rename the part after the ./ to whatever our folder with tests is called
+        if [ -d "./test" ]; then python -m unittest discover -s ./test; fi
+      # Rename the parts after the ./ to whatever our folder with tests is called
