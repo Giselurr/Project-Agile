@@ -5,18 +5,11 @@ from tkinter import *
 import mysql.connector
 import mysql.connector.cursor
 import bcrypt 
-from database import db_connector # type: ignore
+from database import db_connection
 
 class register():
     """ This class register a user to this application. """
     window = Tk()
-    db = db_connector.db_connection()
-#     con = {"user": "root", "password": "KamelKatt3801", "host": "localhost", "port": 3306, 
-#                 "database": "breathe", "raise_on_warnings": True}
-#     my_con = mysql.connector.connect(**con)
-#     curser = my_con.cursor()
-    curser = db.connect()
-
 
     def __init__(self):
         """ Initializing the window for the GUI """
@@ -24,6 +17,12 @@ class register():
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#24334C")
         self.window.title("Please register your account.")
+        self.con = {"user": "root", "password": "KamelKatt3801", "host": "localhost", "port": 3306, 
+        "database": "breathe", "raise_on_warnings": True}
+        #self.db = db_connection.db_connection("root", "KamelKatt3801")
+        self.my_con = mysql.connector.connect(**self.con)
+        self.cursor = self.my_con.cursor()
+
         
 
     def register_gui(self):
@@ -72,12 +71,12 @@ class register():
         password = password.get().encode('utf-8')
         hashed_password = self.salt_hash(password)
         if self.check_user_name(user_name):
-                query = "INSERT INTO user (user_name, first_name, last_name, password)" \
+                query = "INSERT INTO user (first_name, last_name, user_name, password)" \
                 "VALUES (%s, %s, %s, %s)"
                 values = (first_name, last_name, user_name,hashed_password)
-                self.curser.execute(query, values)
+                self.cursor.execute(query, values)
 
-                if self.curser.rowcount == 1:
+                if self.cursor.rowcount == 1:
                         self.my_con.commit()
                         pop.title("Register successful1")
                         Label(pop, text="Registered user successfully!").pack()
@@ -98,14 +97,13 @@ class register():
            """ This method will check if the username already exists. """
            query = "SELECT user_name FROM user WHERE user_name = %s"
            values =(user_name, )
-           self.curser.execute(query, values)
-           result = self.curser.fetchone()
+           self.cursor.execute(query, values)
+           result = self.cursor.fetchone()
            if result:
                 return False
            else:
                 return True
            
-""" reg = register()
+reg = register()
 
 reg.register_gui()
- """
