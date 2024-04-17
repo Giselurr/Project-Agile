@@ -1,11 +1,11 @@
 """ This module will use a tikinte GUI interface and use a mysql connection
 so that a user can register to this application. The colors used is: #24334C for bg
-and #61FF64 for fg """
+and #61FF64 for fg. """
 from tkinter import *
 import mysql.connector
 import mysql.connector.cursor
 import bcrypt 
-from database import db_connection
+from database import db_connection, db_connects
 
 class register():
     """ This class register a user to this application. """
@@ -20,8 +20,7 @@ class register():
         self.con = {"user": "root", "password": "KamelKatt3801", "host": "localhost", "port": 3306, 
         "database": "breathe", "raise_on_warnings": True}
         #self.db = db_connection.db_connection("root", "KamelKatt3801")
-        self.my_con = mysql.connector.connect(**self.con)
-        self.cursor = self.my_con.cursor()
+        self.db_connects = db_connects.db_connnects()
 
         
 
@@ -63,47 +62,32 @@ class register():
         self.window.mainloop()
 
     def register_user(self, first_name, last_name, user_name, password, register_frame):
-        """ This method will get the users name from the GUI and add their information to the DB. """
+        """ This method will get the users name from the GUI
+          and add their information to the DB. """
         pop=Toplevel(register_frame)
         first_name = first_name.get()
         last_name = last_name.get()
         user_name = user_name.get()
         password = password.get().encode('utf-8')
         hashed_password = self.salt_hash(password)
-        if self.check_user_name(user_name):
+        if self.db_connects.check_user_name(user_name):
                 query = "INSERT INTO user (first_name, last_name, user_name, password)" \
                 "VALUES (%s, %s, %s, %s)"
                 values = (first_name, last_name, user_name,hashed_password)
                 self.cursor.execute(query, values)
-
                 if self.cursor.rowcount == 1:
-                        self.my_con.commit()
-                        pop.title("Register successful1")
-                        Label(pop, text="Registered user successfully!").pack()
+                    self.my_con.commit()
+                    pop.title("Register successful1")
+                    Label(pop, text="Registered user successfully!").pack()
                 else:
-                        pop.title("Register unsuccesfull!")
-                        Label(pop, text="Please try again!").pack()
+                    pop.title("Register unsuccesfull!")
+                    Label(pop, text="Please try again!").pack()
         else:
-                pop.title("Register unsuccesfull!")
-                Label(pop, text="Please try again!").pack()
+            pop.title("Register unsuccesfull!")                
+            Label(pop, text="Please try again!").pack()
            
     def salt_hash(self, password):
          """ This will transform their password to an encrypte version. """
          salt = bcrypt.gensalt()
          hashed = bcrypt.hashpw(password, salt)
          return hashed
-      
-    def check_user_name(self, user_name):
-           """ This method will check if the username already exists. """
-           query = "SELECT user_name FROM user WHERE user_name = %s"
-           values =(user_name, )
-           self.cursor.execute(query, values)
-           result = self.cursor.fetchone()
-           if result:
-                return False
-           else:
-                return True
-           
-reg = register()
-
-reg.register_gui()

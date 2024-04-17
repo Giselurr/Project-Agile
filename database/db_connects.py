@@ -1,12 +1,16 @@
+""" This modules handles mysql statements. """
 from database import db_connection
 import mysql.connector
 import mysql.connector.cursor
 
 class db_connnects():
+    """ This class handles the connection to the database
+     and it handles sql statements and queries. """
     def __init__(self):
         self.db = db_connection.db_connection("root", "KamelKatt3801")
 
     def get_hashed_pass(self, user):
+        """ Retreives the hashed password from the database. """
         query = "SELECT password FROM user WHERE user_name = %s"
         values = (user, )
         self.curser = self.db.connect()
@@ -20,8 +24,15 @@ class db_connnects():
         finally:
             if self.curser:
                 self.curser.close()
-        
-db = db_connnects()
-print(db)
-print(db.get_hashed_pass("PAW"))
+
+    def check_user_name(self, user_name):
+        """ This method will check if the username already exists. """
+        query = "SELECT user_name FROM user WHERE user_name = %s"
+        values =(user_name, )
+        self.curser.execute(query, values)
+        result = self.curser.fetchone()
+        if result:
+            return False
+        else:
+            return True
     

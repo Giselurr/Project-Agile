@@ -1,15 +1,16 @@
 """ This module will use a tikinter GUI interface
 so that a user can login to this application. The colors used is: #040B20 for bg
-and #8ddf00 for fg """
+and #8ddf00 for fg. """
 from tkinter import *
 from database import db_connects
 import bcrypt
 
 class login():
-    """ This class will login the user """
+    """ This class will login the user. """
     window = Tk()
 
     def __init__(self):
+        """ Initializing the class it starts the GUI and the db connection. """
         self.window.geometry("640x540")
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#040B20")
@@ -17,7 +18,7 @@ class login():
         self.db_connects = db_connects.db_connnects()
     
     def login_GUI(self):
-        """ This is the login graphical interface """
+        """ This is the login graphical interface. """
         login_frame = Frame(self.window)
         login_frame.configure(bg="#040B20")
         Label(login_frame, text="Please fill in your login information below",
@@ -37,6 +38,8 @@ class login():
         self.window.mainloop()
       
     def login_user(self, user_name, password, login_frame):
+        """ Checks the password and compares it with the 
+         hashed password from the database. """
         pop_up = Toplevel(login_frame)
         user_name = user_name.get()
         password = password.get().encode('utf-8')
