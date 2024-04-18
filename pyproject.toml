@@ -1,8 +1,9 @@
 [tool.coverage.run]
-omit =
+omit = [
     "test_*.py",
-   "test/*",
+    "test/*",
     "*/__init__.py"
+    ]
 
 [tool.coverage.report]
 omit = [
