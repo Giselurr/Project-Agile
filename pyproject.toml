@@ -1,3 +1,16 @@
+[tool.coverage.run]
+omit =
+    "test_*.py",
+   "test/*",
+    "*/__init__.py"
+
+[tool.coverage.report]
+omit = [
+    "test_*.py",
+    "test/*",
+    "*/__init__.py"
+    ]
+
 [tool.ruff]
 # Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
 lint.select = ["E", "F", "I", "N"]
