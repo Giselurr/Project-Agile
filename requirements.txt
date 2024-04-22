@@ -10,3 +10,6 @@ coverage
 # Database
 mysql-connector-python
 bcrypt
+
+#GUI
+tk
