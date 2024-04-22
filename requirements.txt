@@ -13,4 +13,3 @@ bcrypt
 
 #GUI
 tk
-tkinter
