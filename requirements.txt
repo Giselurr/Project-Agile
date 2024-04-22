@@ -1,0 +1,12 @@
+# Pre-commit
+pre-commit
+
+# Documentation
+pdoc3
+
+# Unit test and coverage
+coverage
+
+# Database
+mysql-connector-python
+bcrypt
