@@ -1,7 +1,6 @@
 """Make automated test for the register class."""
 
 import unittest
-from tkinter import Frame, Tk
 from unittest.mock import MagicMock, patch
 
 from account import register
@@ -12,8 +11,8 @@ class TestRegister(unittest.TestCase):
 
     def setUp(self):
         self.mock_window = MagicMock()
-        self.root = Tk()
-        self.register_frame = Frame(self.root)
+        self.root = MagicMock()
+        self.register_frame = MagicMock()
         self.register_frame.pack()
         self.reg = register.Register(self.root)
 
