@@ -5,7 +5,7 @@ from tkinter import Button, Entry, Frame, Label, StringVar, Toplevel, W
 
 import bcrypt
 
-from database import db_connects
+from database import database_handler
 
 
 class Login:
@@ -18,7 +18,7 @@ class Login:
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#040B20")
         self.window.title("Please login to your account.")
-        self.db_connects = db_connects.DbConnnects()
+        self.db_handler = database_handler.DatabaseHandler()
 
     def login_gui(self):
         """This is the login graphical interface."""
@@ -72,7 +72,7 @@ class Login:
         pop_up = Toplevel(login_frame)
         user_name = user_name.get()
         password = password.get().encode("utf-8")
-        hashed = self.db_connects.get_hashed_pass(user_name)
+        hashed = self.db_handler.get_hashed_pass(user_name)
         if hashed and bcrypt.checkpw(password, hashed.encode("utf-8")):
             pop_up.title("Login successfull!")
             Label(
@@ -92,8 +92,3 @@ class Login:
                 bg="#040B20",
                 fg="#8ddf00",
             ).pack()
-
-
-# window = Tk()
-# log = Login(window)
-# log.login_GUI()

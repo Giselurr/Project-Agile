@@ -24,28 +24,28 @@ class TestLogin(unittest.TestCase):
 
         self.assertEqual(log.window, self.mock_window)
 
-    @patch("database.db_connects.DbConnnects")
-    def test_init_dbconnects(self, mock_dbconnects):
+    @patch("database.database_handler.DatabaseHandler")
+    def test_init_dbconnects(self, mock_db_handler):
         """Test so that the DbConnects object get called once."""
 
         log = login.Login(self.mock_window)
 
-        mock_dbconnects.assert_called_once()
+        mock_db_handler.assert_called_once()
 
     @patch("bcrypt.checkpw", return_value=True)
-    @patch("database.db_connects.DbConnnects")
-    def test_login_valid_password(self, mock_dbconnects, mock_checkpw):
+    @patch("database.database_handler.DatabaseHandler")
+    def test_login_valid_password(self, mock_db_handler, mock_checkpw):
         """This will check if correct password will work."""
         user_name = "test_user"
-        hashed = mock_dbconnects.get_hashed_pass(user_name)
+        hashed = mock_db_handler.get_hashed_pass(user_name)
         self.assertTrue(hashed and mock_checkpw)
 
     @patch("bcrypt.checkpw", return_value=False)
-    @patch("database.db_connects.DbConnnects")
-    def test_login_invalid_password(self, mock_dbconnects, mock_checkpw):
+    @patch("database.database_handler.DatabaseHandler")
+    def test_login_invalid_password(self, mock_db_handler, mock_checkpw):
         """This will check if incorrect password will not work."""
         user_name = "test_user"
-        hashed = mock_dbconnects.get_hashed_pass(user_name)
+        hashed = mock_db_handler.get_hashed_pass(user_name)
         self.assertTrue(hashed and mock_checkpw)
 
 
