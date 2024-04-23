@@ -1,6 +1,6 @@
 """This module will store the user information and the GUI for the user page"""
 
-from tkinter import Button, Frame, Label, PhotoImage, Tk
+from tkinter import Button, Frame, Label, PhotoImage
 
 
 class User:
@@ -116,9 +116,3 @@ class User:
             font=("Arial", 12),
         ).grid(row=1, column=0)
         redirect.pack()
-
-
-window = Tk()
-user = User(True, "Nilla", window)
-user.user_gui()
-"""bg 040B20 fg AFB5D6"""
