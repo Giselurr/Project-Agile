@@ -8,9 +8,9 @@ from account import login, register
 class Main:
     """This class will handle the user GUI whe he/she is not logged in."""
 
-    def __init__(self):
+    def __init__(self, window):
         """Initiates the window."""
-        self.window = Tk()
+        self.window = window
         self.window.geometry("640x540")
         self.window.resizable(height=True, width=False)
         self.window.configure(bg="#AFB5D6")
@@ -73,5 +73,6 @@ class Main:
 
 
 if __name__ == "__main__":
-    main = Main()
+    window = Tk()
+    main = Main(window)
     main.main_gui()

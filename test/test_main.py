@@ -12,7 +12,7 @@ class TestMain(TestCase):
     def setUp(self):
         self.mock_window = MagicMock()
         self.mock_user_frame = MagicMock()
-        self.main = main.Main()
+        self.main = main.Main(self.mock_window)
         self.main.window = MagicMock()
 
     def test_main_init(self):
