@@ -1,6 +1,6 @@
 """A module that will be the user interface when not logged in."""
 
-from tkinter import Button, Frame, Label, Tk
+from tkinter import Button, Frame, Label, PhotoImage, Tk
 
 from account import login, register
 
@@ -13,51 +13,37 @@ class Main:
         self.window = window
         self.window.geometry("640x540")
         self.window.resizable(height=True, width=False)
-        self.window.configure(bg="#AFB5D6")
+        self.window.configure(bg="#040B20")
 
     def main_gui(self):
         main_frame = Frame(self.window)
-        main_frame.configure(bg="#AFB5D6")
-        Label(main_frame, text="", bg="#AFB5D6").grid(row=0)
-        Label(
-            main_frame,
-            text="Welcome to BREATHE - ",
-            bg="#AFB5D6",
-            fg="#040B20",
-            font=("Century Schoolbook", 25, "bold"),
-        ).grid(row=1, column=0, columnspan=4)
-        Label(main_frame, text="", bg="#AFB5D6").grid(row=0)
-        Label(
-            main_frame,
-            text="an application that will help you find your calm",
-            bg="#AFB5D6",
-            fg="#040B20",
-            font=("Century Schoolbook", 15, "bold"),
-        ).grid(row=2, column=0, columnspan=4)
-        Label(main_frame, text="", bg="#AFB5D6").grid(row=3)
+        main_frame.configure(bg="#040B20")
+        logo = PhotoImage(file="account\images\Logo.png")
+        login = PhotoImage(file="account\images\Login.png")
+        register = PhotoImage(file="account\images\Register.png")
+        Label(main_frame, text="", bg="#040B20").grid(row=0)
+
+        Label(main_frame, text="", bg="#040B20").grid(row=0)
+        Label(main_frame, image=logo, border=0).grid(row=2, column=0, columnspan=4)
+        Label(main_frame, text="", bg="#040B20").grid(row=3)
         Button(
             main_frame,
-            text="Register an account",
-            bg="#040B20",
-            fg="#AFB5D6",
-            font=("Century Schoolbook", 15, "bold"),
-            relief="flat",
+            image=register,
             command=lambda: self.register_user(main_frame),
-            highlightbackground="#FFFFFF",
-            border=1,
-        ).grid(row=4, column=0, columnspan=4)
-        Label(main_frame, text="", bg="#AFB5D6").grid(row=5)
+            border=0,
+            highlightthickness=0,
+            pady=0,
+            padx=0,
+        ).grid(row=4, column=0, columnspan=2)
         Button(
             main_frame,
-            text="Login",
-            bg="#040B20",
-            fg="#AFB5D6",
+            image=login,
             command=lambda: self.login_user(main_frame),
-            font=("Century Schoolbook", 15, "bold"),
-            relief="flat",
-            highlightbackground="#FFFFFF",
-            border=1,
-        ).grid(row=6, column=0, columnspan=4)
+            border=0,
+            highlightthickness=0,
+            pady=0,
+            padx=0,
+        ).grid(row=4, column=2, columnspan=2)
         main_frame.pack()
         self.window.mainloop()
 
