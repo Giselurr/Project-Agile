@@ -13,7 +13,9 @@ class TestMain(TestCase):
         self.mock_window = MagicMock()
         self.mock_user_frame = MagicMock()
         self.main = main.Main()
+        self.main.window = MagicMock()
 
     def test_main_init(self):
         """Test so that the class is being instanciated."""
+
         self.assertIsInstance(self.main, main.Main)
