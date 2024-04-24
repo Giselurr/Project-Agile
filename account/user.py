@@ -1,6 +1,6 @@
 """This module will store the user information and the GUI for the user page"""
 
-from tkinter import Button, Frame, Label, PhotoImage
+from tkinter import Button, Frame, Label, PhotoImage, Tk
 
 
 class User:
@@ -14,27 +14,27 @@ class User:
 
     def user_gui(self):
         """The interface for a logged in user."""
-        self.window.geometry("640x540")
+        self.window.geometry("640x700")
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#040B20")
         if self.is_logged_in:
-            breathe_img = PhotoImage(file="account\images/breathe.png")
-            scheduel_img = PhotoImage(file="account\images/scheduel.png")
-            stresslevel_img = PhotoImage(file="account\images/stresslevel.png")
-            calendar_img = PhotoImage(file="account\images/calendar.png")
+            background = PhotoImage(file="account\images\Background.png")
+            breathe_img = PhotoImage(file="account\images/Breathe_Lungs_Icon.png")
+            scheduel_img = PhotoImage(file="account\images/schedule.png")
+            stresslevel_img = PhotoImage(file="account\images\Set_levels.png")
+            calendar_img = PhotoImage(file="account\images/calender.png")
             history_img = PhotoImage(file="account\images/history.png")
             self.window.title(f"Welcome {self.user_name}!")
             user_frame = Frame(self.window)
             user_frame.configure(bg="#040B20")
-            Label(user_frame, bg="#040B20", text="").grid(row=0)
             Label(
                 user_frame,
-                text="Welcome " + self.user_name + ", what would you like to do? ",
+                text="Welcome " + self.user_name + "!",
                 bg="#040B20",
-                fg="#AFB5D6",
-                font=("Arial", 18),
-            ).grid(row=1, column=0, columnspan=4)
-            Label(user_frame, bg="#040B20", text="").grid(row=2)
+                fg="#FFFFFF",
+                font=("Arial", 20),
+            ).grid(row=0, column=0)
+            Label(user_frame, image=background, border=0).grid(row=1, column=0)
             Button(
                 user_frame,
                 image=breathe_img,
@@ -44,8 +44,7 @@ class User:
                 bd=0,
                 padx=0,
                 pady=0,
-            ).grid(row=3, column=0, columnspan=4)
-            Label(user_frame, bg="#040B20", text="").grid(row=4)
+            ).place(x=70, y=60)
             Button(
                 user_frame,
                 image=scheduel_img,
@@ -55,7 +54,7 @@ class User:
                 bd=0,
                 padx=0,
                 pady=0,
-            ).grid(row=5, column=0, columnspan=2)
+            ).place(x=82, y=360)
             Button(
                 user_frame,
                 image=stresslevel_img,
@@ -65,7 +64,7 @@ class User:
                 bd=0,
                 padx=0,
                 pady=0,
-            ).grid(row=5, column=2, columnspan=2)
+            ).place(x=221, y=360)
             Label(user_frame, bg="#040B20", text="").grid(row=6)
             Button(
                 user_frame,
@@ -76,7 +75,7 @@ class User:
                 bd=0,
                 padx=0,
                 pady=0,
-            ).grid(row=7, column=0, columnspan=2)
+            ).place(x=82, y=500)
             Button(
                 user_frame,
                 image=history_img,
@@ -86,7 +85,7 @@ class User:
                 bd=0,
                 padx=0,
                 pady=0,
-            ).grid(row=7, column=2, columnspan=2)
+            ).place(x=221, y=500)
             user_frame.pack()
         else:
             self.window.title("Not logged in!")
@@ -111,8 +110,14 @@ class User:
         Label(
             redirect,
             text="Redirecting to the " + redirect_to + ".",
-            bg="#AFB5D6",
-            fg="#040B20",
+            bg="#040B20",
+            fg="#AFB5D6",
             font=("Arial", 12),
         ).grid(row=1, column=0)
         redirect.pack()
+
+
+if __name__ == "__main__":
+    window = Tk()
+    user = User(True, "Pernilla", window)
+    user.user_gui()
