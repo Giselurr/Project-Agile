@@ -1,7 +1,7 @@
 """This module will use a tikinte GUI interface and use a mysql connection
 so that a user can register to this application."""
 
-from tkinter import NSEW, Button, E, Entry, Frame, Label, StringVar, Tk, Toplevel, W
+from tkinter import NSEW, Button, E, Entry, Frame, Label, StringVar, Toplevel, W
 
 import bcrypt
 
@@ -139,8 +139,3 @@ class Register:
         salt = bcrypt.gensalt()
         hashed = bcrypt.hashpw(password, salt)
         return hashed
-
-
-window = Tk()
-reg = Register(window)
-reg.register_gui()
