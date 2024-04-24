@@ -1,7 +1,7 @@
 """This module will use a tikinte GUI interface and use a mysql connection
 so that a user can register to this application."""
 
-from tkinter import NSEW, Button, E, Entry, Frame, Label, StringVar, Toplevel, W
+from tkinter import NSEW, Button, E, Entry, Frame, Label, StringVar, Tk, Toplevel, W
 
 import bcrypt
 
@@ -85,10 +85,6 @@ class Register:
             row=8, column=2, ipady=8
         )
         Label(register_frame, text="", bg="#040B20").grid(row=9, column=1, columnspan=3)
-        first_name = first_name.get()
-        last_name = last_name.get()
-        user_name = user_name.get()
-        password = password.get().encode("utf-8")
         Button(
             register_frame,
             text="REGISTER",
@@ -106,10 +102,14 @@ class Register:
     def register_user(self, first_name, last_name, user_name, password, register_frame):
         """This method will get the users name from the GUI
         and add their information to the DB."""
+        first_name = first_name.get()
+        last_name = last_name.get()
+        user_name = user_name.get()
+        password = password.get().encode("utf-8")
         pop = Toplevel(register_frame)
         hashed_password = self.salt_hash(password)
         user_exists = self.db_handler.check_user_name(user_name)
-        if user_exists:
+        if not user_exists:
             self.cursor = self.database.connect()
             try:
                 query = (
@@ -139,3 +139,8 @@ class Register:
         salt = bcrypt.gensalt()
         hashed = bcrypt.hashpw(password, salt)
         return hashed
+
+
+window = Tk()
+reg = Register(window)
+reg.register_gui()
