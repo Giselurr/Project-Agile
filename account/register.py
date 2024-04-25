@@ -22,7 +22,7 @@ class Register:
         self.db_handler = database_handler.DatabaseHandler()
         self.database = database_connection.DatabaseConnection(
             "root", "KamelKatt3801"
-        )  # Change to your db username and password.  # noqa: E501
+        )  # Change to your db username and password.
 
     def register_gui(self):
         """The Graphical interface for the user register"""
