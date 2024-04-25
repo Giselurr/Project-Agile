@@ -1,5 +1,5 @@
 
-Copyright YEAR 2024, gisela.malmberg0007@stud.hkr.se, pernilla.ahlstrom-wennerberg0018@stud.hkr.se, nikita.fransson_unver0034@stud.hkr.se, max.gahlberg0275@stud.hkr.se, obada.hana0001@stud.hkr.se
+Copyright YEAR 2024, gisela.malmberg0007@stud.hkr.se, pernilla.ahlstrom-wennerberg0018@stud.hkr.se, nikita.fransson_unver0034@stud.hkr.se, max.dahlberg0275@stud.hkr.se, obada.hana0001@stud.hkr.se
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
