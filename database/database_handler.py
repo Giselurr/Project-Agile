@@ -8,7 +8,9 @@ class DatabaseHandler:
     and it handles sql statements and queries."""
 
     def __init__(self):
-        self.db = database_connection.DatabaseConnection("root", "KamelKatt3801")
+        self.db = database_connection.DatabaseConnection(
+            "root", "KamelKatt3801"
+        )  # Change to your db username and password.
 
     def get_hashed_pass(self, user):
         """Retreives the hashed password from the database."""

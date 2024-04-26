@@ -1,10 +1,11 @@
 """This module will use a tikinte GUI interface and use a mysql connection
 so that a user can register to this application."""
 
-from tkinter import NSEW, Button, E, Entry, Frame, Label, StringVar, Toplevel, W
+from tkinter import NSEW, Button, E, Entry, Frame, Label, StringVar, W
 
 import bcrypt
 
+from account import login
 from database import database_connection, database_handler
 
 
@@ -19,7 +20,9 @@ class Register:
         self.window.config(bg="#040B20")
         self.window.title("Please register your account.")
         self.db_handler = database_handler.DatabaseHandler()
-        self.database = database_connection.DatabaseConnection("root", "KamelKatt3801")
+        self.database = database_connection.DatabaseConnection(
+            "root", "KamelKatt3801"
+        )  # Change to your db username and password.
 
     def register_gui(self):
         """The Graphical interface for the user register"""
@@ -106,7 +109,6 @@ class Register:
         last_name = last_name.get()
         user_name = user_name.get()
         password = password.get().encode("utf-8")
-        pop = Toplevel(register_frame)
         hashed_password = self.salt_hash(password)
         user_exists = self.db_handler.check_user_name(user_name)
         if not user_exists:
@@ -120,17 +122,19 @@ class Register:
                 self.cursor.execute(query, values)
                 if self.cursor.rowcount == 1:
                     self.database.commit()
-                    pop.title("Register successful1")
-                    Label(pop, text="Registered user successfully!").pack()
                     register_frame.pack_forget()
-                else:
-                    pop.title("Register unsuccesfull!")
-                    Label(pop, text="Please try again!").pack()
             finally:
                 self.cursor.close()
+                log = login.Login(self.window)
+                log.login_gui()
         else:
-            pop.title("Username allready exits!")
-            Label(pop, text="Username already exits, please try again!").pack()
+            Label(
+                register_frame,
+                text="The user already exists, please try again!",
+                bg="#040B20",
+                fg="#AFB5D6",
+                font=("Arial", 14),
+            ).grid(row=12, column=0, columnspan=3, ipady=10)
 
     def salt_hash(self, password):
         """This will transform their password to an encrypte version."""
