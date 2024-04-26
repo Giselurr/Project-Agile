@@ -1,7 +1,7 @@
 """This module will use a tikinter GUI interface
 so that a user can login to this application."""
 
-from tkinter import Button, Entry, Frame, Label, StringVar, W
+from tkinter import Button, Entry, Frame, Label, PhotoImage, StringVar, W
 
 import bcrypt
 
@@ -15,22 +15,23 @@ class Login:
     def __init__(self, window):
         """Initializing the class it starts the GUI and the db connection."""
         self.window = window
-        self.window.geometry("640x540")
+        self.window.geometry("640x700")
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#040B20")
-        self.window.title("Please login to your account.")
+        self.window.title("Breathe")
         self.db_handler = database_handler.DatabaseHandler()
 
     def login_gui(self):
         """This is the login graphical interface."""
         login_frame = Frame(self.window)
         login_frame.configure(bg="#040B20")
+        login_button = PhotoImage(file="account\images\Login.png")
         Label(
             login_frame,
-            text="Please fill in your login information below",
-            font=("Arial", 14),
+            text="USER LOGIN",
+            font=("Arial", 20, "bold"),
             bg="#040B20",
-            fg="#78CBFF",
+            fg="#AFB5D6",
         ).grid(row=0, column=0, columnspan=3, pady=15)
         user_name = StringVar()
         Label(
@@ -38,9 +39,9 @@ class Login:
             text="User Name:",
             font=("Arial", 14),
             bg="#040B20",
-            fg="#76ADCF",
+            fg="#AFB5D6",
         ).grid(row=2, column=0, pady=15)
-        Entry(login_frame, font=("Arial", 14), textvariable=user_name).grid(
+        Entry(login_frame, font=("Arial", 20), textvariable=user_name).grid(
             row=2, column=2, sticky=W
         )
         password = StringVar()
@@ -49,19 +50,18 @@ class Login:
             text="Password:",
             font=("Arial", 14),
             bg="#040B20",
-            fg="#64CEF0",
+            fg="#AFB5D6",
         ).grid(row=4, column=0, pady=15)
-        Entry(login_frame, font=("Arial", 14), textvariable=password).grid(
+        Entry(login_frame, font=("Arial", 20), textvariable=password, show="*").grid(
             row=4, column=2, sticky=W
         )
         Button(
             login_frame,
-            text="LOGIN",
-            bg="#78CBFF",
-            fg="#040B20",
-            height=1,
-            width=20,
-            font=("Arial", 14),
+            image=login_button,
+            border=0,
+            highlightthickness=0,
+            pady=0,
+            padx=0,
             command=lambda: self.login_user(user_name, password, login_frame),
         ).grid(row=6, column=0, columnspan=3, pady=10)
         login_frame.pack()

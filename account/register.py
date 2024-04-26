@@ -1,7 +1,7 @@
 """This module will use a tikinte GUI interface and use a mysql connection
 so that a user can register to this application."""
 
-from tkinter import NSEW, Button, E, Entry, Frame, Label, StringVar, W
+from tkinter import NSEW, Button, E, Entry, Frame, Label, PhotoImage, StringVar, W
 
 import bcrypt
 
@@ -17,26 +17,27 @@ class Register:
     def __init__(self, window):
         """Initializing the window for the GUI"""
         self.window = window
-        self.window.geometry("640x540")
+        self.window.geometry("640x700")
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#040B20")
         self.window.title("Please register your account.")
         self.db_handler = database_handler.DatabaseHandler()
         self.database = database_connection.DatabaseConnection(
-            "root", "Cbth2468"
+            "root", "KamelKatt"
         )  # Change to your db username and password.
 
     def register_gui(self):
         """The Graphical interface for the user register"""
         register_frame = Frame(self.window)
         register_frame.configure(bg="#040B20")
+        register_button = PhotoImage(file="account\images\Register.png")
         Label(
             register_frame,
-            text="Register your new account",
+            text="REGISTER USER",
             bg="#040B20",
             fg="#AFB5D6",
-            font=("Arial", 15),
-        ).grid(row=0, column=0, columnspan=3, sticky=NSEW)
+            font=("Arial", 20, "bold"),
+        ).grid(row=0, column=0, columnspan=3, sticky=NSEW, pady=15)
         Label(register_frame, text="", bg="#040B20").grid(row=1, column=1, columnspan=3)
         first_name = StringVar()
         Label(
@@ -45,10 +46,10 @@ class Register:
             bg="#040B20",
             fg="#AFB5D6",
             font=("Arial", 14),
-        ).grid(row=2, column=0, ipady=8, sticky=E)
-        Entry(
-            register_frame, textvariable=first_name, width=30, font=("Arial", 13)
-        ).grid(row=2, column=2, ipady=8)
+        ).grid(row=2, column=0, sticky=E)
+        Entry(register_frame, textvariable=first_name, font=("Arial", 20)).grid(
+            row=2, column=2
+        )
         Label(register_frame, text="", bg="#040B20").grid(row=3, column=1, columnspan=3)
         last_name = StringVar()
         Label(
@@ -57,10 +58,10 @@ class Register:
             bg="#040B20",
             fg="#AFB5D6",
             font=("Arial", 14),
-        ).grid(row=4, column=0, ipady=8, sticky=E)
-        Entry(
-            register_frame, textvariable=last_name, width=30, font=("Arial", 13)
-        ).grid(row=4, column=2, ipady=8)
+        ).grid(row=4, column=0, sticky=E)
+        Entry(register_frame, textvariable=last_name, font=("Arial", 20)).grid(
+            row=4, column=2
+        )
         Label(register_frame, text="", bg="#040B20").grid(row=5, column=1, columnspan=3)
         user_name = StringVar()
         Label(
@@ -69,13 +70,9 @@ class Register:
             bg="#040B20",
             fg="#AFB5D6",
             font=("Arial", 14),
-        ).grid(row=6, column=0, ipady=8, sticky=W)
-        Entry(
-            register_frame, textvariable=user_name, width=30, font=("Arial", 13)
-        ).grid(
-            row=6,
-            column=2,
-            ipady=8,
+        ).grid(row=6, column=0, sticky=W)
+        Entry(register_frame, textvariable=user_name, font=("Arial", 20)).grid(
+            row=6, column=2
         )
         Label(register_frame, text="", bg="#040B20").grid(row=7, column=1, columnspan=3)
         password = StringVar()
@@ -85,22 +82,21 @@ class Register:
             bg="#040B20",
             fg="#AFB5D6",
             font=("Arial", 14),
-        ).grid(row=8, column=0, ipady=8, sticky=E)
+        ).grid(row=8, column=0, sticky=E)
         Entry(
             register_frame,
             show="*",
             textvariable=password,
-            width=30,
-            font=("Arial", 13),
-        ).grid(row=8, column=2, ipady=8)
+            font=("Arial", 20),
+        ).grid(row=8, column=2)
         Label(register_frame, text="", bg="#040B20").grid(row=9, column=1, columnspan=3)
         Button(
             register_frame,
-            text="REGISTER",
-            bg="#040B20",
-            fg="#AFB5D6",
-            width=30,
-            height=3,
+            image=register_button,
+            border=0,
+            highlightthickness=0,
+            pady=0,
+            padx=0,
             command=lambda: self.register_user(
                 first_name, last_name, user_name, password, register_frame
             ),
