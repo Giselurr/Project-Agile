@@ -86,9 +86,13 @@ class Register:
             fg="#AFB5D6",
             font=("Arial", 14),
         ).grid(row=8, column=0, ipady=8, sticky=E)
-        Entry(register_frame, textvariable=password, width=30, font=("Arial", 13)).grid(
-            row=8, column=2, ipady=8
-        )
+        Entry(
+            register_frame,
+            show="*",
+            textvariable=password,
+            width=30,
+            font=("Arial", 13),
+        ).grid(row=8, column=2, ipady=8)
         Label(register_frame, text="", bg="#040B20").grid(row=9, column=1, columnspan=3)
         Button(
             register_frame,
