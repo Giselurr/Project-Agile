@@ -86,7 +86,7 @@ coverage-xml:
 	coverage run -m unittest discover
 	coverage xml
 
-test: lint coverage
+test: unittest coverage
 
 
 # ---------------------------------------------------------
