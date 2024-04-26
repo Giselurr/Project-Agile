@@ -1,7 +1,7 @@
 """Make automated test for the register class."""
 
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 from account import register
 
@@ -69,6 +69,7 @@ class TestRegister(unittest.TestCase):
 
     @patch("database.database_connection.DatabaseConnection")
     def test_register_user_curser(self, mock_database):
+        """Test curser for registration."""
         mock_cursor = MagicMock()
         mock_database.connect.return_value = mock_cursor
 
@@ -77,28 +78,97 @@ class TestRegister(unittest.TestCase):
 
         self.assertEqual(mock_cursor, cursor)
 
+    @patch("account.register.Register.check_username_conditions")
+    @patch("account.register.Register.check_password_conditions")
+    @patch("account.register.bcrypt.hashpw")
+    @patch("database.database_handler.DatabaseHandler.check_user_name")
+    @patch("database.database_connection.DatabaseConnection.connect")
+    @patch("database.database_connection.DatabaseConnection.commit")
+    @patch("account.login.Login.login_gui")
+    @patch("account.login.Login")
+    def test_register_uscker_success(
+        self,
+        mock_login,
+        mock_login_gui,
+        mock_commit,
+        mock_connect,
+        mock_check_user_name,
+        mock_hashpw,
+        mock_check_username,
+        mock_check_password,
+    ):
+        """Test so that the user can register his or hers account successfully."""
+        mock_cursor = MagicMock()
+        mock_connect.return_value = mock_cursor
+        mock_cursor.rowcount = 1
+        mock_hashpw.return_value = b"hashed_password"
+        password = "password".encode("utf-8")
+        mock_name = MagicMock()
+        mock_user = Mock(return_value="user")
+        mock_check_username.return_value = True
+        mock_check_password.return_value = True
+        mock_check_user_name.return_value = False
 
-@patch("account.register.Toplevel")
-@patch("account.register.bcrypt.hashpw")
-@patch("database.datbase_handler.DatabaseHandler.check_user_name", return_value=False)
-@patch("database.database_connection.DatabaseConnection.connect")
-def test_register_uscker_success(
-    self, mock_connect, mock_check_user_name, mock_hashpw, mock_toplevel
-):
-    """Test so that the user can register his or hers account successfully."""
-    mock_cursor = MagicMock()
-    mock_connect.return_value = mock_cursor
-    mock_cursor.rowcount = 1
-    mock_hashpw.return_value = b"hashed_password"
-    password = "password".encode("utf-8")
+        self.reg.register_user(
+            mock_user, mock_user, mock_user, mock_user, self.register_frame
+        )
+        mock_check_username.assert_called_once()
+        mock_check_password.assert_called_once()
+        mock_check_user_name.assert_called_once()
+        mock_cursor.execute.assert_called_once()
+        mock_commit.assert_called_once()
+        mock_cursor.close.assert_called_once()
 
-    self.reg.register_user("First", "Last", "user", password, self.register_frame)
+    def test_username_white_space(self):
+        """Test if error with only whitespace in username."""
+        user_name = " "
+        with self.assertRaises(register.UsernameError) as error:
+            register.Register(self.mock_window).check_username_conditions(user_name)
+            self.assertEqual(
+                str(error.exception),
+                "Not a valid username!\
+                         \nUsername cannot contain whitespace",
+            )
 
-    mock_check_user_name.assert_called_once_with("user")
-    mock_cursor.execute.assert_called_once()
-    mock_cursor.close.assert_called_once()
-    mock_cursor.commit.assert_called_once()
-    mock_toplevel.assert_called_once()
+    def test_username_contain_white_space(self):
+        """Test if error with whitespace in username."""
+        user_name = "b b"
+        with self.assertRaises(register.UsernameError) as error:
+            register.Register(self.mock_window).check_username_conditions(user_name)
+            self.assertEqual(
+                str(error.exception),
+                "Not a valid username!\
+                         \nUsername cannot contain whitespace",
+            )
+
+    def test_username_to_long(self):
+        """Test if error with username to long."""
+        user_name = "obobobobobobo"
+        with self.assertRaises(register.UsernameError) as error:
+            register.Register(self.mock_window).check_username_conditions(user_name)
+            self.assertEqual(str(error.exception), "Username to long!\nMax 12 letters")
+
+    def test_password_only_white_space(self):
+        """Test if only whitespace password raise error."""
+        password = " "
+        with self.assertRaises(register.UsernameError) as error:
+            register.Register(self.mock_window).check_username_conditions(password)
+            self.assertEqual(
+                str(error.exception),
+                "Not a valid password!\
+                                \nPassword cannot contain whitespace",
+            )
+
+    def test_password_white_space(self):
+        """Test if password containing whitespace raise error."""
+        password = "L L"
+        with self.assertRaises(register.UsernameError) as error:
+            register.Register(self.mock_window).check_username_conditions(password)
+            self.assertEqual(
+                str(error.exception),
+                "Not a valid password!\
+                                \nPassword cannot contain whitespace",
+            )
 
 
 if __name__ == "__main__":
