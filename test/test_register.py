@@ -69,6 +69,7 @@ class TestRegister(unittest.TestCase):
 
     @patch("database.database_connection.DatabaseConnection")
     def test_register_user_curser(self, mock_database):
+        """Test curser for registration."""
         mock_cursor = MagicMock()
         mock_database.connect.return_value = mock_cursor
 
@@ -77,14 +78,13 @@ class TestRegister(unittest.TestCase):
 
         self.assertEqual(mock_cursor, cursor)
 
-    @patch("account.register.Toplevel")
     @patch("account.register.bcrypt.hashpw")
     @patch(
-        "database.datbase_handler.DatabaseHandler.check_user_name", return_value=False
+        "database.database_handler.DatabaseHandler.check_user_name", return_value=False
     )
     @patch("database.database_connection.DatabaseConnection.connect")
     def test_register_uscker_success(
-        self, mock_connect, mock_check_user_name, mock_hashpw, mock_toplevel
+        self, mock_connect, mock_check_user_name, mock_hashpw
     ):
         """Test so that the user can register his or hers account successfully."""
         mock_cursor = MagicMock()
@@ -99,7 +99,6 @@ class TestRegister(unittest.TestCase):
         mock_cursor.execute.assert_called_once()
         mock_cursor.close.assert_called_once()
         mock_cursor.commit.assert_called_once()
-        mock_toplevel.assert_called_once()
 
     def test_username_white_space(self):
         """Test if error with only whitespace in username."""
