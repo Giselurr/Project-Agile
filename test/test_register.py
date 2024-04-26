@@ -1,7 +1,7 @@
 """Make automated test for the register class."""
 
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 from account import register
 
@@ -78,24 +78,31 @@ class TestRegister(unittest.TestCase):
 
         self.assertEqual(mock_cursor, cursor)
 
-    @patch("account.register.bcrypt.hashpw")
-    @patch(
-        "database.database_handler.DatabaseHandler.check_user_name", return_value=False
-    )
-    @patch("database.database_connection.DatabaseConnection.connect")
-    def test_register_uscker_success(
-        self, mock_connect, mock_check_user_name, mock_hashpw
-    ):
+    def test_register_uscker_success(self):
         """Test so that the user can register his or hers account successfully."""
-        mock_cursor = MagicMock()
-        mock_connect.return_value = mock_cursor
-        mock_cursor.rowcount = 1
-        mock_hashpw.return_value = b"hashed_password"
-        password = "password".encode("utf-8")
+        with patch("account.register.Register.check_username_conditions") as mock_check:
+            mock_check.return_value()
+        with patch("account.register.bcrypt.hashpw") as mock_hashpw:
+            mock_hashpw.return_value = b"hashed_password"
+        with patch(
+            "database.database_handler.DatabaseHandler.check_user_name"
+        ) as mock_check_user_name:
+            mock_check_user_name.return_value = False
+        with patch(
+            "database.database_connection.DatabaseConnection.connect"
+        ) as mock_connect:
+            mock_cursor = MagicMock()
+            mock_connect.return_value = mock_cursor
+            mock_cursor.rowcount = 1
+        password = Mock(side_effect="password".encode("utf-8"))
+        mock_name = MagicMock()
+        mock_user = Mock(side_effect="user")
 
-        self.reg.register_user("First", "Last", "user", password, self.register_frame)
-
-        mock_check_user_name.assert_called_once_with("user")
+        self.reg.register_user(
+            mock_name, mock_name, mock_user, password, self.register_frame
+        )
+        mock_check.assert_called_once()
+        mock_check_user_name.assert_called_once()
         mock_cursor.execute.assert_called_once()
         mock_cursor.close.assert_called_once()
         mock_cursor.commit.assert_called_once()

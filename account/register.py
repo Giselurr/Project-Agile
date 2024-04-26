@@ -111,9 +111,9 @@ class Register:
         first_name = first_name.get()
         last_name = last_name.get()
         user_name = user_name.get()
+        password = password.get()
         try:
             self.check_username_conditions(user_name)
-            password = password.get()
             self.check_password_conditions(password)
             password.encode("utf-8")
             hashed_password = self.salt_hash(password)
