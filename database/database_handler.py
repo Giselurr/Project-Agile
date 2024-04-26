@@ -9,7 +9,7 @@ class DatabaseHandler:
 
     def __init__(self):
         self.db = database_connection.DatabaseConnection(
-            "root", "KamelKatt3801"
+            "root", "Cbth2468"
         )  # Change to your db username and password.
 
     def get_hashed_pass(self, user):

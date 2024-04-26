@@ -101,5 +101,45 @@ def test_register_uscker_success(
     mock_toplevel.assert_called_once()
 
 
+@patch("usernameerror.UsernameError")
+def test_username_white_space(self, error):
+    """Test if error with only whitespace in username."""
+    user_name = " "
+    with self.assertRaises(error):
+        register.Register(self.mock_window).check_username_conditions(user_name)
+
+
+@patch("usernameerror.UsernameError")
+def test_username_contain_white_space(self, error):
+    """Test if error with whitespace in username."""
+    user_name = "b b"
+    with self.assertRaises(error):
+        register.Register(self.mock_window).check_username_conditions(user_name)
+
+
+@patch("usernameerror.UsernameError")
+def test_username_to_long(self, error):
+    """Test if error with username to long."""
+    user_name = "obobobobobob"
+    with self.assertRaises(error):
+        register.Register(self.mock_window).check_username_conditions(user_name)
+
+
+@patch("usernameerror.UsernameError")
+def test_password_only_white_space(self, error):
+    """Test if only whitespace password raise error."""
+    password = " "
+    with self.assertRaises(error):
+        register.Register(self.mock_window).check_username_conditions(password)
+
+
+@patch("usernameerror.UsernameError")
+def test_password_white_space(self, error):
+    """Test if password containing whitespace raise error."""
+    password = "L L"
+    with self.assertRaises(error):
+        register.Register(self.mock_window).check_username_conditions(password)
+
+
 if __name__ == "__main__":
     unittest.main()
