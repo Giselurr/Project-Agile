@@ -78,34 +78,46 @@ class TestRegister(unittest.TestCase):
 
         self.assertEqual(mock_cursor, cursor)
 
-    def test_register_uscker_success(self):
+    @patch("account.register.Register.check_username_conditions")
+    @patch("account.register.Register.check_password_conditions")
+    @patch("account.register.bcrypt.hashpw")
+    @patch("database.database_handler.DatabaseHandler.check_user_name")
+    @patch("database.database_connection.DatabaseConnection.connect")
+    @patch("database.database_connection.DatabaseConnection.commit")
+    @patch("account.login.Login.login_gui")
+    @patch("account.login.Login")
+    def test_register_uscker_success(
+        self,
+        mock_login,
+        mock_login_gui,
+        mock_commit,
+        mock_connect,
+        mock_check_user_name,
+        mock_hashpw,
+        mock_check_username,
+        mock_check_password,
+    ):
         """Test so that the user can register his or hers account successfully."""
-        with patch("account.register.Register.check_username_conditions") as mock_check:
-            mock_check.return_value()
-        with patch("account.register.bcrypt.hashpw") as mock_hashpw:
-            mock_hashpw.return_value = b"hashed_password"
-        with patch(
-            "database.database_handler.DatabaseHandler.check_user_name"
-        ) as mock_check_user_name:
-            mock_check_user_name.return_value = False
-        with patch(
-            "database.database_connection.DatabaseConnection.connect"
-        ) as mock_connect:
-            mock_cursor = MagicMock()
-            mock_connect.return_value = mock_cursor
-            mock_cursor.rowcount = 1
-        password = Mock(side_effect="password".encode("utf-8"))
+        mock_cursor = MagicMock()
+        mock_connect.return_value = mock_cursor
+        mock_cursor.rowcount = 1
+        mock_hashpw.return_value = b"hashed_password"
+        password = "password".encode("utf-8")
         mock_name = MagicMock()
-        mock_user = Mock(side_effect="user")
+        mock_user = Mock(return_value="user")
+        mock_check_username.return_value = True
+        mock_check_password.return_value = True
+        mock_check_user_name.return_value = False
 
         self.reg.register_user(
-            mock_name, mock_name, mock_user, password, self.register_frame
+            mock_user, mock_user, mock_user, mock_user, self.register_frame
         )
-        mock_check.assert_called_once()
+        mock_check_username.assert_called_once()
+        mock_check_password.assert_called_once()
         mock_check_user_name.assert_called_once()
         mock_cursor.execute.assert_called_once()
+        mock_commit.assert_called_once()
         mock_cursor.close.assert_called_once()
-        mock_cursor.commit.assert_called_once()
 
     def test_username_white_space(self):
         """Test if error with only whitespace in username."""
