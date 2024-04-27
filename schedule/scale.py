@@ -1,5 +1,7 @@
+"""This module will show scale and connect with database to store the stress level."""
+
 from datetime import datetime
-from tkinter import Button, Frame, Label, Radiobutton, StringVar
+from tkinter import Button, Frame, Label, Radiobutton, StringVar, Toplevel
 
 from account import user
 from database import database_connection, database_handler
@@ -31,17 +33,17 @@ class Scale:
         ).grid(row=0, column=1, columnspan=10, pady=40)
 
         scale = [
-            (1, 1),  # "#F8D5BE"),
-            (2, 2),  # "#F9BB93"),
-            (3, 3),  # "#F79757"),
-            (4, 4),  # "#F88A41"),
-            (5, 5),  # "#F77119"),
-            (6, 6),  # "#E75E04"),
-            (7, 7),  # "#C55206"),
-            (8, 8),  # "#A83304"),
-            (9, 9),  # "#922D05"),
-            (10, 10),
-        ]  # "#BE0808")]
+            (1, "#F8D5BE"),
+            (2, "#F9BB93"),
+            (3, "#F79757"),
+            (4, "#F88A41"),
+            (5, "#F77119"),
+            (6, "#E75E04"),
+            (7, "#C55206"),
+            (8, "#A83304"),
+            (9, "#922D05"),
+            (10, "#BE0808"),
+        ]
 
         self.var.set("1")
         Label(
@@ -66,14 +68,14 @@ class Scale:
                 value=code,
                 font=("Arial", 0),
                 bg="#040B20",
-                fg="black",
+                fg=code,
             ).grid(row=1, column=number, sticky="w")
             Label(
                 scale_frame,
                 text=number,
                 font=("Arial", 14),
                 bg="#040B20",
-                fg="white",
+                fg=code,
             ).grid(row=3, column=number, sticky="W", pady=10)
 
         Button(
@@ -103,6 +105,7 @@ class Scale:
 
     def return_to_user_page(self, scale_frame):
         """button action for return."""
+        self.top.destroy()
         scale_frame.pack_forget()
         logged_in_user = user.User(True, self.user, self.window)
         logged_in_user.user_gui()
@@ -122,5 +125,27 @@ class Scale:
             if self.cursor.rowcount == 1:
                 self.database.commit()
                 self.cursor.close()
+
         finally:
-            self.return_to_user_page(scale_frame)
+            self.top = Toplevel()
+            self.top.geometry("280x200")
+            self.top.title("app name")
+            self.top.resizable(height=True, width=False)
+            self.top.configure(bg="#040B20")
+            Label(
+                self.top,
+                text="Stress level saved!",
+                font=("Arial", 14),
+                bg="#040B20",
+                fg="#F8D5BE",
+            ).grid(row=1, column=5, pady=40, padx=(40, 40))
+            Button(
+                self.top,
+                text="Ok",
+                bg="#78CBFF",
+                fg="#040B20",
+                height=1,
+                width=5,
+                font=("Arial", 14),
+                command=lambda: self.return_to_user_page(scale_frame),
+            ).grid(row=2, column=5, pady=(20, 40), padx=(40, 40))
