@@ -11,7 +11,7 @@ class Main:
     def __init__(self, window):
         """Initiates the window."""
         self.window = window
-        self.window.geometry("640x540")
+        self.window.geometry("640x700")
         self.window.resizable(height=True, width=False)
         self.window.configure(bg="#040B20")
 
