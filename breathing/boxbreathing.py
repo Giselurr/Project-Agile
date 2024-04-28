@@ -26,13 +26,13 @@ class DisplayExercise:
         self.gif_label = tk.Label(
             self.window, image=self.gif_objects[self.current_frame]
         )
-        self.gif_label.pack(side="top", pady=70)  # Center the GIF label
+        self.gif_label.pack(side="top", pady=70) 
 
-        # Create a frame to contain the buttons
+       
         self.button_frame = tk.Frame(self.window, bg="#040B20")
         self.button_frame.pack()
 
-        # Place the start button
+        
         self.start = tk.Button(
             self.button_frame,
             text="START",
@@ -45,7 +45,7 @@ class DisplayExercise:
         )
         self.start.pack(side="left", padx=10, pady=10)
 
-        # Place the stop button
+        
         self.stop = tk.Button(
             self.button_frame,
             text="CANCEL",
@@ -58,7 +58,7 @@ class DisplayExercise:
         )
         self.stop.pack(side="left", padx=10, pady=10)
 
-        # Position the button frame below the GIF label
+        
         self.button_frame.place(relx=0.5, rely=0.5, anchor="center", y=220)
 
     def animate(self):
@@ -72,7 +72,7 @@ class DisplayExercise:
         self.window.destroy()
 
 
-# Creating the main window
+
 if __name__ == "__main__":
     main_window = tk.Tk()
     exercise = DisplayExercise(main_window)
