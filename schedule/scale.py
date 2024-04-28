@@ -97,15 +97,16 @@ class Scale:
             height=1,
             width=10,
             font=("Arial", 14),
-            command=lambda: self.return_to_user_page(scale_frame),
+            command=lambda: self.return_to_user_page(scale_frame, 0),
         ).grid(row=4, column=1, columnspan=10, pady=40, sticky="W")
 
         scale_frame.pack()
         self.window.mainloop()
 
-    def return_to_user_page(self, scale_frame):
+    def return_to_user_page(self, scale_frame, num):
         """button action for return."""
-        self.top.destroy()
+        if num == 1:
+            self.top.destroy()
         scale_frame.pack_forget()
         logged_in_user = user.User(True, self.user, self.window)
         logged_in_user.user_gui()
@@ -147,5 +148,5 @@ class Scale:
                 height=1,
                 width=5,
                 font=("Arial", 14),
-                command=lambda: self.return_to_user_page(scale_frame),
+                command=lambda: self.return_to_user_page(scale_frame, 1),
             ).grid(row=2, column=5, pady=(20, 40), padx=(40, 40))
