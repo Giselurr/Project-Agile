@@ -13,4 +13,4 @@ bcrypt
 
 #GUI
 tk
-
+pillow
