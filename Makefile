@@ -86,7 +86,7 @@ coverage-xml:
 	coverage run -m unittest discover
 	coverage xml
 
-test: lint coverage
+test: unittest coverage
 
 
 # ---------------------------------------------------------
@@ -97,3 +97,5 @@ pdoc:
 	pdoc --force --html --output-dir doc/pdoc/account account/*.py
 	pdoc --force --html --output-dir doc/pdoc/database database/*.py
 	pdoc --force --html --output-dir doc/pdoc/schedule schedule/*.py
+	pdoc --force --html --output-dir doc/pdoc/breathing breathing/*.py
+	pdoc --force --html --output-dir doc/pdoc/ /*.py
