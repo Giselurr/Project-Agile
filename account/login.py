@@ -5,7 +5,7 @@ from tkinter import Button, Entry, Frame, Label, PhotoImage, StringVar, W
 
 import bcrypt
 
-from account import user
+import main
 from database import database_handler
 
 
@@ -74,9 +74,7 @@ class Login:
         password = password.get().encode("utf-8")
         hashed = self.db_handler.get_hashed_pass(user_name)
         if hashed and bcrypt.checkpw(password, hashed.encode("utf-8")):
-            login_frame.pack_forget()
-            logged_in_user = user.User(True, user_name, self.window)
-            logged_in_user.user_gui()
+            main.Main.manager_menu_choice(self, login_frame, "USER_MENU", user_name)
         else:
             Label(
                 login_frame,

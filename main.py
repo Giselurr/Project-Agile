@@ -1,64 +1,56 @@
-"""A module that will be the user interface when not logged in."""
+from tkinter import Tk
 
-from tkinter import Button, Frame, Label, PhotoImage, Tk
+from account import login, main_menu, register, user
 
-from account import login, register
+# from breathing import boxbreathing
+# from schedule import calander, clock, dailynote, scale
 
 
 class Main:
-    """This class will handle the user GUI whe he/she is not logged in."""
-
     def __init__(self, window):
-        """Initiates the window."""
         self.window = window
-        self.window.geometry("640x700")
-        self.window.resizable(height=True, width=False)
-        self.window.configure(bg="#040B20")
 
-    def main_gui(self):
-        main_frame = Frame(self.window)
-        main_frame.configure(bg="#040B20")
-        logo = PhotoImage(file="account\images\Logo.png")
-        login = PhotoImage(file="account\images\Login.png")
-        register = PhotoImage(file="account\images\Register.png")
-        Label(main_frame, text="", bg="#040B20").grid(row=0)
+    def start_main_window(self):
+        main_window = main_menu.MainMenu(self.window)
+        main_window.main_gui()
 
-        Label(main_frame, text="", bg="#040B20").grid(row=0)
-        Label(main_frame, image=logo, border=0).grid(row=2, column=0, columnspan=4)
-        Label(main_frame, text="", bg="#040B20").grid(row=3)
-        Button(
-            main_frame,
-            image=register,
-            command=lambda: self.register_user(main_frame),
-            border=0,
-            highlightthickness=0,
-            pady=0,
-            padx=0,
-        ).grid(row=4, column=0, columnspan=2)
-        Button(
-            main_frame,
-            image=login,
-            command=lambda: self.login_user(main_frame),
-            border=0,
-            highlightthickness=0,
-            pady=0,
-            padx=0,
-        ).grid(row=4, column=2, columnspan=2)
-        main_frame.pack()
-        self.window.mainloop()
-
-    def register_user(self, main_frame):
-        main_frame.pack_forget()
-        reg = register.Register(self.window)
-        reg.register_gui()
-
-    def login_user(self, main_frame):
-        main_frame.pack_forget()
-        log = login.Login(self.window)
-        log.login_gui()
+    def manager_menu_choice(self, frame, menu_choice, user_name):
+        if menu_choice == "MAIN_MENU":
+            # Redirect to main menu (might not be needed).
+            print("MAIN_MENU")
+        elif menu_choice == "LOGIN":
+            frame.pack_forget()
+            log = login.Login(self.window)
+            log.login_gui()
+        elif menu_choice == "REGISTER":
+            frame.pack_forget()
+            reg = register.Register(self.window)
+            reg.register_gui()
+        elif menu_choice == "LOG_OUT":
+            # Redirect to log out (might be merged with MAIN_MENU).
+            print("LOG_OUT")
+        elif menu_choice == "USER_MENU":
+            frame.pack_forget()
+            logged_in_user = user.User(True, user_name, self.window)
+            logged_in_user.user_gui()
+        elif menu_choice == "BREATHE":
+            # Redirect to breathe.
+            print("BREATHE")
+        elif menu_choice == "SCHEDULE":
+            # Redirect to schedule.
+            print("SCHEDULE")
+        elif menu_choice == "STRESS_LEVEL":
+            # Redirect to stress level.
+            print("STRESS_LEVEL")
+        elif menu_choice == "CALENDAR":
+            # Redirect to calendar.
+            print("CALENDAR")
+        elif menu_choice == "STRESS_HISTORY":
+            # Redirect to stress history.
+            print("STRESS_HISTORY")
 
 
 if __name__ == "__main__":
     window = Tk()
     main = Main(window)
-    main.main_gui()
+    main.start_main_window()
