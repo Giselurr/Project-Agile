@@ -5,7 +5,7 @@ from tkinter import NSEW, Button, E, Entry, Frame, Label, PhotoImage, StringVar,
 
 import bcrypt
 
-from account import login
+import main
 from database import database_connection, database_handler
 
 from .usernameerror import UsernameError
@@ -130,8 +130,9 @@ class Register:
                         register_frame.pack_forget()
                 finally:
                     self.cursor.close()
-                    log = login.Login(self.window)
-                    log.login_gui()
+                    main.Main.manager_menu_choice(
+                        self, register_frame, "LOGIN", user_name
+                    )
             else:
                 Label(
                     register_frame,
