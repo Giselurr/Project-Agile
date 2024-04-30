@@ -22,9 +22,7 @@ class Register:
         self.window.config(bg="#040B20")
         self.window.title("Please register your account.")
         self.db_handler = database_handler.DatabaseHandler()
-        self.database = database_connection.DatabaseConnection(
-            "root", "Cbth2468"
-        )  # Change to your db username and password.
+        self.database = database_connection.DatabaseConnection()
 
     def register_gui(self):
         """The Graphical interface for the user register"""

@@ -15,9 +15,7 @@ class Scale:
         self.window = window
         self.user = user_name
         self.db_handler = database_handler.DatabaseHandler()
-        self.database = database_connection.DatabaseConnection(
-            "root", "Cbth2468"
-        )  # Change to your db username and password.
+        self.database = database_connection.DatabaseConnection()
 
     def scale_gui(self):
         """User interface with scale."""
