@@ -2,6 +2,8 @@
 
 from tkinter import Button, Frame, Label, PhotoImage, Tk
 
+from schedule import scale
+
 
 class User:
     """The user class will set up a user instance, add GUI and buttons(links)
@@ -59,7 +61,7 @@ class User:
                 user_frame,
                 image=stresslevel_img,
                 borderwidth=0,
-                command=lambda: self.redirect("set your stress level", user_frame),
+                command=lambda: self.redirect_to_scale(user_frame),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -115,6 +117,11 @@ class User:
             font=("Arial", 12),
         ).grid(row=1, column=0)
         redirect.pack()
+
+    def redirect_to_scale(self, user_frame):
+        user_frame.pack_forget()
+        logged_in_user = scale.Scale(self.window, self.user_name)
+        logged_in_user.scale_gui()
 
 
 if __name__ == "__main__":
