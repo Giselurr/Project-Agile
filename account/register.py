@@ -23,7 +23,7 @@ class Register:
         self.window.title("Please register your account.")
         self.db_handler = database_handler.DatabaseHandler()
         self.database = database_connection.DatabaseConnection(
-            "root", "KamelKatt"
+            "root", "Cbth2468"
         )  # Change to your db username and password.
 
     def register_gui(self):
