@@ -2,7 +2,7 @@
 
 from tkinter import Button, Frame, Label, PhotoImage, Tk
 
-from schedule import scale
+import main
 
 
 class User:
@@ -119,9 +119,7 @@ class User:
         redirect.pack()
 
     def redirect_to_scale(self, user_frame):
-        user_frame.pack_forget()
-        logged_in_user = scale.Scale(self.window, self.user_name)
-        logged_in_user.scale_gui()
+        main.Main.manager_menu_choice(self, user_frame, "STRESS_LEVEL", self.user_name)
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@
 from datetime import datetime
 from tkinter import Button, Frame, Label, PhotoImage, Radiobutton, StringVar, Toplevel
 
-from account import user
+import main
 from database import database_connection, database_handler
 
 
@@ -91,19 +91,17 @@ class Scale:
             image=return_button,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: self.return_to_user_page(scale_frame, 0),
+            command=lambda: self.return_to_user_page(scale_frame, False),
         ).grid(row=5, column=0, columnspan=10, pady=40, sticky="W")
 
         scale_frame.pack()
         self.window.mainloop()
 
-    def return_to_user_page(self, scale_frame, num):
+    def return_to_user_page(self, scale_frame, close_popup):
         """button action for return."""
-        if num == 1:
+        if close_popup:
             self.top.destroy()
-        scale_frame.pack_forget()
-        logged_in_user = user.User(True, self.user, self.window)
-        logged_in_user.user_gui()
+        main.Main.manager_menu_choice(self, scale_frame, "USER_MENU", self.user)
 
     def store_selected(self, scale_frame, var):
         """load to database selected stress level."""
@@ -151,5 +149,5 @@ class Scale:
                     height=1,
                     width=5,
                     font=("Arial", 14),
-                    command=lambda: self.return_to_user_page(scale_frame, 1),
+                    command=lambda: self.return_to_user_page(scale_frame, True),
                 ).grid(row=2, column=5, pady=(20, 40), padx=(40, 40))
