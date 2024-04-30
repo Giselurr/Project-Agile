@@ -11,9 +11,8 @@ class Scale:
     """This class will handle the user GUI whe he/she is not logged in."""
 
     def __init__(self, window, user_name):
-        """Initiates the window."""
+        """Initiate the window."""
         self.window = window
-        self.var = StringVar()
         self.user = user_name
         self.db_handler = database_handler.DatabaseHandler()
         self.database = database_connection.DatabaseConnection(
@@ -46,8 +45,8 @@ class Scale:
             (9, "#922D05"),
             (10, "#BE0808"),
         ]
-
-        self.var.set("1")
+        var = StringVar()
+        var.set("1")
         Label(
             scale_frame,
             text="Not stressed",
@@ -66,7 +65,7 @@ class Scale:
         for number, code in scale:
             Radiobutton(
                 scale_frame,
-                variable=self.var,
+                variable=var,
                 value=code,
                 highlightthickness=0,
                 font=("Arial", 0),
@@ -86,7 +85,7 @@ class Scale:
             image=select_button,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: self.store_selected(scale_frame),
+            command=lambda: self.store_selected(scale_frame, var),
         ).grid(row=5, column=6, columnspan=10, pady=40)
 
         Button(
@@ -108,9 +107,9 @@ class Scale:
         logged_in_user = user.User(True, self.user, self.window)
         logged_in_user.user_gui()
 
-    def store_selected(self, scale_frame):
+    def store_selected(self, scale_frame, var):
         """load to database selected stress level."""
-        colour = self.var.get()
+        colour = var.get()
         if colour == "1":
             Label(
                 scale_frame,
