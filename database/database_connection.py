@@ -7,8 +7,10 @@ import mysql.connector.cursor
 class DatabaseConnection:
     """Creates the basic database connection add your own information."""
 
-    def __init__(self, user, password):
+    def __init__(self):
         """Initialize the db_connection class with the connection login information."""
+        user = "root"  # Change to your username.
+        password = "password"  # Change to your password.
         self.con = {
             "user": user,
             "password": password,

@@ -1,64 +1,67 @@
-"""A module that will be the user interface when not logged in."""
+"""Main module that creates the original window that gets passed around.
+Also contains the redirect manager for the program."""
 
-from tkinter import Button, Frame, Label, PhotoImage, Tk
+from tkinter import Tk
 
-from account import login, register
+from account import login, main_menu, register, user
+
+# from breathing import boxbreathing
+from schedule import scale  # calander, clock, dailynote,
 
 
 class Main:
-    """This class will handle the user GUI whe he/she is not logged in."""
-
     def __init__(self, window):
-        """Initiates the window."""
+        """Init Main."""
         self.window = window
-        self.window.geometry("640x700")
-        self.window.resizable(height=True, width=False)
-        self.window.configure(bg="#040B20")
 
-    def main_gui(self):
-        main_frame = Frame(self.window)
-        main_frame.configure(bg="#040B20")
-        logo = PhotoImage(file="account\images\Logo.png")
-        login = PhotoImage(file="account\images\Login.png")
-        register = PhotoImage(file="account\images\Register.png")
-        Label(main_frame, text="", bg="#040B20").grid(row=0)
+    def start_main_window(self):
+        """Start the main menu window."""
+        main_window = main_menu.MainMenu(self.window)
+        main_window.main_gui()
 
-        Label(main_frame, text="", bg="#040B20").grid(row=0)
-        Label(main_frame, image=logo, border=0).grid(row=2, column=0, columnspan=4)
-        Label(main_frame, text="", bg="#040B20").grid(row=3)
-        Button(
-            main_frame,
-            image=register,
-            command=lambda: self.register_user(main_frame),
-            border=0,
-            highlightthickness=0,
-            pady=0,
-            padx=0,
-        ).grid(row=4, column=0, columnspan=2)
-        Button(
-            main_frame,
-            image=login,
-            command=lambda: self.login_user(main_frame),
-            border=0,
-            highlightthickness=0,
-            pady=0,
-            padx=0,
-        ).grid(row=4, column=2, columnspan=2)
-        main_frame.pack()
-        self.window.mainloop()
-
-    def register_user(self, main_frame):
-        main_frame.pack_forget()
-        reg = register.Register(self.window)
-        reg.register_gui()
-
-    def login_user(self, main_frame):
-        main_frame.pack_forget()
-        log = login.Login(self.window)
-        log.login_gui()
+    def manager_menu_choice(self, frame, menu_choice, user_name):
+        """Handles all the redirects and frame forgets for all windows."""
+        # Might want to add "frame.pack_forget()" here if all of the options do it.
+        if menu_choice == "MAIN_MENU":
+            # Redirect to main menu (might not be needed).
+            # Might use start_main_window()
+            print("MAIN_MENU")
+        elif menu_choice == "LOGIN":
+            frame.pack_forget()
+            login_redirect = login.Login(self.window)
+            login_redirect.login_gui()
+        elif menu_choice == "REGISTER":
+            frame.pack_forget()
+            register_redirect = register.Register(self.window)
+            register_redirect.register_gui()
+        elif menu_choice == "LOG_OUT":
+            # Redirect to log out (might be merged with MAIN_MENU).
+            print("LOG_OUT")
+        elif menu_choice == "USER_MENU":
+            frame.pack_forget()
+            user_redirect = user.User(True, user_name, self.window)
+            user_redirect.user_gui()
+        elif menu_choice == "BREATHE":
+            # frame.pack_forget()
+            # breath_redirect = boxbreathing.DisplayExercise(self.window, user_name)
+            # breath_redirect.display_imagery()
+            print("BREATHE")
+        elif menu_choice == "SCHEDULE":
+            # Redirect to schedule.
+            print("SCHEDULE")
+        elif menu_choice == "STRESS_LEVEL":
+            frame.pack_forget()
+            stress_level_redirect = scale.Scale(self.window, user_name)
+            stress_level_redirect.scale_gui()
+        elif menu_choice == "CALENDAR":
+            # Redirect to calendar.
+            print("CALENDAR")
+        elif menu_choice == "STRESS_HISTORY":
+            # Redirect to stress history.
+            print("STRESS_HISTORY")
 
 
 if __name__ == "__main__":
     window = Tk()
     main = Main(window)
-    main.main_gui()
+    main.start_main_window()

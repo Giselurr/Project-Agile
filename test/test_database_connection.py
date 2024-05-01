@@ -10,10 +10,35 @@ from database import database_connection
 class TestDatabaseConnetion(TestCase):
     """This will test the database connection class."""
 
+    # @patch("mysql.connector.connect")
+    # def test_connect(self, mock_connect):
+    #    """Will test so a connetion with the database works."""
+    #    db = database_connection.DatabaseConnection("test_user", "test_password")
+    #    db.connect()
+    #    mock_connect.assert_called_once_with(
+    #        user="test_user",
+    #        password="test_password",
+    #        host="localhost",
+    #        port=3306,
+    #        database="breathe",
+    #        raise_on_warnings=True,
+    #    )
+
     @patch("mysql.connector.connect")
-    def test_connect(self, mock_connect):
-        """Will test so a connetion with the database works."""
-        db = database_connection.DatabaseConnection("test_user", "test_password")
+    @patch.object(database_connection.DatabaseConnection, "__init__", return_value=None)
+    def test_connect(self, mock_init, mock_connect):
+        """Will test so a connection with the database works."""
+        db = database_connection.DatabaseConnection()
+        db.con = {
+            "user": "test_user",
+            "password": "test_password",
+            "host": "localhost",
+            "port": 3306,
+            "database": "breathe",
+            "raise_on_warnings": True,
+        }
+        db.my_con = None
+        db.cursor = None
         db.connect()
         mock_connect.assert_called_once_with(
             user="test_user",
@@ -31,7 +56,7 @@ class TestDatabaseConnetion(TestCase):
         mock_conn.is_connected.return_value = True
         mock_connect.return_value = mock_conn
 
-        db_connection = database_connection.DatabaseConnection("user", "password")
+        db_connection = database_connection.DatabaseConnection()
         db_connection.my_con = (
             mock_conn  # Manually setting the connection to mock object
         )

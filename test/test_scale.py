@@ -30,6 +30,6 @@ class TestScale(TestCase):
     @patch("account.user.User")
     def test_return_to_user_page(self, mock_user):
         """later."""
-        self.reg.return_to_user_page(self.scale_frame, 2)
+        self.reg.return_to_user_page(self.scale_frame, False)
         mock_user.assert_called_once_with(True, self.reg.user, self.reg.window)
         mock_user.return_value.user_gui.assert_called_once()
