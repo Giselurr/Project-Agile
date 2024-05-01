@@ -1,3 +1,6 @@
+"""Main module that creates the original window that gets passed around.
+Also contains the redirect manager for the program."""
+
 from tkinter import Tk
 
 from account import login, main_menu, register, user
@@ -8,16 +11,20 @@ from schedule import scale  # calander, clock, dailynote,
 
 class Main:
     def __init__(self, window):
+        """Init Main."""
         self.window = window
 
     def start_main_window(self):
+        """Start the main menu window."""
         main_window = main_menu.MainMenu(self.window)
         main_window.main_gui()
 
     def manager_menu_choice(self, frame, menu_choice, user_name):
+        """Handles all the redirects and frame forgets for all windows."""
         # Might want to add "frame.pack_forget()" here if all of the options do it.
         if menu_choice == "MAIN_MENU":
             # Redirect to main menu (might not be needed).
+            # Might use start_main_window()
             print("MAIN_MENU")
         elif menu_choice == "LOGIN":
             frame.pack_forget()

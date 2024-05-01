@@ -6,7 +6,7 @@ import main
 
 
 class MainMenu:
-    """This class will handle the user GUI whe he/she is not logged in."""
+    """This class will handle the user GUI when he/she is not logged in."""
 
     def __init__(self, window):
         """Initiates the window."""
@@ -16,6 +16,7 @@ class MainMenu:
         self.window.configure(bg="#040B20")
 
     def main_gui(self):
+        """Main menu window with selection between register and login."""
         main_frame = Frame(self.window)
         main_frame.configure(bg="#040B20")
         logo = PhotoImage(file="account\images\Logo.png")
