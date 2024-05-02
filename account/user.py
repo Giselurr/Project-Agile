@@ -40,6 +40,7 @@ class User:
             Button(
                 user_frame,
                 image=breathe_img,
+                activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect("breathe", user_frame),
                 highlightthickness=0,
@@ -50,6 +51,7 @@ class User:
             Button(
                 user_frame,
                 image=scheduel_img,
+                activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect("set schedule", user_frame),
                 highlightthickness=0,
@@ -60,6 +62,7 @@ class User:
             Button(
                 user_frame,
                 image=stresslevel_img,
+                activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect_to_scale(user_frame),
                 highlightthickness=0,
@@ -71,6 +74,7 @@ class User:
             Button(
                 user_frame,
                 image=calendar_img,
+                activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect("view your calender", user_frame),
                 highlightthickness=0,
@@ -81,6 +85,7 @@ class User:
             Button(
                 user_frame,
                 image=history_img,
+                activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect("stress history", user_frame),
                 highlightthickness=0,

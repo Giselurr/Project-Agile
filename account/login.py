@@ -58,6 +58,7 @@ class Login:
         Button(
             login_frame,
             image=login_button,
+            activebackground="#040B20",
             border=0,
             highlightthickness=0,
             pady=0,
