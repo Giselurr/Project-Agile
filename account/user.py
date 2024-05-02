@@ -2,7 +2,7 @@
 
 from tkinter import Button, Frame, Label, PhotoImage, Tk
 
-from breathing import boxbreathing
+import main
 
 
 class User:
@@ -41,7 +41,7 @@ class User:
                 user_frame,
                 image=breathe_img,
                 borderwidth=0,
-                command=lambda: self.redirect_breathe("breathe", user_frame),
+                command=lambda: self.redirect("breathe", user_frame),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -61,7 +61,7 @@ class User:
                 user_frame,
                 image=stresslevel_img,
                 borderwidth=0,
-                command=lambda: self.redirect("set your stress level", user_frame),
+                command=lambda: self.redirect_to_scale(user_frame),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -118,10 +118,8 @@ class User:
         ).grid(row=1, column=0)
         redirect.pack()
 
-    def redirect_breathe(self, redirect_to, user_frame):
-        user_frame.pack_forget()
-        breath_redirect = boxbreathing.DisplayExercise(self.window, self.user_name)
-        breath_redirect.display_imagery()
+    def redirect_to_scale(self, user_frame):
+        main.Main.manager_menu_choice(self, user_frame, "STRESS_LEVEL", self.user_name)
 
 
 if __name__ == "__main__":
