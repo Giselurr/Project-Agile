@@ -1,5 +1,6 @@
 """This module will store the user information and the GUI for the user page"""
 
+from datetime import datetime
 from tkinter import Button, Frame, Label, PhotoImage, Tk
 
 import main
@@ -42,7 +43,7 @@ class User:
                 image=breathe_img,
                 borderwidth=0,
                 command=lambda: main.Main.manager_menu_choice(
-                    self, user_frame, "BREATHE", self.user_name
+                    self, user_frame, "BREATHE", self.user_name, ""
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -54,7 +55,7 @@ class User:
                 image=scheduel_img,
                 borderwidth=0,
                 command=lambda: main.Main.manager_menu_choice(
-                    self, user_frame, "SCHEDULE", self.user_name
+                    self, user_frame, "SCHEDULE", self.user_name, ""
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -66,7 +67,7 @@ class User:
                 image=stresslevel_img,
                 borderwidth=0,
                 command=lambda: main.Main.manager_menu_choice(
-                    self, user_frame, "STRESS_LEVEL", self.user_name
+                    self, user_frame, "STRESS_LEVEL", self.user_name, datetime.now()
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -79,7 +80,7 @@ class User:
                 image=calendar_img,
                 borderwidth=0,
                 command=lambda: main.Main.manager_menu_choice(
-                    self, user_frame, "CALENDAR", self.user_name
+                    self, user_frame, "CALENDAR", self.user_name, ""
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -91,7 +92,7 @@ class User:
                 image=history_img,
                 borderwidth=0,
                 command=lambda: main.Main.manager_menu_choice(
-                    self, user_frame, "STRESS_HISTORY", self.user_name
+                    self, user_frame, "STRESS_HISTORY", self.user_name, ""
                 ),
                 highlightthickness=0,
                 bd=0,

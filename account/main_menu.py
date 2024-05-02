@@ -31,7 +31,7 @@ class MainMenu:
             main_frame,
             image=register,
             command=lambda: main.Main.manager_menu_choice(
-                self, main_frame, "REGISTER", "DUMMY_NAME"
+                self, main_frame, "REGISTER", "DUMMY_NAME", ""
             ),
             border=0,
             highlightthickness=0,

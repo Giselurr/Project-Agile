@@ -108,7 +108,9 @@ class DisplayExercise:
         self.box_brathing_frame.pack_forget()
         self.button_frame.pack_forget()
         self.button_frame.place_forget()
-        main.Main.manager_menu_choice(self, self.button_frame, "USER_MENU", self.user)
+        main.Main.manager_menu_choice(
+            self, self.button_frame, "USER_MENU", self.user, ""
+        )
 
     def stop(self):
         self.stop_frame.pack_forget()
