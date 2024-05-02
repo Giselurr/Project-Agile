@@ -10,7 +10,7 @@ class DatabaseConnection:
     def __init__(self):
         """Initialize the db_connection class with the connection login information."""
         user = "root"  # Change to your username.
-        password = "password"  # Change to your password.
+        password = "Cbth2468"  # Change to your password.
         self.con = {
             "user": user,
             "password": password,

@@ -19,7 +19,7 @@ class Main:
         main_window = main_menu.MainMenu(self.window)
         main_window.main_gui()
 
-    def manager_menu_choice(self, frame, menu_choice, user_name):
+    def manager_menu_choice(self, frame, menu_choice, user_name, date):
         """Handles all the redirects and frame forgets for all windows."""
         # Might want to add "frame.pack_forget()" here if all of the options do it.
         if menu_choice == "MAIN_MENU":
@@ -51,7 +51,7 @@ class Main:
             print("SCHEDULE")
         elif menu_choice == "STRESS_LEVEL":
             frame.pack_forget()
-            stress_level_redirect = scale.Scale(self.window, user_name)
+            stress_level_redirect = scale.Scale(self.window, user_name, date)
             stress_level_redirect.scale_gui()
         elif menu_choice == "CALENDAR":
             # Redirect to calendar.

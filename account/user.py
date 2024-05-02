@@ -1,5 +1,6 @@
 """This module will store the user information and the GUI for the user page"""
 
+from datetime import datetime
 from tkinter import Button, Frame, Label, PhotoImage, Tk
 
 import main
@@ -119,7 +120,9 @@ class User:
         redirect.pack()
 
     def redirect_to_scale(self, user_frame):
-        main.Main.manager_menu_choice(self, user_frame, "STRESS_LEVEL", self.user_name)
+        main.Main.manager_menu_choice(
+            self, user_frame, "STRESS_LEVEL", self.user_name, datetime.now()
+        )
 
 
 if __name__ == "__main__":
