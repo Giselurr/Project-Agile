@@ -41,7 +41,9 @@ class User:
                 user_frame,
                 image=breathe_img,
                 borderwidth=0,
-                command=lambda: self.redirect("breathe", user_frame),
+                command=lambda: main.Main.manager_menu_choice(
+                    self, user_frame, "BREATHE", self.user_name
+                ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -51,7 +53,9 @@ class User:
                 user_frame,
                 image=scheduel_img,
                 borderwidth=0,
-                command=lambda: self.redirect("set schedule", user_frame),
+                command=lambda: main.Main.manager_menu_choice(
+                    self, user_frame, "SCHEDULE", self.user_name
+                ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -61,7 +65,9 @@ class User:
                 user_frame,
                 image=stresslevel_img,
                 borderwidth=0,
-                command=lambda: self.redirect_to_scale(user_frame),
+                command=lambda: main.Main.manager_menu_choice(
+                    self, user_frame, "STRESS_LEVEL", self.user_name
+                ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -72,7 +78,9 @@ class User:
                 user_frame,
                 image=calendar_img,
                 borderwidth=0,
-                command=lambda: self.redirect("view your calender", user_frame),
+                command=lambda: main.Main.manager_menu_choice(
+                    self, user_frame, "CALENDAR", self.user_name
+                ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -82,7 +90,9 @@ class User:
                 user_frame,
                 image=history_img,
                 borderwidth=0,
-                command=lambda: self.redirect("stress history", user_frame),
+                command=lambda: main.Main.manager_menu_choice(
+                    self, user_frame, "STRESS_HISTORY", self.user_name
+                ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -103,23 +113,6 @@ class User:
             ).grid(row=1, column=0, columnspan=4)
             user_frame.pack()
         self.window.mainloop()
-
-    def redirect(self, redirect_to, user_frame):
-        user_frame.pack_forget()
-        redirect = Frame(self.window)
-        redirect.configure(bg="#AFB5D6")
-        Label(redirect, bg="#AFB5D6", text="").grid(row=0)
-        Label(
-            redirect,
-            text="Redirecting to the " + redirect_to + ".",
-            bg="#040B20",
-            fg="#AFB5D6",
-            font=("Arial", 12),
-        ).grid(row=1, column=0)
-        redirect.pack()
-
-    def redirect_to_scale(self, user_frame):
-        main.Main.manager_menu_choice(self, user_frame, "STRESS_LEVEL", self.user_name)
 
 
 if __name__ == "__main__":

@@ -4,8 +4,7 @@ Also contains the redirect manager for the program."""
 from tkinter import Tk
 
 from account import login, main_menu, register, user
-
-# from breathing import boxbreathing
+from breathing import boxbreathing
 from schedule import scale  # calander, clock, dailynote,
 
 
@@ -42,10 +41,9 @@ class Main:
             user_redirect = user.User(True, user_name, self.window)
             user_redirect.user_gui()
         elif menu_choice == "BREATHE":
-            # frame.pack_forget()
-            # breath_redirect = boxbreathing.DisplayExercise(self.window, user_name)
-            # breath_redirect.display_imagery()
-            print("BREATHE")
+            frame.pack_forget()
+            breath_redirect = boxbreathing.DisplayExercise(self.window, user_name)
+            breath_redirect.display_imagery()
         elif menu_choice == "SCHEDULE":
             # Redirect to schedule.
             print("SCHEDULE")
