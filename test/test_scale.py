@@ -14,7 +14,8 @@ class TestScale(TestCase):
         self.scale_frame = MagicMock()
         self.scale_frame.pack()
         self.mock_user_name = MagicMock()
-        self.reg = scale.Scale(self.root, self.mock_user_name)
+        self.mock_date = MagicMock()
+        self.reg = scale.Scale(self.root, self.mock_user_name, self.mock_date)
 
     def tearDown(self):
         """later."""
@@ -24,12 +25,12 @@ class TestScale(TestCase):
     def test_init(self):
         """later."""
         mock_window = MagicMock()
-        ref = scale.Scale(mock_window, self.mock_user_name)
+        mock_date = MagicMock()
+        ref = scale.Scale(mock_window, self.mock_user_name, mock_date)
         self.assertIsInstance(ref, scale.Scale)
 
-    @patch("account.user.User")
-    def test_return_to_user_page(self, mock_user):
+    @patch("main.Main")
+    def test_return_to_user_page(self, mock_main):
         """later."""
         self.reg.return_to_user_page(self.scale_frame, False)
-        mock_user.assert_called_once_with(True, self.reg.user, self.reg.window)
-        mock_user.return_value.user_gui.assert_called_once()
+        mock_main.manager_menu_choice.assert_called_once()

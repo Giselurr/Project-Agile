@@ -132,18 +132,6 @@ class Scale:
             self, scale_frame, "USER_MENU", self.user, self.date
         )
 
-    def store_selected(self, scale_frame, var):
-        """Load to database selected stress level."""
-        colour = var.get()
-        if colour == "1":
-            Label(
-                scale_frame,
-                text="Choose stress level",
-                bg="#040B20",
-                fg="#ff0000",
-                font=("Arial", 14),
-            ).grid(row=6, column=1, columnspan=10, ipady=10)
-
     def check_entry(self, scale_frame, colour, note):
         """Load to database selected stress level."""
         colour = colour.get()
@@ -159,17 +147,23 @@ class Scale:
             ).grid(row=6, column=1, columnspan=10, ipady=10)
         elif result[1]:
             self.confirm_overide(scale_frame, result[0], colour, notes)
-        self.save_selected(scale_frame, colour, notes)
+        else:
+            self.save_selected(scale_frame, colour, notes)
 
     def confirm_overide(self, scale_frame, id_calander, colour, notes):
         """Ensure user want to overwrite their old entry."""
+        self.top = Toplevel()
+        self.top.geometry("280x200")
+        self.top.title("app name")
+        self.top.resizable(height=True, width=False)
+        self.top.configure(bg="#040B20")
         Label(
             self.top,
-            text="Are you sure you want to save changes?",
+            text="Are you sure you \nwant to save changes?",
             font=("Arial", 14),
             bg="#040B20",
             fg="#F8D5BE",
-        ).grid(row=1, column=5, pady=40, padx=(40, 40))
+        ).grid(row=1, column=1, columnspan=5, pady=40, padx=(40, 40))
         Button(
             self.top,
             text="Ok",
@@ -178,10 +172,10 @@ class Scale:
             height=1,
             width=5,
             font=("Arial", 14),
-            command=lambda: self.db_handler.update_row(
-                self.top, colour, notes, id_calander
+            command=lambda: self.update_row(
+                scale_frame, colour, notes, id_calander, True
             ),
-        ).grid(row=2, column=5, pady=(20, 40), padx=(40, 40))
+        ).grid(row=2, column=5, columnspan=1, pady=(20, 40), padx=(40, 20))
         Button(
             self.top,
             text="Return",
@@ -191,7 +185,7 @@ class Scale:
             width=5,
             font=("Arial", 14),
             command=lambda: self.return_to_user_page(scale_frame, True),
-        ).grid(row=2, column=5, pady=(20, 40), padx=(40, 40))
+        ).grid(row=2, column=1, columnspan=1, pady=(20, 40), padx=(20, 40))
 
     def save_selected(self, scale_frame, colour, note):
         """This will handel insert to database."""
@@ -199,7 +193,7 @@ class Scale:
             self.cursor = self.database.connect()
             query = (
                 "INSERT INTO stress_calender (date, stress_level, note, user_user_name)"
-                "VALUES (%s, %s, %s)"
+                "VALUES (%s, %s, %s, %s)"
             )
             formateddate = self.date.strftime("%Y-%m-%d")
             values = (formateddate, colour, note, self.user)
@@ -230,3 +224,7 @@ class Scale:
                 font=("Arial", 14),
                 command=lambda: self.return_to_user_page(scale_frame, True),
             ).grid(row=2, column=5, pady=(20, 40), padx=(40, 40))
+
+    def update_row(self, scale_frame, colour, notes, id_calender, close_pop_up):
+        self.db_handler.update_row(colour, notes, id_calender)
+        self.return_to_user_page(scale_frame, close_pop_up)

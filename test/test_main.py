@@ -2,7 +2,7 @@
 
 import unittest
 from tkinter import Tk
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import main
 
@@ -30,6 +30,7 @@ class TestMain(unittest.TestCase):
     ):
         """Test all of the different choices in the manager."""
         frame = Mock()
+        mock_date = MagicMock()
         menu_choices = [
             ("LOGIN", mock_login, "login_gui"),
             ("REGISTER", mock_register, "register_gui"),
@@ -39,14 +40,18 @@ class TestMain(unittest.TestCase):
         ]
         for menu_choice, mock_class, method_name in menu_choices:
             with self.subTest(menu_choice=menu_choice):
-                self.main.manager_menu_choice(frame, menu_choice, "test_user")
+                self.main.manager_menu_choice(
+                    frame, menu_choice, "test_user", mock_date
+                )
                 frame.pack_forget.assert_called_once()
                 if menu_choice == "USER_MENU":  # Uses different args than the rest.
                     mock_user.assert_called_once_with(True, "test_user", self.window)
                 elif (
                     menu_choice == "STRESS_LEVEL"
                 ):  # Uses different args than the rest.
-                    mock_scale.assert_called_once_with(self.window, "test_user")
+                    mock_scale.assert_called_once_with(
+                        self.window, "test_user", mock_date
+                    )
                 else:
                     mock_class.assert_called_once_with(self.window)
                 getattr(mock_class.return_value, method_name).assert_called_once()

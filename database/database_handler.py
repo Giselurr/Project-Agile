@@ -34,34 +34,37 @@ class DatabaseHandler:
         finally:
             curser.close()
 
-    def check_date(self, user_name, date):
+    def check_date(self, user_name, current_date):
         """Later."""
         query = (
             "SELECT calender_id, date FROM stress_calender WHERE user_user_name = %s"
         )
-        date.strftime("%Y-%m-%d")
+        new_date = current_date.strftime("%Y-%m-%d")
         values = (user_name,)
         curser = self.db.connect()
         try:
             curser.execute(query, values)
             result = curser.fetchall()
-            for calender_id, db_dates in result:
-                if db_dates == date:
+            print(result)
+            for calender_id, db_date in result:
+                db_dates = db_date.strftime("%Y-%m-%d")
+                if db_dates == new_date:
                     return (calender_id, True)
             return ("", False)
         finally:
             curser.close()
 
-    def update_row(self, top, colour, notes, id):
+    def update_row(self, colour, notes, id):
         """Later."""
-        top.destroy()
         query = "UPDATE stress_calender SET stress_level = %s, note = %s \
-            WHERE calender_id = %s"
+              WHERE calender_id = %s"
+
         values = (colour, notes, id)
         curser = self.db.connect()
         try:
             curser.execute(query, values)
-            result = curser.fetchone()
+            if curser.rowcount == 1:
+                self.db.commit()
 
         finally:
             curser.close()
