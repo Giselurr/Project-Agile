@@ -91,6 +91,7 @@ class Register:
         Button(
             register_frame,
             image=register_button,
+            activebackground="#040B20",
             border=0,
             highlightthickness=0,
             pady=0,

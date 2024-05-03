@@ -54,7 +54,7 @@ class Scale:
         ).grid(row=1, column=0, sticky="W")
         Label(
             scale_frame,
-            text="Werry stressed",
+            text="Very stressed",
             font=("Arial", 14),
             bg="#040B20",
             fg="#BE0808",
@@ -65,6 +65,7 @@ class Scale:
                 scale_frame,
                 variable=var,
                 value=code,
+                activebackground="#040B20",  # Not a perfect solution, but still better.
                 highlightthickness=0,
                 font=("Arial", 0),
                 bg="#040B20",
@@ -81,6 +82,7 @@ class Scale:
         Button(
             scale_frame,
             image=select_button,
+            activebackground="#040B20",
             borderwidth=0,
             highlightthickness=0,
             command=lambda: self.store_selected(scale_frame, var),
@@ -89,6 +91,7 @@ class Scale:
         Button(
             scale_frame,
             image=return_button,
+            activebackground="#040B20",
             borderwidth=0,
             highlightthickness=0,
             command=lambda: self.return_to_user_page(scale_frame, False),
