@@ -1,6 +1,15 @@
 """This module will handle the settings for the user."""
 
-from tkinter import Button, Entry, Frame, Label, StringVar, Tk, messagebox
+from tkinter import (
+    Button,
+    E,
+    Entry,
+    Frame,
+    Label,
+    StringVar,
+    Tk,
+    messagebox,
+)
 
 import bcrypt
 
@@ -23,64 +32,73 @@ class UserSettings:
         self.window.geometry("640x700")
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#040B20")
-        setting_frame = Frame(self.window, bg="#040B20")
+        self.setting_frame = Frame(self.window, bg="#040B20")
         Label(
-            setting_frame,
+            self.setting_frame,
             text="USER SETTINGS",
             bg="#040B20",
             fg="#FFFFFF",
             font=("Arial", 20),
         ).grid(column=0, row=0, columnspan=2)
 
-        Label(setting_frame, text="", bg="#040B20").grid(row=1, column=0, columnspan=3)
+        Label(self.setting_frame, text="", bg="#040B20").grid(
+            row=1, column=0, columnspan=3
+        )
 
         Label(
-            setting_frame,
+            self.setting_frame,
             text="CHANGE YOUR PASSWORD",
             font=("Arial", 14),
             bg="#040B20",
             fg="#FFFFFF",
         ).grid(row=2, column=0, columnspan=2)
-        old_password = StringVar()
+        self.old_password = StringVar()
         Label(
-            setting_frame,
+            self.setting_frame,
             text="Current password: ",
             font=("Arial", 14),
             bg="#040B20",
             fg="#FFFFFF",
         ).grid(row=3, column=0)
-        Entry(setting_frame, textvariable=old_password, font=("Arial", 14)).grid(
-            row=3, column=1
-        )
-        new_password = StringVar()
+        Entry(
+            self.setting_frame, textvariable=self.old_password, font=("Arial", 14)
+        ).grid(row=3, column=1)
+        self.new_password = StringVar()
         Label(
-            setting_frame,
+            self.setting_frame,
             text="New password: ",
             font=("Arial", 14),
             bg="#040B20",
             fg="#FFFFFF",
         ).grid(row=4, column=0)
-        Entry(setting_frame, textvariable=new_password, font=("Arial", 14)).grid(
-            row=4, column=1
+        entry_change = Entry(
+            self.setting_frame, textvariable=self.new_password, font=("Arial", 14)
         )
-        Label(setting_frame, text="", bg="#040B20").grid(row=5, column=0, columnspan=3)
+        entry_change.grid(row=4, column=1)
+        entry_change.bind("<Return>", self.press_enter)
+        Label(self.setting_frame, text="", bg="#040B20").grid(
+            row=5, column=0, columnspan=3
+        )
         Button(
-            setting_frame,
+            self.setting_frame,
+            activebackground="#040B20",
             text="CHANGE",
             bg="#040B20",
             fg="white",
-            font=("Arial", 14),
-            width=18,
+            font="Arial",
+            width=8,
             height=1,
             command=lambda: self.change_password(
-                setting_frame, old_password, new_password
+                self.setting_frame, self.old_password, self.new_password
             ),
-        ).grid(row=6, column=0, columnspan=2)
+        ).grid(row=6, column=1, sticky=E)
 
-        Label(setting_frame, text="", bg="#040B20").grid(row=7, column=0, columnspan=3)
+        Label(self.setting_frame, text="", bg="#040B20").grid(
+            row=7, column=0, columnspan=3
+        )
 
         Label(
-            setting_frame,
+            self.setting_frame,
             text="DELETE MY ACCOUNT",
             font=("Arial", 14),
             bg="#040B20",
@@ -88,31 +106,41 @@ class UserSettings:
         ).grid(row=8, column=0, columnspan=2)
         password = StringVar()
         Label(
-            setting_frame,
+            self.setting_frame,
             text="Enter your password: ",
             font=("Arial", 14),
             bg="#040B20",
             fg="#FFFFFF",
         ).grid(row=9, column=0)
-        Entry(setting_frame, textvariable=password, font=("Arial", 14)).grid(
+        Entry(self.setting_frame, textvariable=password, font=("Arial", 14)).grid(
             row=9, column=1
         )
 
-        Label(setting_frame, text="", bg="#040B20").grid(row=10, column=0, columnspan=3)
+        Label(self.setting_frame, text="", bg="#040B20").grid(
+            row=10, column=0, columnspan=3
+        )
+
         Button(
-            setting_frame,
+            self.setting_frame,
+            activebackground="#040B20",
             text="DELETE",
             bg="#040B20",
             fg="white",
-            font=("Arial", 14),
-            width=18,
+            font="Arial",
+            width=8,
             height=1,
-            command=lambda: self.delete_account(setting_frame, password),
-        ).grid(row=11, column=0, columnspan=2)
+            command=lambda: self.delete_account(self.setting_frame, password),
+        ).grid(row=11, column=1, sticky=E)
 
-        setting_frame.pack()
+        self.setting_frame.pack()
 
         self.window.mainloop()
+
+    def press_enter(self):
+        if Entry.widgetName == self.entry_change:
+            self.change_password(
+                self.setting_frame, self.old_password, self.new_password
+            )
 
     def change_password(self, setting_frame, old_password, new_password):
         old_password = old_password.get()

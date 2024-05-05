@@ -79,12 +79,19 @@ class Register:
             fg="#AFB5D6",
             font=("Arial", 14),
         ).grid(row=8, column=0, sticky=E)
-        Entry(
+        register_entry = Entry(
             register_frame,
             show="*",
             textvariable=password,
             font=("Arial", 20),
-        ).grid(row=8, column=2)
+        )
+        register_entry.grid(row=8, column=2)
+        register_entry.bind(
+            "<Return>",
+            lambda event: self.register_user(
+                first_name, last_name, user_name, password, register_frame
+            ),
+        )
         Label(register_frame, text="", bg="#040B20").grid(row=9, column=1, columnspan=3)
         Button(
             register_frame,
