@@ -3,8 +3,6 @@ so that a user can register to this application."""
 
 from tkinter import NSEW, Button, E, Entry, Frame, Label, PhotoImage, StringVar, W
 
-import bcrypt
-
 import main
 from database import database_connection, database_handler
 
@@ -115,7 +113,7 @@ class Register:
             self.check_username_conditions(user_name)
             self.check_password_conditions(password)
             password.encode("utf-8")
-            hashed_password = self.salt_hash(password)
+            hashed_password = self.db_handler.salt_hash(password)
             user_exists = self.db_handler.check_user_name(user_name)
             if not user_exists:
                 self.cursor = self.database.connect()
@@ -154,14 +152,6 @@ class Register:
             fg="#ff0000",
             font=("Arial", 14),
         ).grid(row=12, column=0, columnspan=3, ipady=10)
-
-    def salt_hash(self, password):
-        """This will transform their password to an encrypte version."""
-        if isinstance(password, str):
-            password = password.encode("utf-8")
-        salt = bcrypt.gensalt()
-        hashed = bcrypt.hashpw(password, salt)
-        return hashed
 
     def check_username_conditions(self, user_name):
         """Check for unvalid username."""

@@ -1,5 +1,7 @@
 """This modules handles mysql statements."""
 
+import bcrypt
+
 from database import database_connection
 
 
@@ -33,3 +35,11 @@ class DatabaseHandler:
             return bool(result)
         finally:
             curser.close()
+
+    def salt_hash(self, password):
+        """This will transform their password to an encrypte version."""
+        if isinstance(password, str):
+            password = password.encode("utf-8")
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(password, salt)
+        return hashed
