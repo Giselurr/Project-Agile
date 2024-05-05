@@ -18,7 +18,7 @@ class TestDatabaseHandler(TestCase):
 
     @patch("database.database_connection.DatabaseConnection")
     def test_database_handler_init_db(self, mock_db):
-        """Test so that the database connection is called once"""
+        """Test that the database connection is called once."""
         db_h = database_handler.DatabaseHandler()
 
         mock_db.assert_called_once()

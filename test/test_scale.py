@@ -33,18 +33,26 @@ class TestScale(TestCase):
         self.reg.return_to_user_page(self.scale_frame, False)
         mock_main.manager_menu_choice.assert_called_once()
 
+    @patch("tkinter.PhotoImage")
     @patch("mysql.connector.connect")
     @patch("database.database_handler.DatabaseHandler.check_date")
-    def test_check_entry(self, mock_database, mock_connection):
+    def test_check_entry(self, mock_database, mock_connection, mock_image):
         """Test that the method call on check_date."""
         mock_note = MagicMock()
         mock_colour = MagicMock()
-        self.reg.check_entry(self.scale_frame, mock_colour, mock_note)
+        mock_colour.get.return_value = "1"
+        mock_image.return_value = MagicMock()
+        mock_database.return_value = ("", False)
+        self.reg.check_entry(
+            self.scale_frame, mock_colour, mock_note, mock_image, mock_image
+        )
         mock_database.assert_called_once()
 
+    @patch("main.Main.manager_menu_choice")
+    @patch("tkinter.PhotoImage")
     @patch("mysql.connector.connect")
     @patch("database.database_handler.DatabaseHandler.update_row")
-    def test_update_row(self, mock_database, mock_connection):
+    def test_update_row(self, mock_database, mock_connection, mock_image, mock_main):
         """Test that the method call on update row."""
         mock_note = MagicMock()
         mock_colour = MagicMock()

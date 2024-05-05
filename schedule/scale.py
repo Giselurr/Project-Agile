@@ -1,4 +1,5 @@
-"""This module will show scale and connect with database to store the stress level."""
+"""Show the stress level scale and connect with database to store chosen\
+      stress level."""
 
 from tkinter import (
     END,
@@ -31,6 +32,8 @@ class Scale:
         """User interface with scale."""
         scale_frame = Frame(self.window)
         scale_frame.configure(bg="#040B20")
+        ok_button = PhotoImage(file=r"schedule\\images\\Ok_light.png")
+        save_button = PhotoImage(file=r"schedule\\images\Save_light.png")
         return_button = PhotoImage(file=r"schedule\images\Return.png")
         select_button = PhotoImage(file=r"schedule\images\Select.png")
         Label(
@@ -38,7 +41,7 @@ class Scale:
             text="Please scale you stress level today",
             font=("Arial", 14),
             bg="#040B20",
-            fg="#78CBFF",
+            fg="#AFB5D6",
         ).grid(row=0, column=1, columnspan=10, pady=40)
 
         scale = [
@@ -64,7 +67,7 @@ class Scale:
         ).grid(row=1, column=0, sticky="W")
         Label(
             scale_frame,
-            text="Werry stressed",
+            text="Very stressed",
             font=("Arial", 14),
             bg="#040B20",
             fg="#BE0808",
@@ -93,13 +96,14 @@ class Scale:
             text="Notes:",
             font=("Arial", 14),
             bg="#040B20",
-            fg="#78CBFF",
+            fg="#AFB5D6",
         ).grid(row=4, column=0, columnspan=1, pady=(30, 0), padx=(50, 10))
 
         note = Text(
             scale_frame,
             height=5,
             width=30,
+            bg="#AFB5D6",
             font=("Arial", 14),
         )
         note.insert("1.0", "(Max 300 characters)")
@@ -110,7 +114,9 @@ class Scale:
             image=select_button,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: self.check_entry(scale_frame, colour, note),
+            command=lambda: self.check_entry(
+                scale_frame, colour, note, save_button, ok_button
+            ),
         ).grid(row=7, column=6, columnspan=10, pady=40)
 
         Button(
@@ -132,7 +138,7 @@ class Scale:
             self, scale_frame, "USER_MENU", self.user, self.date
         )
 
-    def check_entry(self, scale_frame, colour, note):
+    def check_entry(self, scale_frame, colour, note, save_button, ok_button):
         """Check if stress level exist for the date. If it should override old\
               data in database."""
         colour = colour.get()
@@ -143,48 +149,49 @@ class Scale:
                 scale_frame,
                 text="Must choose stress level",
                 bg="#040B20",
-                fg="#ff0000",
+                fg="#AFB5D6",
                 font=("Arial", 14),
             ).grid(row=6, column=1, columnspan=10, ipady=10)
         elif result[1]:
-            self.confirm_overide(scale_frame, result[0], colour, notes)
+            self.confirm_overide(scale_frame, result[0], colour, notes, save_button)
         else:
-            self.save_selected(scale_frame, colour, notes)
+            self.save_selected(scale_frame, colour, notes, ok_button)
 
-    def confirm_overide(self, scale_frame, id_calander, colour, notes):
+    def confirm_overide(self, scale_frame, id_calander, colour, notes, save_button):
         """Ensure user want to overwrite their old entry."""
         self.top = Toplevel()
         self.top.geometry("280x200")
-        self.top.title("app name")
+        self.top.title("Breath")
         self.top.resizable(height=True, width=False)
         self.top.configure(bg="#040B20")
-        ok_button = PhotoImage(file=r"schedule\images\Ok_light.png")
-        return_button = PhotoImage(file=r"schedule\images\Return.png")
         Label(
             self.top,
             text="Are you sure you \nwant to save changes?",
             font=("Arial", 14),
             bg="#040B20",
-            fg="#F8D5BE",
-        ).grid(row=1, column=1, columnspan=5, pady=40, padx=(40, 40))
+            fg="#AFB5D6",
+        ).grid(row=1, column=1, columnspan=5, pady=30, padx=(40, 40))
         Button(
             self.top,
-            image=ok_button,
+            image=save_button,
             borderwidth=0,
             highlightthickness=0,
             command=lambda: self.update_row(
                 scale_frame, colour, notes, id_calander, True
             ),
-        ).grid(row=2, column=5, columnspan=1, pady=(20, 40), padx=(40, 20))
+        ).grid(row=2, column=4, pady=(10, 20), padx=(20, 10))
         Button(
             self.top,
-            image=return_button,
-            borderwidth=0,
-            highlightthickness=0,
+            text="Return",
+            bg="#AFB5D6",
+            fg="#040B20",
+            font=("Arial", 14),
+            height=1,
+            width=5,
             command=lambda: self.return_to_user_page(scale_frame, True),
-        ).grid(row=2, column=1, columnspan=1, pady=(20, 40), padx=(20, 40))
+        ).grid(row=2, column=1, pady=(10, 20), padx=(20, 40))
 
-    def save_selected(self, scale_frame, colour, note):
+    def save_selected(self, scale_frame, colour, note, ok_button):
         """Handel insert to database."""
         try:
             self.cursor = self.database.connect()
@@ -201,24 +208,21 @@ class Scale:
         finally:
             self.top = Toplevel()
             self.top.geometry("280x200")
-            self.top.title("app name")
+            self.top.title("Breath")
             self.top.resizable(height=True, width=False)
-            self.top.configure(bg="#040B20")
+            self.top.configure(bg="#AFB5D6")
             Label(
                 self.top,
                 text="Stress level saved!",
                 font=("Arial", 14),
-                bg="#040B20",
-                fg="#F8D5BE",
+                bg="#AFB5D6",
+                fg="#040B20",
             ).grid(row=1, column=5, pady=40, padx=(40, 40))
             Button(
                 self.top,
-                text="Ok",
-                bg="#78CBFF",
-                fg="#040B20",
-                height=1,
-                width=5,
-                font=("Arial", 14),
+                image=ok_button,
+                borderwidth=0,
+                highlightthickness=0,
                 command=lambda: self.return_to_user_page(scale_frame, True),
             ).grid(row=2, column=5, pady=(20, 40), padx=(40, 40))
 
