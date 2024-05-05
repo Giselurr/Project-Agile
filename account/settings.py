@@ -86,7 +86,19 @@ class UserSettings:
             bg="#040B20",
             fg="#FFFFFF",
         ).grid(row=8, column=0, columnspan=2)
-        Label(setting_frame, text="", bg="#040B20").grid(row=9, column=0, columnspan=3)
+        password = StringVar()
+        Label(
+            setting_frame,
+            text="Enter your password: ",
+            font=("Arial", 14),
+            bg="#040B20",
+            fg="#FFFFFF",
+        ).grid(row=9, column=0)
+        Entry(setting_frame, textvariable=password, font=("Arial", 14)).grid(
+            row=9, column=1
+        )
+
+        Label(setting_frame, text="", bg="#040B20").grid(row=10, column=0, columnspan=3)
         Button(
             setting_frame,
             text="DELETE",
@@ -95,10 +107,8 @@ class UserSettings:
             font=("Arial", 14),
             width=18,
             height=1,
-            command=lambda: self.delete_account(
-                setting_frame, old_password, new_password
-            ),
-        ).grid(row=10, column=0, columnspan=2)
+            command=lambda: self.delete_account(setting_frame, password),
+        ).grid(row=11, column=0, columnspan=2)
 
         setting_frame.pack()
 
@@ -122,9 +132,9 @@ class UserSettings:
                     self.database.commit()
                     messagebox.showinfo("Success", "You have changed the password!")
                 else:
-                    messagebox.showinfo("Fail", "You have not changed the password!")
+                    messagebox.showinfo("Error!", "You have not changed the password!")
             except Exception as e:
-                messagebox.showinfo("Error", f"An error occured {e}")
+                messagebox.showinfo("Error!", f"An error occured {e}")
 
             finally:
                 self.cursor.close()
@@ -132,10 +142,37 @@ class UserSettings:
                     self, setting_frame, "USER_MENU", self.user_name
                 )
         else:
-            messagebox.showinfo("Warning", "Old password is not correct!")
+            messagebox.showinfo("Error!", "Old password is not correct!")
 
-    def delete_account(self):
-        pass
+    def delete_account(self, setting_frame, password):
+        password = password.get()
+        self.cursor = self.database.connect()
+        hashed = self.db_handler.get_hashed_pass(self.user_name)
+        if hashed and bcrypt.checkpw(password.encode("utf-8"), hashed.encode("utf-8")):
+            try:
+                query = "DELETE FROM user WHERE user_name = %s"
+                print(self.user_name)
+                values = (self.user_name,)
+                self.cursor.execute(query, values)
+                if self.cursor.rowcount == 1:
+                    self.database.commit()
+                    messagebox.showinfo(
+                        "Success!", "Your account has successfully been deleted."
+                    )
+                    main.Main.manager_menu_choice(
+                        self, setting_frame, "MAIN_MENU", None
+                    )
+                else:
+                    messagebox.showinfo(
+                        "Error!",
+                        ("Something went wrong, your account has not been deleted!"),
+                    )
+            except Exception as e:
+                messagebox.showinfo("Error!", f"There was an error: {e}")
+            finally:
+                self.cursor.close()
+        else:
+            messagebox.showinfo("Error!", "Your password was incorrect!")
 
 
 if __name__ == "__main__":
