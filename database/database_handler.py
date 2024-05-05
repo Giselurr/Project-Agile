@@ -23,7 +23,7 @@ class DatabaseHandler:
             curser.close()
 
     def check_user_name(self, user_name):
-        """This method will check if the username already exists."""
+        """Check if the username already exist."""
         query = "SELECT user_name FROM user WHERE user_name = %s"
         values = (user_name,)
         curser = self.db.connect()
@@ -35,7 +35,7 @@ class DatabaseHandler:
             curser.close()
 
     def check_date(self, user_name, current_date):
-        """Later."""
+        """Check if date exist in database for stress-level."""
         query = (
             "SELECT calender_id, date FROM stress_calender WHERE user_user_name = %s"
         )
@@ -55,7 +55,7 @@ class DatabaseHandler:
             curser.close()
 
     def update_row(self, colour, notes, id):
-        """Later."""
+        """Update exciting row in database."""
         query = "UPDATE stress_calender SET stress_level = %s, note = %s \
               WHERE calender_id = %s"
 

@@ -66,6 +66,35 @@ class TestDatabaseHandler(TestCase):
 
         self.assertFalse(result)
 
+    @patch("datetime.datetime")
+    @patch("mysql.connector.connect")
+    @patch("database.database_connection.DatabaseConnection.connect")
+    def test_check_date(self, mock_connect, mock_mysql, mock_date):
+        """Test if check_date return on method call."""
+        mock_date.strf.return_value = "2020-05-05"
+        db_h = database_handler.DatabaseHandler()
+        result = db_h.check_date(
+            " ",
+            mock_date,
+        )
+        exp = ("", False)
+        self.assertEqual(result, exp)
+
+    @patch("mysql.connector.connect")
+    def test_update_row(self, mock_connect):
+        """Test update_row method call."""
+        mock_note = MagicMock()
+        mock_colour = MagicMock()
+        mock_id = MagicMock()
+        db_h = database_handler.DatabaseHandler()
+        mock_conn = mock.Mock()
+        mock_cursor = mock.Mock()
+        mock_connect.return_value = mock_conn
+        mock_conn.cursor.return_value = mock_cursor
+        mock_cursor.rowcount = 1
+        db_h.update_row(mock_colour, mock_note, mock_id)
+        mock_cursor.execute.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main()

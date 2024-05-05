@@ -133,7 +133,8 @@ class Scale:
         )
 
     def check_entry(self, scale_frame, colour, note):
-        """Load to database selected stress level."""
+        """Check if stress level exist for the date. If it should override old\
+              data in database."""
         colour = colour.get()
         notes = note.get(1.0, END)
         result = self.db_handler.check_date(self.user, self.date)
@@ -157,6 +158,8 @@ class Scale:
         self.top.title("app name")
         self.top.resizable(height=True, width=False)
         self.top.configure(bg="#040B20")
+        ok_button = PhotoImage(file=r"schedule\images\Ok_light.png")
+        return_button = PhotoImage(file=r"schedule\images\Return.png")
         Label(
             self.top,
             text="Are you sure you \nwant to save changes?",
@@ -166,29 +169,23 @@ class Scale:
         ).grid(row=1, column=1, columnspan=5, pady=40, padx=(40, 40))
         Button(
             self.top,
-            text="Ok",
-            bg="#78CBFF",
-            fg="#040B20",
-            height=1,
-            width=5,
-            font=("Arial", 14),
+            image=ok_button,
+            borderwidth=0,
+            highlightthickness=0,
             command=lambda: self.update_row(
                 scale_frame, colour, notes, id_calander, True
             ),
         ).grid(row=2, column=5, columnspan=1, pady=(20, 40), padx=(40, 20))
         Button(
             self.top,
-            text="Return",
-            bg="#78CBFF",
-            fg="#040B20",
-            height=1,
-            width=5,
-            font=("Arial", 14),
+            image=return_button,
+            borderwidth=0,
+            highlightthickness=0,
             command=lambda: self.return_to_user_page(scale_frame, True),
         ).grid(row=2, column=1, columnspan=1, pady=(20, 40), padx=(20, 40))
 
     def save_selected(self, scale_frame, colour, note):
-        """This will handel insert to database."""
+        """Handel insert to database."""
         try:
             self.cursor = self.database.connect()
             query = (
@@ -226,5 +223,6 @@ class Scale:
             ).grid(row=2, column=5, pady=(20, 40), padx=(40, 40))
 
     def update_row(self, scale_frame, colour, notes, id_calender, close_pop_up):
+        """Update existing row in database."""
         self.db_handler.update_row(colour, notes, id_calender)
         self.return_to_user_page(scale_frame, close_pop_up)
