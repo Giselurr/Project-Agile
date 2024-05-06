@@ -36,6 +36,8 @@ class Scale:
         save_button = PhotoImage(file=r"schedule\\images\Save_light.png")
         return_button = PhotoImage(file=r"schedule\images\Return.png")
         select_button = PhotoImage(file=r"schedule\images\Select.png")
+        save_large_button = PhotoImage(file=r"schedule\images\Save_large_light.png")
+        small_return = PhotoImage(file=r"schedule\images\return_small.png")
         Label(
             scale_frame,
             text="Please scale you stress level today",
@@ -111,11 +113,12 @@ class Scale:
 
         Button(
             scale_frame,
-            image=select_button,
+            image=save_large_button,
             borderwidth=0,
             highlightthickness=0,
+            activebackground="#040B20",
             command=lambda: self.check_entry(
-                scale_frame, colour, note, save_button, ok_button
+                scale_frame, colour, note, save_button, ok_button, small_return
             ),
         ).grid(row=7, column=6, columnspan=10, pady=40)
 
@@ -124,6 +127,7 @@ class Scale:
             image=return_button,
             borderwidth=0,
             highlightthickness=0,
+            activebackground="#040B20",
             command=lambda: self.return_to_user_page(scale_frame, False),
         ).grid(row=7, column=0, columnspan=10, pady=40, sticky="W")
 
@@ -138,7 +142,9 @@ class Scale:
             self, scale_frame, "USER_MENU", self.user, self.date
         )
 
-    def check_entry(self, scale_frame, colour, note, save_button, ok_button):
+    def check_entry(
+        self, scale_frame, colour, note, save_button, ok_button, small_return
+    ):
         """Check if stress level exist for the date. If it should override old\
               data in database."""
         colour = colour.get()
@@ -153,11 +159,15 @@ class Scale:
                 font=("Arial", 14),
             ).grid(row=6, column=1, columnspan=10, ipady=10)
         elif result[1]:
-            self.confirm_overide(scale_frame, result[0], colour, notes, save_button)
+            self.confirm_overide(
+                scale_frame, result[0], colour, notes, save_button, small_return
+            )
         else:
             self.save_selected(scale_frame, colour, notes, ok_button)
 
-    def confirm_overide(self, scale_frame, id_calander, colour, notes, save_button):
+    def confirm_overide(
+        self, scale_frame, id_calander, colour, notes, save_button, return_button
+    ):
         """Ensure user want to overwrite their old entry."""
         self.top = Toplevel()
         self.top.geometry("280x200")
@@ -176,20 +186,19 @@ class Scale:
             image=save_button,
             borderwidth=0,
             highlightthickness=0,
+            activebackground="#040B20",
             command=lambda: self.update_row(
                 scale_frame, colour, notes, id_calander, True
             ),
-        ).grid(row=2, column=4, pady=(10, 20), padx=(20, 10))
+        ).grid(row=2, column=3, pady=(10, 20), padx=(5, 10))
         Button(
             self.top,
-            text="Return",
-            bg="#AFB5D6",
-            fg="#040B20",
-            font=("Arial", 14),
-            height=1,
-            width=5,
+            image=return_button,
+            borderwidth=0,
+            highlightthickness=0,
+            activebackground="#040B20",
             command=lambda: self.return_to_user_page(scale_frame, True),
-        ).grid(row=2, column=1, pady=(10, 20), padx=(20, 40))
+        ).grid(row=2, column=1, pady=(10, 20), padx=(20, 5))
 
     def save_selected(self, scale_frame, colour, note, ok_button):
         """Handel insert to database."""
@@ -210,19 +219,20 @@ class Scale:
             self.top.geometry("280x200")
             self.top.title("Breath")
             self.top.resizable(height=True, width=False)
-            self.top.configure(bg="#AFB5D6")
+            self.top.configure(bg="#040B20")
             Label(
                 self.top,
                 text="Stress level saved!",
                 font=("Arial", 14),
-                bg="#AFB5D6",
-                fg="#040B20",
+                bg="#040B20",
+                fg="#AFB5D6",
             ).grid(row=1, column=5, pady=40, padx=(40, 40))
             Button(
                 self.top,
                 image=ok_button,
                 borderwidth=0,
                 highlightthickness=0,
+                activebackground="#040B20",
                 command=lambda: self.return_to_user_page(scale_frame, True),
             ).grid(row=2, column=5, pady=(20, 40), padx=(40, 40))
 
