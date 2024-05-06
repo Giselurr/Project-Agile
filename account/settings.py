@@ -71,11 +71,11 @@ class UserSettings:
             bg="#040B20",
             fg="#FFFFFF",
         ).grid(row=4, column=0)
-        entry_change = Entry(
+        self.entry_change = Entry(
             self.setting_frame, textvariable=self.new_password, font=("Arial", 14)
         )
-        entry_change.grid(row=4, column=1)
-        entry_change.bind("<Return>", self.press_enter)
+        self.entry_change.grid(row=4, column=1)
+        self.entry_change.bind("<Return>", self.press_enter)
         Label(self.setting_frame, text="", bg="#040B20").grid(
             row=5, column=0, columnspan=3
         )
@@ -104,7 +104,7 @@ class UserSettings:
             bg="#040B20",
             fg="#FFFFFF",
         ).grid(row=8, column=0, columnspan=2)
-        password = StringVar()
+        self.password = StringVar()
         Label(
             self.setting_frame,
             text="Enter your password: ",
@@ -112,10 +112,11 @@ class UserSettings:
             bg="#040B20",
             fg="#FFFFFF",
         ).grid(row=9, column=0)
-        Entry(self.setting_frame, textvariable=password, font=("Arial", 14)).grid(
-            row=9, column=1
+        self.entry_delete = Entry(
+            self.setting_frame, textvariable=self.password, font=("Arial", 14)
         )
-
+        self.entry_delete.grid(row=9, column=1)
+        self.entry_delete.bind("<Return>", self.press_enter)
         Label(self.setting_frame, text="", bg="#040B20").grid(
             row=10, column=0, columnspan=3
         )
@@ -129,18 +130,20 @@ class UserSettings:
             font="Arial",
             width=8,
             height=1,
-            command=lambda: self.delete_account(self.setting_frame, password),
+            command=lambda: self.delete_account(self.setting_frame, self.password),
         ).grid(row=11, column=1, sticky=E)
 
         self.setting_frame.pack()
 
         self.window.mainloop()
 
-    def press_enter(self):
-        if Entry.widgetName == self.entry_change:
+    def press_enter(self, event):
+        if event.widget == self.entry_change:
             self.change_password(
                 self.setting_frame, self.old_password, self.new_password
             )
+        if event.widget == self.entry_delete:
+            self.delete_account(self.setting_frame, self.password)
 
     def change_password(self, setting_frame, old_password, new_password):
         old_password = old_password.get()

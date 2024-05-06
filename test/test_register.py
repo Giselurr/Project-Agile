@@ -80,7 +80,7 @@ class TestRegister(unittest.TestCase):
 
     @patch("account.register.Register.check_username_conditions")
     @patch("account.register.Register.check_password_conditions")
-    @patch("account.register.bcrypt.hashpw")
+    @patch("database.database_handler.DatabaseHandler.salt_hash")
     @patch("database.database_handler.DatabaseHandler.check_user_name")
     @patch("database.database_connection.DatabaseConnection.connect")
     @patch("database.database_connection.DatabaseConnection.commit")
