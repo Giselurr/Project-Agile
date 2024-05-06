@@ -44,7 +44,7 @@ class TestScale(TestCase):
         mock_image.return_value = MagicMock()
         mock_database.return_value = ("", False)
         self.reg.check_entry(
-            self.scale_frame, mock_colour, mock_note, mock_image, mock_image
+            self.scale_frame, mock_colour, mock_note, mock_image, mock_image, mock_image
         )
         mock_database.assert_called_once()
 
