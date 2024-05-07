@@ -158,6 +158,16 @@ class Scale:
                 fg="#AFB5D6",
                 font=("Arial", 14),
             ).grid(row=6, column=1, columnspan=10, ipady=10)
+
+        elif len(notes) > 300:
+            Label(
+                scale_frame,
+                text="To many character in notes",
+                bg="#040B20",
+                fg="#AFB5D6",
+                font=("Arial", 14),
+            ).grid(row=6, column=1, columnspan=10, ipady=10)
+
         elif result[1]:
             self.confirm_overide(
                 scale_frame, result[0], colour, notes, save_button, small_return
