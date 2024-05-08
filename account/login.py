@@ -79,7 +79,7 @@ class Login:
         password = password.get().encode("utf-8")
         hashed = self.db_handler.get_hashed_pass(user_name)
         if hashed and bcrypt.checkpw(password, hashed.encode("utf-8")):
-            main.Main.manager_menu_choice(self, login_frame, "USER_MENU", user_name)
+            main.Main.manager_menu_choice(self, login_frame, "USER_MENU", user_name, "")
         else:
             Label(
                 login_frame,

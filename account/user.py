@@ -1,5 +1,6 @@
 """This module will store the user information and the GUI for the user page"""
 
+from datetime import datetime
 from tkinter import Button, Frame, Label, PhotoImage, Tk, Toplevel
 
 import main
@@ -152,8 +153,9 @@ class User:
         redirect.pack()
 
     def redirect_to_scale(self, user_frame):
-        """Redirects to the scale."""
-        main.Main.manager_menu_choice(self, user_frame, "STRESS_LEVEL", self.user_name)
+        main.Main.manager_menu_choice(
+            self, user_frame, "STRESS_LEVEL", self.user_name, datetime.now()
+        )
 
     def sign_out(self, user_frame, left_buttons):
         """Sign out pop-up window with Y/N."""
