@@ -3,7 +3,7 @@ Also contains the redirect manager for the program."""
 
 from tkinter import Tk
 
-from account import login, main_menu, register, user
+from account import login, main_menu, register, settings, user
 
 # from breathing import boxbreathing
 from schedule import scale  # calander, clock, dailynote,
@@ -23,9 +23,10 @@ class Main:
         """Handles all the redirects and frame forgets for all windows."""
         # Might want to add "frame.pack_forget()" here if all of the options do it.
         if menu_choice == "MAIN_MENU":
-            # Redirect to main menu (might not be needed).
-            # Might use start_main_window()
-            print("MAIN_MENU")
+            frame.pack_forget()
+            main_menu_redirect = main_menu.MainMenu(self.window)
+            main_menu_redirect.main_gui()
+            # print("MAIN_MENU")
         elif menu_choice == "LOGIN":
             frame.pack_forget()
             login_redirect = login.Login(self.window)
@@ -59,6 +60,11 @@ class Main:
         elif menu_choice == "STRESS_HISTORY":
             # Redirect to stress history.
             print("STRESS_HISTORY")
+        elif menu_choice == "USER_SETTINGS":
+            # Redirect to user settings.
+            frame.pack_forget()
+            user_settings_redirect = settings.UserSettings(True, user_name, self.window)
+            user_settings_redirect.user_setting_gui()
 
 
 if __name__ == "__main__":

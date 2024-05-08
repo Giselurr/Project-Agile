@@ -52,8 +52,12 @@ class Login:
             bg="#040B20",
             fg="#AFB5D6",
         ).grid(row=4, column=0, pady=15)
-        Entry(login_frame, font=("Arial", 20), textvariable=password, show="*").grid(
-            row=4, column=2, sticky=W
+        login_entry = Entry(
+            login_frame, font=("Arial", 20), textvariable=password, show="*"
+        )
+        login_entry.grid(row=4, column=2, sticky=W)
+        login_entry.bind(
+            "<Return>", lambda event: self.login_user(user_name, password, login_frame)
         )
         Button(
             login_frame,
