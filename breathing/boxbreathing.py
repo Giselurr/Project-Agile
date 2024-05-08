@@ -13,6 +13,8 @@ class DisplayExercise:
         self.window.config(bg="#040B20")
         self.is_not_running = True
         self.user = user
+        self.window.title("Breathe")
+        self.window.iconbitmap("breathing\images\Breathe_icon.ico")
 
     def display_imagery(self):
         # starting all the frames

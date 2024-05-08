@@ -14,6 +14,8 @@ class MainMenu:
         self.window.geometry("640x700")
         self.window.resizable(height=True, width=False)
         self.window.configure(bg="#040B20")
+        self.window.title("Breathe")
+        self.window.iconbitmap("account\images\Breathe_icon.ico")
 
     def main_gui(self):
         """Main menu window with selection between register and login."""

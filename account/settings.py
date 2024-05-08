@@ -26,6 +26,8 @@ class UserSettings:
         self.window = window
         self.db_handler = database_handler.DatabaseHandler()
         self.database = database_connection.DatabaseConnection()
+        self.window.title("Breathe")
+        self.window.iconbitmap("account\images\Breathe_icon.ico")
 
     def user_setting_gui(self):
         """The user settings interface."""

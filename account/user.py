@@ -14,6 +14,8 @@ class User:
         self.is_logged_in = logged_in
         self.user_name = user_name
         self.window = window
+        self.window.title("Breathe")
+        self.window.iconbitmap("account\images\Breathe_icon.ico")
 
     def user_gui(self):
         """The interface for a logged in user."""
@@ -29,7 +31,6 @@ class User:
             history_img = PhotoImage(file="account\images/history.png")
             sign_out_img = PhotoImage(file="account\images\sign_out.png")
             user_settings_img = PhotoImage(file="account\images/user_settings.png")
-            self.window.title(f"Welcome {self.user_name}!")
             user_frame = Frame(self.window)
             user_frame.configure(bg="#040B20")
             left_buttons = Frame(self.window, bg="#FFFFFF")
@@ -125,7 +126,6 @@ class User:
             ).place(x=221, y=500)
             user_frame.pack()
         else:
-            self.window.title("Not logged in!")
             user_frame = Frame(self.window, bg="#040B20")
             Label(user_frame, bg="#040B20", text="").grid(row=0)
             Label(
@@ -164,6 +164,7 @@ class User:
         self.top = Toplevel()
         self.top.geometry("280x200")
         self.top.title("Breathe")
+        self.top.iconbitmap("account\images\Breathe_icon.ico")
         self.top.resizable(height=False, width=False)
         self.top.configure(bg="#040B20")
         Label(
