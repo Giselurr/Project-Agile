@@ -19,6 +19,7 @@ class Login:
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#040B20")
         self.window.title("Breathe")
+        self.window.iconbitmap("account\images\Breathe_icon.ico")
         self.db_handler = database_handler.DatabaseHandler()
 
     def login_gui(self):

@@ -18,7 +18,8 @@ class Register:
         self.window.geometry("640x700")
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#040B20")
-        self.window.title("Please register your account.")
+        self.window.title("Breathe")
+        self.window.iconbitmap("account\images\Breathe_icon.ico")
         self.db_handler = database_handler.DatabaseHandler()
         self.database = database_connection.DatabaseConnection()
 

@@ -27,6 +27,8 @@ class Scale:
         self.date = date
         self.db_handler = database_handler.DatabaseHandler()
         self.database = database_connection.DatabaseConnection()
+        self.window.title("Breathe")
+        self.window.iconbitmap("schedule\images\Breathe_icon.ico")
 
     def scale_gui(self):
         """User interface with scale."""
@@ -182,7 +184,8 @@ class Scale:
         """Ensure user want to overwrite their old entry."""
         self.top = Toplevel()
         self.top.geometry("280x200")
-        self.top.title("Breath")
+        self.top.title("Breathe")
+        self.top.iconbitmap("schedule\images\Breathe_icon.ico")
         self.top.resizable(height=True, width=False)
         self.top.configure(bg="#040B20")
         Label(
@@ -228,7 +231,8 @@ class Scale:
         finally:
             self.top = Toplevel()
             self.top.geometry("280x200")
-            self.top.title("Breath")
+            self.top.title("Breathe")
+            self.top.iconbitmap("schedule\images\Breathe_icon.ico")
             self.top.resizable(height=True, width=False)
             self.top.configure(bg="#040B20")
             Label(
