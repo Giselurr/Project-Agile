@@ -1,7 +1,7 @@
 """This module will store the user information and the GUI for the user page"""
 
 from datetime import datetime
-from tkinter import Button, Frame, Label, PhotoImage, Tk
+from tkinter import Button, Frame, Label, PhotoImage, Tk, Toplevel
 
 import main
 
@@ -27,9 +27,12 @@ class User:
             stresslevel_img = PhotoImage(file="account\images\Set_levels.png")
             calendar_img = PhotoImage(file="account\images/calender.png")
             history_img = PhotoImage(file="account\images/history.png")
+            sign_out_img = PhotoImage(file="account\images\sign_out.png")
+            user_settings_img = PhotoImage(file="account\images/user_settings.png")
             self.window.title(f"Welcome {self.user_name}!")
             user_frame = Frame(self.window)
             user_frame.configure(bg="#040B20")
+            left_buttons = Frame(self.window, bg="#FFFFFF")
             Label(
                 user_frame,
                 text="Welcome " + self.user_name + "!",
@@ -39,8 +42,35 @@ class User:
             ).grid(row=0, column=0)
             Label(user_frame, image=background, border=0).grid(row=1, column=0)
             Button(
+                left_buttons,
+                image=sign_out_img,
+                activebackground="#040B20",
+                borderwidth=0,
+                command=lambda: self.sign_out(user_frame, left_buttons),
+                highlightthickness=0,
+                bd=0,
+                padx=0,
+                pady=0,
+            ).pack()
+            Button(
+                left_buttons,
+                image=user_settings_img,
+                activebackground="#040B20",
+                borderwidth=0,
+                command=lambda: self.redirect_to_user_settings(
+                    user_frame, left_buttons
+                ),
+                highlightthickness=0,
+                bd=0,
+                padx=0,
+                pady=0,
+            ).pack()
+            left_buttons.place(x=1, y=50)
+            Label(user_frame, image=background, border=0).grid(row=1, column=0)
+            Button(
                 user_frame,
                 image=breathe_img,
+                activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect("breathe", user_frame),
                 highlightthickness=0,
@@ -51,6 +81,7 @@ class User:
             Button(
                 user_frame,
                 image=scheduel_img,
+                activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect("set schedule", user_frame),
                 highlightthickness=0,
@@ -61,6 +92,7 @@ class User:
             Button(
                 user_frame,
                 image=stresslevel_img,
+                activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect_to_scale(user_frame),
                 highlightthickness=0,
@@ -72,6 +104,7 @@ class User:
             Button(
                 user_frame,
                 image=calendar_img,
+                activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect("view your calender", user_frame),
                 highlightthickness=0,
@@ -82,6 +115,7 @@ class User:
             Button(
                 user_frame,
                 image=history_img,
+                activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect("stress history", user_frame),
                 highlightthickness=0,
@@ -92,8 +126,7 @@ class User:
             user_frame.pack()
         else:
             self.window.title("Not logged in!")
-            user_frame = Frame(self.window)
-            user_frame.configure(bg="#040B20")
+            user_frame = Frame(self.window, bg="#040B20")
             Label(user_frame, bg="#040B20", text="").grid(row=0)
             Label(
                 user_frame,
@@ -123,6 +156,63 @@ class User:
         main.Main.manager_menu_choice(
             self, user_frame, "STRESS_LEVEL", self.user_name, datetime.now()
         )
+
+    def sign_out(self, user_frame, left_buttons):
+        """Sign out pop-up window with Y/N."""
+        self.no_img = PhotoImage(file="account\images/no.png")
+        self.yes_img = PhotoImage(file="account\images\yes.png")
+        self.top = Toplevel()
+        self.top.geometry("280x200")
+        self.top.title("Breathe")
+        self.top.resizable(height=False, width=False)
+        self.top.configure(bg="#040B20")
+        Label(
+            self.top,
+            text="Do you want to sign out?",
+            bg="#040B20",
+            fg="#FFFFFF",
+            font=("Arial", 16),
+        ).pack(pady=40)
+        Button(
+            self.top,
+            image=self.no_img,
+            activebackground="#040B20",
+            borderwidth=0,
+            command=lambda: self.return_to_user_page(user_frame, True),
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=15, y=90)
+        Button(
+            self.top,
+            image=self.yes_img,
+            activebackground="#040B20",
+            borderwidth=0,
+            command=lambda: self.return_to_main_page(user_frame, left_buttons, True),
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=145, y=90)
+
+    def return_to_user_page(self, frame, close_popup):
+        """Button action for return to the user page."""
+        if close_popup:
+            self.top.destroy()
+        main.Main.manager_menu_choice(self, frame, "USER_MENU", self.user_name)
+
+    def return_to_main_page(self, frame, left_buttons, close_popup):
+        """Return to the main menu."""
+        left_buttons.place_forget()
+        if close_popup:
+            self.top.destroy()
+        main.Main.manager_menu_choice(self, frame, "MAIN_MENU", self.user_name)
+
+    def redirect_to_user_settings(self, frame, left_buttons):
+        """Redirects to the user settings page."""
+        left_buttons.place_forget()
+        main.Main.manager_menu_choice(self, frame, "USER_SETTINGS", self.user_name)
 
 
 if __name__ == "__main__":

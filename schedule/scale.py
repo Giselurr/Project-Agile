@@ -80,6 +80,7 @@ class Scale:
                 scale_frame,
                 variable=colour,
                 value=code,
+                activebackground="#040B20",  # Not a perfect solution, but still better.
                 highlightthickness=0,
                 font=("Arial", 0),
                 bg="#040B20",

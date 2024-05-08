@@ -33,6 +33,7 @@ class MainMenu:
             command=lambda: main.Main.manager_menu_choice(
                 self, main_frame, "REGISTER", "", ""
             ),
+            activebackground="#040B20",
             border=0,
             highlightthickness=0,
             pady=0,
@@ -44,6 +45,7 @@ class MainMenu:
             command=lambda: main.Main.manager_menu_choice(
                 self, main_frame, "LOGIN", "Max", ""
             ),
+            activebackground="#040B20",
             border=0,
             highlightthickness=0,
             pady=0,
