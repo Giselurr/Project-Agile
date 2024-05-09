@@ -50,7 +50,7 @@ class Main:
             print("CALENDAR")
         elif menu_choice == "STRESS_HISTORY":
             stress_history_redirect = stress_history.History(self.window)
-            stress_history_redirect.draw_barchart()
+            stress_history_redirect.draw_stress_history()
             print("STRESS_HISTORY")
         elif menu_choice == "USER_SETTINGS":
             user_settings_redirect = settings.UserSettings(True, user_name, self.window)
