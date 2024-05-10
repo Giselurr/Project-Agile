@@ -156,8 +156,8 @@ class User:
 
     def sign_out(self, user_frame, left_buttons):
         """Sign out pop-up window with Y/N."""
-        self.no_img = PhotoImage(file="account\images/no.png")
-        self.yes_img = PhotoImage(file="account\images\yes.png")
+        self.no_img = PhotoImage(file=r"account\images\thumbnail_no.png")
+        self.yes_img = PhotoImage(file=r"account\images\yes.png")
         self.top = Toplevel()
         self.top.geometry("280x200")
         self.top.title("Breathe")
