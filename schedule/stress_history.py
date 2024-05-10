@@ -32,16 +32,10 @@ class History:
             print("previous")
 
     def draw_buttons(self):
-        next_img = ImageTk.PhotoImage(
-            Image.open("schedule\images\OK.png")
-        )  # Change to new image.
-        previous_img = ImageTk.PhotoImage(
-            Image.open("schedule\images\Ok_light.png")
-        )  # Change to new image.
+        next_img = ImageTk.PhotoImage(Image.open("schedule\images\Right_arrow.png"))
+        previous_img = ImageTk.PhotoImage(Image.open("schedule\images\Left_arrow.png"))
         return_img = ImageTk.PhotoImage(Image.open("schedule\images\Return.png"))
-        notes_img = ImageTk.PhotoImage(
-            Image.open("schedule\images\img_notes.png")
-        )  # Change to new image.
+        notes_img = ImageTk.PhotoImage(Image.open("schedule\images\img_notes.png"))
         Button(
             self.canvas,
             image=previous_img,
@@ -52,7 +46,7 @@ class History:
             bd=0,
             padx=0,
             pady=0,
-        ).place(x=160, y=60)
+        ).place(x=75, y=641)
         Button(
             self.canvas,
             image=next_img,
@@ -63,7 +57,7 @@ class History:
             bd=0,
             padx=0,
             pady=0,
-        ).place(x=360, y=60)
+        ).place(x=545, y=641)
         Button(
             self.canvas,
             image=return_img,
@@ -74,7 +68,7 @@ class History:
             bd=0,
             padx=0,
             pady=0,
-        ).place(x=60, y=630)
+        ).place(x=60, y=70)
         Button(
             self.canvas,
             image=notes_img,
@@ -85,7 +79,7 @@ class History:
             bd=0,
             padx=0,
             pady=0,
-        ).place(x=350, y=630)
+        ).place(x=350, y=70)
 
         self.window.mainloop()
 
@@ -109,7 +103,7 @@ class History:
         for day in days:
             self.canvas.create_text(
                 x,
-                600,
+                650,
                 text=day,
                 font=("Arial", 12, "bold"),
                 fill="#AFB5D6",
@@ -118,19 +112,19 @@ class History:
 
     def draw_scale_text(self):
         x = 90
-        y = 540
+        y = 592
         for number in range(1, 11):
             self.canvas.create_text(
                 x, y, anchor=SW, text=number, font=("Arial", 13, "bold"), fill="#AFB5D6"
             )
             self.canvas.create_text(
                 x + 15,
-                y - 7,
+                y - 9,
                 anchor=SW,
-                text="_" * 47,
-                font=("Arial", 13, "bold"),
+                text="_" * 61,
+                font=("Arial", 10, "bold"),
                 fill="#AFB5D6",
-            )  # Remove "* 47" in text to remove lines.
+            )  # Remove "* 61" in text to remove lines.
             y -= 44
 
     def draw_barchart(self):
@@ -140,7 +134,7 @@ class History:
         bar_width = 40
         bar_gap = 20
         left_gap = 120
-        bottom_gap = 125
+        bottom_gap = 75
 
         for x, y in enumerate(stress_levels):
             x0 = x * (bar_gap + bar_width) + left_gap
