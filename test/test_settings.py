@@ -91,7 +91,7 @@ class TestSettings(unittest.TestCase):
         self.set.cursor.execute.assert_called()
         self.set.database.commit.assert_called()
         mock_main_manager.assert_called_once_with(
-            self.set, self.mock_settings_frame, "USER_MENU", self.mock_user_name
+            self.set, self.mock_settings_frame, "USER_MENU", self.mock_user_name, None
         )
 
     @patch("main.Main.manager_menu_choice")
@@ -119,5 +119,5 @@ class TestSettings(unittest.TestCase):
             "Success!", "Your account has successfully been deleted."
         )
         mock_main_manager.assert_called_once_with(
-            self.set, self.mock_settings_frame, "MAIN_MENU", None
+            self.set, self.mock_settings_frame, "MAIN_MENU", None, None
         )

@@ -172,7 +172,7 @@ class UserSettings:
             finally:
                 self.cursor.close()
                 main.Main.manager_menu_choice(
-                    self, setting_frame, "USER_MENU", self.user_name
+                    self, setting_frame, "USER_MENU", self.user_name, None
                 )
         else:
             messagebox.showinfo("Error!", "Old password is not correct!")
@@ -193,7 +193,7 @@ class UserSettings:
                         "Success!", "Your account has successfully been deleted."
                     )
                     main.Main.manager_menu_choice(
-                        self, setting_frame, "MAIN_MENU", None
+                        self, setting_frame, "MAIN_MENU", None, None
                     )
                 else:
                     messagebox.showinfo(

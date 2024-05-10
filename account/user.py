@@ -73,7 +73,9 @@ class User:
                 image=breathe_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: self.redirect("breathe", user_frame),
+                command=lambda: main.Main.manager_menu_choice(
+                    self, user_frame, "BREATHE", self.user_name, None
+                ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -84,7 +86,13 @@ class User:
                 image=scheduel_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: self.redirect("set schedule", user_frame),
+                command=lambda: main.Main.manager_menu_choice(
+                    self,
+                    user_frame,
+                    "SCHEDULE",
+                    None,
+                    None,  # Add name or date if needed.
+                ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -107,7 +115,13 @@ class User:
                 image=calendar_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: self.redirect("view your calender", user_frame),
+                command=lambda: main.Main.manager_menu_choice(
+                    self,
+                    user_frame,
+                    "CALENDAR",
+                    None,
+                    None,  # Add name or date if needed.
+                ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -118,7 +132,13 @@ class User:
                 image=history_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: self.redirect("stress history", user_frame),
+                command=lambda: main.Main.manager_menu_choice(
+                    self,
+                    user_frame,
+                    "STRESS_HISTORY",
+                    None,
+                    None,  # Add name or date if needed.
+                ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -137,20 +157,6 @@ class User:
             ).grid(row=1, column=0, columnspan=4)
             user_frame.pack()
         self.window.mainloop()
-
-    def redirect(self, redirect_to, user_frame):
-        user_frame.pack_forget()
-        redirect = Frame(self.window)
-        redirect.configure(bg="#AFB5D6")
-        Label(redirect, bg="#AFB5D6", text="").grid(row=0)
-        Label(
-            redirect,
-            text="Redirecting to the " + redirect_to + ".",
-            bg="#040B20",
-            fg="#AFB5D6",
-            font=("Arial", 12),
-        ).grid(row=1, column=0)
-        redirect.pack()
 
     def redirect_to_scale(self, user_frame):
         main.Main.manager_menu_choice(
@@ -201,19 +207,21 @@ class User:
         """Button action for return to the user page."""
         if close_popup:
             self.top.destroy()
-        main.Main.manager_menu_choice(self, frame, "USER_MENU", self.user_name)
+        main.Main.manager_menu_choice(self, frame, "USER_MENU", self.user_name, None)
 
     def return_to_main_page(self, frame, left_buttons, close_popup):
         """Return to the main menu."""
         left_buttons.place_forget()
         if close_popup:
             self.top.destroy()
-        main.Main.manager_menu_choice(self, frame, "MAIN_MENU", self.user_name)
+        main.Main.manager_menu_choice(self, frame, "MAIN_MENU", self.user_name, None)
 
     def redirect_to_user_settings(self, frame, left_buttons):
         """Redirects to the user settings page."""
         left_buttons.place_forget()
-        main.Main.manager_menu_choice(self, frame, "USER_SETTINGS", self.user_name)
+        main.Main.manager_menu_choice(
+            self, frame, "USER_SETTINGS", self.user_name, None
+        )
 
 
 if __name__ == "__main__":
