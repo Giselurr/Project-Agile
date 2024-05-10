@@ -3,9 +3,12 @@ from tkinter import SW, Button, Canvas, Tk
 
 from PIL import Image, ImageTk
 
+import main
+
 
 class History:
-    def __init__(self, window):
+    def __init__(self, window, user_name):
+        self.user_name = user_name
         self.window = window
         self.window.resizable(height=False, width=False)
         self.window.title("Breathe")
@@ -62,7 +65,9 @@ class History:
             self.canvas,
             image=return_img,
             activebackground="#040B20",
-            command=lambda: print("RETURN"),
+            command=lambda: main.Main.manager_menu_choice(
+                self, self.canvas, "USER_MENU", self.user_name, None
+            ),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
