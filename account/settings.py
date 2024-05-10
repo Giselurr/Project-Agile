@@ -193,7 +193,7 @@ class UserSettings:
                         "Success!", "Your account has successfully been deleted."
                     )
                     main.Main.manager_menu_choice(
-                        self, setting_frame, "MAIN_MENU", self.user_name, None
+                        self, setting_frame, "MAIN_MENU", None, None
                     )
                 else:
                     messagebox.showinfo(
