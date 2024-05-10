@@ -2,7 +2,7 @@ import tkinter as tk
 
 from PIL import Image, ImageTk
 
-from account import user
+import main
 
 
 class DisplayExercise:
@@ -107,11 +107,11 @@ class DisplayExercise:
         self.loop = self.window.after(50, self.animate)
 
     def cancel(self):
-        self.box_brathing_frame.pack_forget()
         self.button_frame.pack_forget()
         self.button_frame.place_forget()
-        user_redirect = user.User(True, self.user, self.window)
-        user_redirect.user_gui()
+        main.Main.manager_menu_choice(
+            self, self.box_brathing_frame, "USER_MENU", self.user, None
+        )
 
     def stop(self):
         self.stop_frame.pack_forget()

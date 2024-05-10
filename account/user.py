@@ -147,7 +147,6 @@ class User:
             ).grid(row=1, column=0, columnspan=4)
             user_frame.pack()
         self.window.mainloop()
-
     def redirect_to_main(self, user_frame, choise, left_buttons):
         left_buttons.destroy()
         main.Main.manager_menu_choice(
