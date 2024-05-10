@@ -73,8 +73,8 @@ class User:
                 image=breathe_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: main.Main.manager_menu_choice(
-                    self, user_frame, "BREATHE", self.user_name, None
+                command=lambda: self.redirect_to_main(
+                    user_frame, "BREATHE", left_buttons
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -86,12 +86,8 @@ class User:
                 image=scheduel_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: main.Main.manager_menu_choice(
-                    self,
-                    user_frame,
-                    "SCHEDULE",
-                    None,
-                    None,  # Add name or date if needed.
+                command=lambda: self.redirect_to_main(
+                    user_frame, "SCHEDULE", left_buttons
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -103,7 +99,9 @@ class User:
                 image=stresslevel_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: self.redirect_to_scale(user_frame),
+                command=lambda: self.redirect_to_main(
+                    user_frame, "STRESS_LEVEL", left_buttons
+                ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -115,12 +113,8 @@ class User:
                 image=calendar_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: main.Main.manager_menu_choice(
-                    self,
-                    user_frame,
-                    "CALENDAR",
-                    None,
-                    None,  # Add name or date if needed.
+                command=lambda: self.redirect_to_main(
+                    user_frame, "CALENDAR", left_buttons
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -132,12 +126,8 @@ class User:
                 image=history_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: main.Main.manager_menu_choice(
-                    self,
-                    user_frame,
-                    "STRESS_HISTORY",
-                    None,
-                    None,  # Add name or date if needed.
+                command=lambda: self.redirect_to_main(
+                    user_frame, "STRESS_HISTORY", left_buttons
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -157,16 +147,16 @@ class User:
             ).grid(row=1, column=0, columnspan=4)
             user_frame.pack()
         self.window.mainloop()
-
-    def redirect_to_scale(self, user_frame):
+    def redirect_to_main(self, user_frame, choise, left_buttons):
+        left_buttons.destroy()
         main.Main.manager_menu_choice(
-            self, user_frame, "STRESS_LEVEL", self.user_name, datetime.now()
+            self, user_frame, choise, self.user_name, datetime.now()
         )
 
     def sign_out(self, user_frame, left_buttons):
         """Sign out pop-up window with Y/N."""
-        self.no_img = PhotoImage(file="account\images/no.png")
-        self.yes_img = PhotoImage(file="account\images\yes.png")
+        self.no_img = PhotoImage(file=r"account\images\thumbnail_no.png")
+        self.yes_img = PhotoImage(file=r"account\images\yes.png")
         self.top = Toplevel()
         self.top.geometry("280x200")
         self.top.title("Breathe")
