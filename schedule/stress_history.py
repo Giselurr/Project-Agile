@@ -40,7 +40,7 @@ class History:
         )  # Change to new image.
         return_img = ImageTk.PhotoImage(Image.open("schedule\images\Return.png"))
         notes_img = ImageTk.PhotoImage(
-            Image.open("schedule\images\Select.png")
+            Image.open("schedule\images\img_notes.png")
         )  # Change to new image.
         Button(
             self.canvas,
