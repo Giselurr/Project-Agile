@@ -4,11 +4,13 @@ from tkinter import SW, Button, Canvas, Tk
 from PIL import Image, ImageTk
 
 import main
+from database import database_handler
 
 
 class History:
     def __init__(self, window, user_name):
         self.user_name = user_name
+        self.db_handler = database_handler.DatabaseHandler()
         self.window = window
         self.window.resizable(height=False, width=False)
         self.window.title("Breathe")
@@ -20,19 +22,20 @@ class History:
 
         self.current_date = datetime.now()
         self.monday_date = None
-        self.sunday_date = None
 
     def calculate_current_week(self):
         self.monday_date = self.current_date
         self.monday_date -= timedelta(days=self.current_date.isoweekday() - 1)
-        self.sunday_date = self.monday_date
-        self.sunday_date += timedelta(days=6)
 
     def change_week(self, change):
         if change == "NEXT":
-            print("next")
+            self.monday_date += timedelta(days=7)
+            self.canvas.delete("all")
+            self.draw_stress_history()
         elif change == "PREVIOUS":
-            print("previous")
+            self.monday_date -= timedelta(days=7)
+            self.canvas.delete("all")
+            self.draw_stress_history()
 
     def draw_buttons(self):
         next_img = ImageTk.PhotoImage(Image.open("schedule\images\Right_arrow.png"))
@@ -89,8 +92,6 @@ class History:
         self.window.mainloop()
 
     def draw_current_week_text(self):
-        print(self.monday_date)
-        print(self.sunday_date)
         text = f"Week of {self.monday_date.strftime('%B %d, %Y')}"
 
         self.canvas.create_text(
@@ -175,7 +176,8 @@ class History:
             self.canvas.create_rectangle(x0, y0, x1, y1, fill=color)
 
     def draw_stress_history(self):
-        self.calculate_current_week()
+        if self.current_date == datetime.now():
+            self.calculate_current_week()
         self.draw_scale_text()
         self.draw_barchart()
         self.draw_day_text()
