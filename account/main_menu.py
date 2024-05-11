@@ -45,7 +45,7 @@ class MainMenu:
             main_frame,
             image=login,
             command=lambda: main.Main.manager_menu_choice(
-                self, main_frame, "LOGIN", None, None
+                self, main_frame, "LOGIN", None, None, None
             ),
             activebackground="#040B20",
             border=0,

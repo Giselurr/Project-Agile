@@ -18,7 +18,7 @@ class Main:
         main_window = main_menu.MainMenu(self.window)
         main_window.main_gui()
 
-    def manager_menu_choice(self, frame, menu_choice, user_name, date):
+    def manager_menu_choice(self, frame, menu_choice, user_name, date, reminder):
         """Handles all the redirects and frame forgets for all windows."""
         if frame is not None:
             frame.pack_forget()
@@ -38,7 +38,9 @@ class Main:
             breath_redirect = boxbreathing.DisplayExercise(self.window, user_name)
             breath_redirect.display_imagery()
         elif menu_choice == "SCHEDULE":
-            schedule = daily_schedule.DailyScheduele(self.window, user_name, date)
+            schedule = daily_schedule.DailyScheduele(
+                self.window, user_name, date, reminder
+            )
             schedule.daily_schedule_gui()
             # print("SCHEDULE")
         elif menu_choice == "STRESS_LEVEL":

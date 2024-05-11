@@ -1,9 +1,11 @@
 """This module will store the user information and the GUI for the user page"""
 
+import threading
 from datetime import datetime
 from tkinter import Button, Frame, Label, PhotoImage, Tk, Toplevel
 
 import main
+from schedule import reminder
 
 
 class User:
@@ -16,6 +18,10 @@ class User:
         self.window = window
         self.window.title("Breathe")
         self.window.iconbitmap("account\images\Breathe_icon.ico")
+        self.reminder_obj = reminder.Reminder(self.user_name)
+        threading.Thread(
+            target=self.reminder_obj.checks_for_reminders, daemon=True
+        ).start()
 
     def user_gui(self):
         """The interface for a logged in user."""
@@ -147,10 +153,11 @@ class User:
             ).grid(row=1, column=0, columnspan=4)
             user_frame.pack()
         self.window.mainloop()
+
     def redirect_to_main(self, user_frame, choise, left_buttons):
         left_buttons.destroy()
         main.Main.manager_menu_choice(
-            self, user_frame, choise, self.user_name, datetime.now()
+            self, user_frame, choise, self.user_name, datetime.now(), self.reminder_obj
         )
 
     def sign_out(self, user_frame, left_buttons):

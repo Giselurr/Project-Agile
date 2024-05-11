@@ -81,8 +81,10 @@ class DatabaseHandler:
 
     def get_daily_schedule(self, user_name):
         """Checks and retreives the daily schedule for a user."""
-        query = "SELECT start_time, stop_time, task FROM"
-        "daily_schedule WHERE user_user_name = %s"
+        query = (
+            "SELECT start_time, stop_time, task FROM daily_schedule"
+            "WHERE user_user_name = %s"
+        )
         values = (user_name,)
         curser = self.db.connect()
         self.events = []
@@ -102,8 +104,10 @@ class DatabaseHandler:
 
     def add_task(self, user_name, start, stop, task):
         """Adds new tasks into the database."""
-        query = "INSERT INTO daily_schedule (user_user_name,"
-        "start_time, stop_time, task) VALUES (%s, %s, %s, %s)"
+        query = (
+            "INSERT INTO daily_schedule (user_user_name, start_time, stop_time, task)"
+            "VALUES (%s, %s, %s, %s)"
+        )
         values = (user_name, start, stop, task)
         curser = self.db.connect()
         try:

@@ -13,15 +13,16 @@ from tkinter import (
     messagebox,
 )
 
+import database.database_connection
+import database.database_handler
 import main
-from database import database_connection, database_handler
 
 
 class DailyScheduele:
     """This handles the schedule for the day and here you can also
     add tasks and breaks for the day."""
 
-    def __init__(self, window, user_name, date):
+    def __init__(self, window, user_name, date, reminder):
         self.date = date
         self.user_name = user_name
         self.window = window
@@ -30,14 +31,14 @@ class DailyScheduele:
         x = (screen_width - 640) // 2
         y = (screen_height - 700) // 2
         self.window.geometry(f"640x700+{x}+{y}")
-        self.db_handler = database_handler.DatabaseHandler()
-        self.database = database_connection.DatabaseConnection()
+        self.db_handler = database.database_handler.DatabaseHandler()
+        self.database = database.database_connection.DatabaseConnection()
         self.window.title("Breathe")
         self.window.iconbitmap("schedule\images\Breathe_icon.ico")
         self.calendar_frame = Frame(self.window, bg="#040B20")
         self.calendar_frame.pack(fill="both", expand=True, padx=10, pady=10)
-        db_handler = database_handler.DatabaseHandler()
-        self.events = db_handler.get_daily_schedule(self.user_name)
+        self.events = self.db_handler.get_daily_schedule(self.user_name)
+        self.reminder_obj = reminder
 
     def daily_schedule_gui(self):
         self.return_img = PhotoImage(file="schedule\images\\return_small_light.png")
@@ -114,11 +115,27 @@ class DailyScheduele:
                 ).grid(row=i, column=2, columnspan=3, padx=10, pady=10, sticky="W")
         Button(
             self.calendar_frame,
-            text="Add item to schedule.",
+            text="ADD ITEM",
             bg="#040B20",
             fg="#FFFFFF",
             font=("Arial", 15),
             command=lambda: self.add_task(),
+        ).pack()
+
+        Button(
+            self.calendar_frame,
+            text="RETURN",
+            bg="#040B20",
+            fg="#FFFFFF",
+            font=("Arial", 15),
+            command=lambda: main.Main.manager_menu_choice(
+                self,
+                self.calendar_frame,
+                "USER_MENU",
+                self.user_name,
+                None,
+                self.reminder_obj,
+            ),
         ).pack()
 
     def add_task(self):
@@ -221,8 +238,12 @@ class DailyScheduele:
         success = self.db_handler.add_task(self.user_name, start, stop, task)
 
         if success:
-            messagebox.showinfo("Success", "Successfully saved your task.")
-            main.Main.manager_menu_choice(self, frame, "SCHEDULE", self.user_name, None)
+            messagebox.showinfo("Success", f"Successfully saved your task. {start}")
+
+            self.reminder_obj.add_tasks(start, task)
+            main.Main.manager_menu_choice(
+                self, frame, "SCHEDULE", self.user_name, None, self.reminder_obj
+            )
         else:
             messagebox.showinfo(
                 "Error", "Your task has not been saved, please try again"
