@@ -15,10 +15,14 @@ class History:
         self.window.resizable(height=False, width=False)
         self.window.title("Breathe")
         self.window.iconbitmap("account\images\Breathe_icon.ico")
-        self.canvas = Canvas(
+        self.barchart_canvas = Canvas(
             self.window, width=640, height=700, bg="#040B20", highlightthickness=0
         )
-        self.canvas.pack()
+        self.barchart_canvas.pack()
+
+        self.notes_canvas = Canvas(
+            self.window, width=640, height=700, bg="#040B20", highlightthickness=0
+        )
 
         self.current_date = datetime.now()
         self.monday_date = None
@@ -75,15 +79,22 @@ class History:
         print(self.sunday_date)
         print()
 
-    def change_week(self, change):
+    def change_week(self, change, page):
+        self.barchart_canvas.delete("all")
+        self.notes_canvas.delete("all")
+
         if change == "NEXT":
             self.calculate_next_week()
-            self.canvas.delete("all")
-            self.draw_stress_history()
+            if page == "BARCHART":
+                self.draw_stress_history()
+            elif page == "NOTES":
+                self.draw_notes_page()
         elif change == "PREVIOUS":
             self.calculate_previous_week()
-            self.canvas.delete("all")
-            self.draw_stress_history()
+            if page == "BARCHART":
+                self.draw_stress_history()
+            elif page == "NOTES":
+                self.draw_notes_page()
 
     def draw_buttons(self):
         next_img = ImageTk.PhotoImage(Image.open("schedule\images\Right_arrow.png"))
@@ -91,10 +102,10 @@ class History:
         return_img = ImageTk.PhotoImage(Image.open("schedule\images\Return.png"))
         notes_img = ImageTk.PhotoImage(Image.open("schedule\images\img_notes.png"))
         Button(
-            self.canvas,
+            self.barchart_canvas,
             image=previous_img,
             activebackground="#040B20",
-            command=lambda: self.change_week("PREVIOUS"),
+            command=lambda: self.change_week("PREVIOUS", "BARCHART"),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -102,10 +113,10 @@ class History:
             pady=0,
         ).place(x=75, y=641)
         Button(
-            self.canvas,
+            self.barchart_canvas,
             image=next_img,
             activebackground="#040B20",
-            command=lambda: self.change_week("NEXT"),
+            command=lambda: self.change_week("NEXT", "BARCHART"),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -113,11 +124,11 @@ class History:
             pady=0,
         ).place(x=545, y=641)
         Button(
-            self.canvas,
+            self.barchart_canvas,
             image=return_img,
             activebackground="#040B20",
             command=lambda: main.Main.manager_menu_choice(
-                self, self.canvas, "USER_MENU", self.user_name, None
+                self, self.barchart_canvas, "USER_MENU", self.user_name, None
             ),
             borderwidth=0,
             highlightthickness=0,
@@ -126,7 +137,7 @@ class History:
             pady=0,
         ).place(x=60, y=70)
         Button(
-            self.canvas,
+            self.barchart_canvas,
             image=notes_img,
             activebackground="#040B20",
             command=lambda: self.draw_notes_page(),
@@ -141,7 +152,7 @@ class History:
     def draw_current_week_text(self):
         text = f"Week of {self.monday_date.strftime('%B %d, %Y')}"
 
-        self.canvas.create_text(
+        self.barchart_canvas.create_text(
             320,
             30,
             text=text,
@@ -153,7 +164,7 @@ class History:
         days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
         for i, day in enumerate(days):
-            self.canvas.create_text(
+            self.barchart_canvas.create_text(
                 139 + i * 60,
                 650,
                 text=day,
@@ -165,10 +176,10 @@ class History:
         x = 90
         for i, number in enumerate(range(1, 11), start=0):
             y = 592 - i * 44
-            self.canvas.create_text(
+            self.barchart_canvas.create_text(
                 x, y, anchor=SW, text=number, font=("Arial", 13, "bold"), fill="#AFB5D6"
             )
-            self.canvas.create_text(
+            self.barchart_canvas.create_text(
                 x + 15,
                 y - 9,
                 anchor=SW,
@@ -207,9 +218,9 @@ class History:
 
             color = scale_and_color.get(y, "white")
 
-            self.canvas.create_rectangle(x0, y0, x1, y1, fill=color)
+            self.barchart_canvas.create_rectangle(x0, y0, x1, y1, fill=color)
 
-    def draw_notes_dates(self, notes_canvas):
+    def draw_notes_dates(self):
         dates_for_days = [
             self.monday_date,
             self.tuesday_date,
@@ -226,7 +237,7 @@ class History:
             str_month = date.strftime("%m").lstrip("0")
             text = str_day + "/" + str_month
 
-            notes_canvas.create_text(
+            self.notes_canvas.create_text(
                 x,
                 75,
                 text=text,
@@ -234,35 +245,143 @@ class History:
                 fill="#AFB5D6",
             )
 
-    def draw_notes_buttons(self, notes_canvas):
+    def draw_notes_buttons(self):
         return_img = ImageTk.PhotoImage(Image.open("schedule\images\Return.png"))
+        next_img = ImageTk.PhotoImage(Image.open("schedule\images\Right_arrow.png"))
+        previous_img = ImageTk.PhotoImage(Image.open("schedule\images\Left_arrow.png"))
+        right_note_img = ImageTk.PhotoImage(
+            Image.open("schedule\images\\notes_right_button.png")
+        )
+        middle_note_img = ImageTk.PhotoImage(
+            Image.open("schedule\images\\notes_middle_button.png")
+        )
+        left_note_img = ImageTk.PhotoImage(
+            Image.open("schedule\images\\notes_left_button.png")
+        )
         Button(
-            notes_canvas,
+            self.notes_canvas,
             image=return_img,
             activebackground="#040B20",
-            command=lambda: self.return_to_barchart(notes_canvas),
+            command=lambda: self.return_to_barchart(),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
             padx=0,
             pady=0,
-        ).place(x=250, y=250)
+        ).place(x=205, y=610)
+        Button(
+            self.notes_canvas,
+            image=previous_img,
+            activebackground="#040B20",
+            command=lambda: self.change_week("PREVIOUS", "NOTES"),
+            borderwidth=0,
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=30, y=65)
+        Button(
+            self.notes_canvas,
+            image=next_img,
+            activebackground="#040B20",
+            command=lambda: self.change_week("NEXT", "NOTES"),
+            borderwidth=0,
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=582, y=65)
+        Button(
+            self.notes_canvas,
+            image=left_note_img,
+            activebackground="#040B20",
+            command=lambda: self.return_to_barchart(),
+            borderwidth=0,
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=50, y=100)
+        Button(
+            self.notes_canvas,
+            image=middle_note_img,
+            activebackground="#040B20",
+            command=lambda: self.return_to_barchart(),
+            borderwidth=0,
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=126, y=100)
+        Button(
+            self.notes_canvas,
+            image=middle_note_img,
+            activebackground="#040B20",
+            command=lambda: self.return_to_barchart(),
+            borderwidth=0,
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=202, y=100)
+        Button(
+            self.notes_canvas,
+            image=middle_note_img,
+            activebackground="#040B20",
+            command=lambda: self.return_to_barchart(),
+            borderwidth=0,
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=278, y=100)
+        Button(
+            self.notes_canvas,
+            image=middle_note_img,
+            activebackground="#040B20",
+            command=lambda: self.return_to_barchart(),
+            borderwidth=0,
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=354, y=100)
+        Button(
+            self.notes_canvas,
+            image=middle_note_img,
+            activebackground="#040B20",
+            command=lambda: self.return_to_barchart(),
+            borderwidth=0,
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=430, y=100)
+        Button(
+            self.notes_canvas,
+            image=right_note_img,
+            activebackground="#040B20",
+            command=lambda: self.return_to_barchart(),
+            borderwidth=0,
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=506, y=100)
         self.window.mainloop()
 
-    def return_to_barchart(self, notes_canvas):
-        notes_canvas.pack_forget()
-        self.canvas.pack()
+    def return_to_barchart(self):
+        self.notes_canvas.pack_forget()
+        self.barchart_canvas.pack()
         self.draw_stress_history()
 
     def draw_notes_page(self):
         """Stops showing the barchart page and creates and shows the notes page."""
-        self.canvas.pack_forget()
-        notes_canvas = Canvas(
-            self.window, width=640, height=700, bg="#040B20", highlightthickness=0
-        )
-        notes_canvas.pack()
-        self.draw_notes_dates(notes_canvas)
-        self.draw_notes_buttons(notes_canvas)
+        self.barchart_canvas.pack_forget()
+        self.notes_canvas.pack()
+
+        self.draw_notes_dates()
+        self.draw_notes_buttons()
 
     def draw_stress_history(self):
         """Displays the barchart page."""
