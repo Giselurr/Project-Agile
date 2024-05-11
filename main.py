@@ -5,7 +5,7 @@ from tkinter import Tk
 
 from account import login, main_menu, register, settings, user
 from breathing import boxbreathing
-from schedule import scale  # calander, clock, dailynote,
+from schedule import daily_schedule, scale  # calander, clock, dailynote,
 
 
 class Main:
@@ -38,9 +38,9 @@ class Main:
             breath_redirect = boxbreathing.DisplayExercise(self.window, user_name)
             breath_redirect.display_imagery()
         elif menu_choice == "SCHEDULE":
-            # Redirect to schedule.
-            # Add name or date in user_menu if needed.
-            print("SCHEDULE")
+            schedule = daily_schedule.DailyScheduele(self.window, user_name, date)
+            schedule.daily_schedule_gui()
+            # print("SCHEDULE")
         elif menu_choice == "STRESS_LEVEL":
             stress_level_redirect = scale.Scale(self.window, user_name, date)
             stress_level_redirect.scale_gui()
