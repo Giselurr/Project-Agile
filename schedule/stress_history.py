@@ -22,18 +22,66 @@ class History:
 
         self.current_date = datetime.now()
         self.monday_date = None
+        self.tuesday_date = None
+        self.wednesday_date = None
+        self.thursday_date = None
+        self.friday_date = None
+        self.saturday_date = None
+        self.sunday_date = None
 
     def calculate_current_week(self):
         self.monday_date = self.current_date
         self.monday_date -= timedelta(days=self.current_date.isoweekday() - 1)
 
+        self.tuesday_date = self.monday_date
+        self.wednesday_date = self.monday_date
+        self.thursday_date = self.monday_date
+        self.friday_date = self.monday_date
+        self.saturday_date = self.monday_date
+        self.sunday_date = self.monday_date
+
+        self.tuesday_date += timedelta(days=1)
+        self.wednesday_date += timedelta(days=2)
+        self.thursday_date += timedelta(days=3)
+        self.friday_date += timedelta(days=4)
+        self.saturday_date += timedelta(days=5)
+        self.sunday_date += timedelta(days=6)
+
+    def calculate_next_week(self):
+        self.monday_date += timedelta(days=7)
+        self.tuesday_date += timedelta(days=7)
+        self.wednesday_date += timedelta(days=7)
+        self.thursday_date += timedelta(days=7)
+        self.friday_date += timedelta(days=7)
+        self.saturday_date += timedelta(days=7)
+        self.sunday_date += timedelta(days=7)
+
+    def calculate_previous_week(self):
+        self.monday_date -= timedelta(days=7)
+        self.tuesday_date -= timedelta(days=7)
+        self.wednesday_date -= timedelta(days=7)
+        self.thursday_date -= timedelta(days=7)
+        self.friday_date -= timedelta(days=7)
+        self.saturday_date -= timedelta(days=7)
+        self.sunday_date -= timedelta(days=7)
+
+    def temp_print_dates_for_testing(self):
+        print(self.monday_date)
+        print(self.tuesday_date)
+        print(self.wednesday_date)
+        print(self.thursday_date)
+        print(self.friday_date)
+        print(self.saturday_date)
+        print(self.sunday_date)
+        print()
+
     def change_week(self, change):
         if change == "NEXT":
-            self.monday_date += timedelta(days=7)
+            self.calculate_next_week()
             self.canvas.delete("all")
             self.draw_stress_history()
         elif change == "PREVIOUS":
-            self.monday_date -= timedelta(days=7)
+            self.calculate_previous_week()
             self.canvas.delete("all")
             self.draw_stress_history()
 
@@ -81,14 +129,13 @@ class History:
             self.canvas,
             image=notes_img,
             activebackground="#040B20",
-            command=lambda: print("NOTES"),
+            command=lambda: self.draw_notes_page(),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
             padx=0,
             pady=0,
         ).place(x=350, y=70)
-
         self.window.mainloop()
 
     def draw_current_week_text(self):
@@ -175,7 +222,63 @@ class History:
 
             self.canvas.create_rectangle(x0, y0, x1, y1, fill=color)
 
+    def temp_notes_text(self, notes_canvas):
+        dates_for_days = [
+            self.monday_date,
+            self.tuesday_date,
+            self.wednesday_date,
+            self.thursday_date,
+            self.friday_date,
+            self.saturday_date,
+            self.sunday_date,
+        ]
+        for i, date in enumerate(dates_for_days):
+            x = 90 + (i * 75)
+
+            str_day = date.strftime("%d").lstrip("0")
+            str_month = date.strftime("%m").lstrip("0")
+            text = str_day + "/" + str_month
+
+            notes_canvas.create_text(
+                x,
+                75,
+                text=text,
+                font=("Arial", 15, "bold"),
+                fill="#AFB5D6",
+            )
+
+    def draw_notes_buttons(self, notes_canvas):
+        return_img = ImageTk.PhotoImage(Image.open("schedule\images\Return.png"))
+        Button(
+            notes_canvas,
+            image=return_img,
+            activebackground="#040B20",
+            command=lambda: self.return_to_barchart(notes_canvas),
+            borderwidth=0,
+            highlightthickness=0,
+            bd=0,
+            padx=0,
+            pady=0,
+        ).place(x=250, y=250)
+        self.window.mainloop()
+
+    def return_to_barchart(self, notes_canvas):
+        notes_canvas.pack_forget()
+        self.canvas.pack()
+        self.draw_stress_history()
+
+    def draw_notes_page(self):
+        """Stops showing the barchart page and creates and shows the notes page."""
+        self.canvas.pack_forget()
+        notes_canvas = Canvas(
+            self.window, width=640, height=700, bg="#040B20", highlightthickness=0
+        )
+        notes_canvas.pack()
+        self.temp_notes_text(notes_canvas)
+        self.draw_notes_buttons(notes_canvas)
+
     def draw_stress_history(self):
+        """Displays the barchart page."""
         if self.current_date == datetime.now():
             self.calculate_current_week()
         self.draw_scale_text()
