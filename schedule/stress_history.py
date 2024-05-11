@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from tkinter import SW, Button, Canvas, Tk
+from tkinter import NW, SW, Button, Canvas, Tk
 
 from PIL import Image, ImageTk
 
@@ -88,13 +88,13 @@ class History:
             if page == "BARCHART":
                 self.draw_stress_history()
             elif page == "NOTES":
-                self.draw_notes_page()
+                self.draw_notes_page(False)
         elif change == "PREVIOUS":
             self.calculate_previous_week()
             if page == "BARCHART":
                 self.draw_stress_history()
             elif page == "NOTES":
-                self.draw_notes_page()
+                self.draw_notes_page(False)
 
     def draw_buttons(self):
         next_img = ImageTk.PhotoImage(Image.open("schedule\images\Right_arrow.png"))
@@ -140,7 +140,7 @@ class History:
             self.barchart_canvas,
             image=notes_img,
             activebackground="#040B20",
-            command=lambda: self.draw_notes_page(),
+            command=lambda: self.prepare_notes_page(),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -245,7 +245,7 @@ class History:
                 fill="#AFB5D6",
             )
 
-    def draw_notes_buttons(self):
+    def draw_notes_buttons(self, draw_note_frame):
         return_img = ImageTk.PhotoImage(Image.open("schedule\images\Return.png"))
         next_img = ImageTk.PhotoImage(Image.open("schedule\images\Right_arrow.png"))
         previous_img = ImageTk.PhotoImage(Image.open("schedule\images\Left_arrow.png"))
@@ -295,7 +295,7 @@ class History:
             self.notes_canvas,
             image=left_note_img,
             activebackground="#040B20",
-            command=lambda: self.return_to_barchart(),
+            command=lambda: self.draw_note_text(self.monday_date, 7),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -306,7 +306,7 @@ class History:
             self.notes_canvas,
             image=middle_note_img,
             activebackground="#040B20",
-            command=lambda: self.return_to_barchart(),
+            command=lambda: self.draw_note_text(self.tuesday_date, 3),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -317,7 +317,7 @@ class History:
             self.notes_canvas,
             image=middle_note_img,
             activebackground="#040B20",
-            command=lambda: self.return_to_barchart(),
+            command=lambda: self.draw_note_text(self.wednesday_date, 5),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -328,7 +328,7 @@ class History:
             self.notes_canvas,
             image=middle_note_img,
             activebackground="#040B20",
-            command=lambda: self.return_to_barchart(),
+            command=lambda: self.draw_note_text(self.thursday_date, 10),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -339,7 +339,7 @@ class History:
             self.notes_canvas,
             image=middle_note_img,
             activebackground="#040B20",
-            command=lambda: self.return_to_barchart(),
+            command=lambda: self.draw_note_text(self.friday_date, 2),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -350,7 +350,7 @@ class History:
             self.notes_canvas,
             image=middle_note_img,
             activebackground="#040B20",
-            command=lambda: self.return_to_barchart(),
+            command=lambda: self.draw_note_text(self.saturday_date, 8),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -361,27 +361,101 @@ class History:
             self.notes_canvas,
             image=right_note_img,
             activebackground="#040B20",
-            command=lambda: self.return_to_barchart(),
+            command=lambda: self.draw_note_text(self.sunday_date, 4),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
             padx=0,
             pady=0,
         ).place(x=506, y=100)
+
+        # Border around the note text is located here since
+        # all custom images have to be in mainloop.
+        if draw_note_frame:
+            note_text_frame_img = ImageTk.PhotoImage(
+                Image.open("schedule\images\\Note_frame.png")
+            )
+            self.notes_canvas.create_image(
+                95, 175, image=note_text_frame_img, anchor=NW
+            )
+
         self.window.mainloop()
 
+    def draw_note_text(self, date, stress_level):
+        # Border around the text is located in draw_notes_buttons since
+        # all custom images have to be in mainloop.
+        self.notes_canvas.delete("all")
+
+        note_text = (
+            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean "
+            "co mmodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et "
+            "magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, "
+            "ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa "
+            "quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate."
+        )
+
+        self.notes_canvas.create_text(
+            110,
+            300,
+            anchor=NW,
+            text=note_text,
+            font=("Arial", 14),
+            fill="#AFB5D6",
+            width=420,
+        )
+
+        str_day = date.strftime("%d").lstrip("0")
+        str_month = date.strftime("%m").lstrip("0")
+        date_text = "Date:   " + str_day + "/" + str_month
+
+        self.notes_canvas.create_text(
+            110,
+            200,
+            anchor=NW,
+            text=date_text,
+            font=("Arial", 14),
+            fill="#AFB5D6",
+        )
+
+        stress_level_text = f"Stress level:   {stress_level}"
+
+        self.notes_canvas.create_text(
+            110,
+            250,
+            anchor=NW,
+            text=stress_level_text,
+            font=("Arial", 14),
+            fill="#AFB5D6",
+        )
+
+        self.draw_notes_page(True)
+
+    def draw_click_button_text(self):
+        self.notes_canvas.create_text(
+            320,
+            375,
+            text="Press a button to see the note for that date",
+            font=("Arial", 14),
+            fill="#AFB5D6",
+        )
+
     def return_to_barchart(self):
+        self.notes_canvas.delete("all")
         self.notes_canvas.pack_forget()
         self.barchart_canvas.pack()
         self.draw_stress_history()
 
-    def draw_notes_page(self):
-        """Stops showing the barchart page and creates and shows the notes page."""
+    def prepare_notes_page(self):
         self.barchart_canvas.pack_forget()
         self.notes_canvas.pack()
+        self.draw_notes_page(False)
 
+    def draw_notes_page(self, draw_frame):
+        """Stops showing the barchart page and creates and shows the notes page."""
         self.draw_notes_dates()
-        self.draw_notes_buttons()
+        if not draw_frame:
+            self.draw_click_button_text()
+        self.draw_notes_buttons(draw_frame)
 
     def draw_stress_history(self):
         """Displays the barchart page."""
