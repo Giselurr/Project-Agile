@@ -152,21 +152,19 @@ class History:
     def draw_day_text(self):
         days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
-        x = 139
-        for day in days:
+        for i, day in enumerate(days):
             self.canvas.create_text(
-                x,
+                139 + i * 60,
                 650,
                 text=day,
                 font=("Arial", 12, "bold"),
                 fill="#AFB5D6",
             )
-            x += 60
 
     def draw_scale_text(self):
         x = 90
-        y = 592
-        for number in range(1, 11):
+        for i, number in enumerate(range(1, 11), start=0):
+            y = 592 - i * 44
             self.canvas.create_text(
                 x, y, anchor=SW, text=number, font=("Arial", 13, "bold"), fill="#AFB5D6"
             )
@@ -178,7 +176,6 @@ class History:
                 font=("Arial", 10, "bold"),
                 fill="#AFB5D6",
             )  # Remove "* 61" in text to remove lines.
-            y -= 44
 
     def draw_barchart(self):
         stress_levels = [6, 9, 4, 7, 3, 5, 1]
@@ -189,40 +186,30 @@ class History:
         left_gap = 120
         bottom_gap = 75
 
+        scale_and_color = {
+            10: "#BE0808",
+            9: "#922D05",
+            8: "#A83304",
+            7: "#C55206",
+            6: "#E75E04",
+            5: "#F77119",
+            4: "#F88A41",
+            3: "#F79757",
+            2: "#F9BB93",
+            1: "#F8D5BE",
+        }
+
         for x, y in enumerate(stress_levels):
             x0 = x * (bar_gap + bar_width) + left_gap
             y0 = 700 - (y * bar_height + bottom_gap)
             x1 = x0 + bar_width
             y1 = 700 - bottom_gap
 
-            color = None
-            match y:
-                case 10:
-                    color = "#BE0808"
-                case 9:
-                    color = "#922D05"
-                case 8:
-                    color = "#A83304"
-                case 7:
-                    color = "#C55206"
-                case 6:
-                    color = "#E75E04"
-                case 5:
-                    color = "#F77119"
-                case 4:
-                    color = "#F88A41"
-                case 3:
-                    color = "#F79757"
-                case 2:
-                    color = "#F9BB93"
-                case 1:
-                    color = "#F8D5BE"
-                case _:
-                    color = "white"
+            color = scale_and_color.get(y, "white")
 
             self.canvas.create_rectangle(x0, y0, x1, y1, fill=color)
 
-    def temp_notes_text(self, notes_canvas):
+    def draw_notes_dates(self, notes_canvas):
         dates_for_days = [
             self.monday_date,
             self.tuesday_date,
@@ -233,7 +220,7 @@ class History:
             self.sunday_date,
         ]
         for i, date in enumerate(dates_for_days):
-            x = 90 + (i * 75)
+            x = 90 + i * 75
 
             str_day = date.strftime("%d").lstrip("0")
             str_month = date.strftime("%m").lstrip("0")
@@ -274,7 +261,7 @@ class History:
             self.window, width=640, height=700, bg="#040B20", highlightthickness=0
         )
         notes_canvas.pack()
-        self.temp_notes_text(notes_canvas)
+        self.draw_notes_dates(notes_canvas)
         self.draw_notes_buttons(notes_canvas)
 
     def draw_stress_history(self):
