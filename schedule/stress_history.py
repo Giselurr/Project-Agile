@@ -406,7 +406,8 @@ class History:
 
         str_day = date.strftime("%d").lstrip("0")
         str_month = date.strftime("%m").lstrip("0")
-        date_text = "Date:   " + str_day + "/" + str_month
+        str_year = date.strftime("%Y")
+        date_text = "Date:   " + str_day + "/" + str_month + " - " + str_year
 
         self.notes_canvas.create_text(
             110,
