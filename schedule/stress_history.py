@@ -268,7 +268,7 @@ class History:
             bd=0,
             padx=0,
             pady=0,
-        ).place(x=205, y=610)
+        ).place(x=205, y=585)
         Button(
             self.notes_canvas,
             image=previous_img,
@@ -295,7 +295,7 @@ class History:
             self.notes_canvas,
             image=left_note_img,
             activebackground="#040B20",
-            command=lambda: self.draw_note_text(self.monday_date, 7),
+            command=lambda: self.draw_note_text(self.monday_date),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -306,7 +306,7 @@ class History:
             self.notes_canvas,
             image=middle_note_img,
             activebackground="#040B20",
-            command=lambda: self.draw_note_text(self.tuesday_date, 3),
+            command=lambda: self.draw_note_text(self.tuesday_date),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -317,7 +317,7 @@ class History:
             self.notes_canvas,
             image=middle_note_img,
             activebackground="#040B20",
-            command=lambda: self.draw_note_text(self.wednesday_date, 5),
+            command=lambda: self.draw_note_text(self.wednesday_date),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -328,7 +328,7 @@ class History:
             self.notes_canvas,
             image=middle_note_img,
             activebackground="#040B20",
-            command=lambda: self.draw_note_text(self.thursday_date, 10),
+            command=lambda: self.draw_note_text(self.thursday_date),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -339,7 +339,7 @@ class History:
             self.notes_canvas,
             image=middle_note_img,
             activebackground="#040B20",
-            command=lambda: self.draw_note_text(self.friday_date, 2),
+            command=lambda: self.draw_note_text(self.friday_date),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -350,7 +350,7 @@ class History:
             self.notes_canvas,
             image=middle_note_img,
             activebackground="#040B20",
-            command=lambda: self.draw_note_text(self.saturday_date, 8),
+            command=lambda: self.draw_note_text(self.saturday_date),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -361,7 +361,7 @@ class History:
             self.notes_canvas,
             image=right_note_img,
             activebackground="#040B20",
-            command=lambda: self.draw_note_text(self.sunday_date, 4),
+            command=lambda: self.draw_note_text(self.sunday_date),
             borderwidth=0,
             highlightthickness=0,
             bd=0,
@@ -381,18 +381,31 @@ class History:
 
         self.window.mainloop()
 
-    def draw_note_text(self, date, stress_level):
+    def draw_note_text(self, date):
         # Border around the text is located in draw_notes_buttons since
         # all custom images have to be in mainloop.
         self.notes_canvas.delete("all")
 
-        note_text = (
-            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean "
-            "co mmodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et "
-            "magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, "
-            "ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa "
-            "quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate."
+        stress_level_color = self.db_handler.get_stress_level(
+            self.user_name, date.date()
         )
+        scale_and_color = {
+            "#BE0808": 10,
+            "#922D05": 9,
+            "#A83304": 8,
+            "#C55206": 7,
+            "#E75E04": 6,
+            "#F77119": 5,
+            "#F88A41": 4,
+            "#F79757": 3,
+            "#F9BB93": 2,
+            "#F8D5BE": 1,
+        }
+        stress_level = scale_and_color.get(stress_level_color, "No score")
+
+        note_text = self.db_handler.get_note(self.user_name, date.date())
+        if note_text == "(Max 300 characters)\n":  # Remove if this gets fixed in scale.
+            note_text = "No note"
 
         self.notes_canvas.create_text(
             110,
@@ -407,7 +420,7 @@ class History:
         str_day = date.strftime("%d").lstrip("0")
         str_month = date.strftime("%m").lstrip("0")
         str_year = date.strftime("%Y")
-        date_text = "Date:   " + str_day + "/" + str_month + " - " + str_year
+        date_text = "Date:  " + str_day + "/" + str_month + " - " + str_year
 
         self.notes_canvas.create_text(
             110,
@@ -418,7 +431,7 @@ class History:
             fill="#AFB5D6",
         )
 
-        stress_level_text = f"Stress level:   {stress_level}"
+        stress_level_text = f"Stress level:  {stress_level}"
 
         self.notes_canvas.create_text(
             110,
