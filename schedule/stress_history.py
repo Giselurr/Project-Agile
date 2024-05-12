@@ -179,7 +179,77 @@ class History:
             )  # Remove "* 61" in text to remove lines.
 
     def draw_barchart(self):
-        stress_levels = [6, 9, 4, 7, 3, 5, 1]
+        color_and_scale = {
+            "#BE0808": 10,
+            "#922D05": 9,
+            "#A83304": 8,
+            "#C55206": 7,
+            "#E75E04": 6,
+            "#F77119": 5,
+            "#F88A41": 4,
+            "#F79757": 3,
+            "#F9BB93": 2,
+            "#F8D5BE": 1,
+        }
+
+        stress_levels = []
+
+        stress_levels.append(
+            color_and_scale.get(
+                self.db_handler.get_stress_level(
+                    self.user_name, self.monday_date.date()
+                ),
+                0,
+            )
+        )
+        stress_levels.append(
+            color_and_scale.get(
+                self.db_handler.get_stress_level(
+                    self.user_name, self.tuesday_date.date()
+                ),
+                0,
+            )
+        )
+        stress_levels.append(
+            color_and_scale.get(
+                self.db_handler.get_stress_level(
+                    self.user_name, self.wednesday_date.date()
+                ),
+                0,
+            )
+        )
+        stress_levels.append(
+            color_and_scale.get(
+                self.db_handler.get_stress_level(
+                    self.user_name, self.thursday_date.date()
+                ),
+                0,
+            )
+        )
+        stress_levels.append(
+            color_and_scale.get(
+                self.db_handler.get_stress_level(
+                    self.user_name, self.friday_date.date()
+                ),
+                0,
+            )
+        )
+        stress_levels.append(
+            color_and_scale.get(
+                self.db_handler.get_stress_level(
+                    self.user_name, self.saturday_date.date()
+                ),
+                0,
+            )
+        )
+        stress_levels.append(
+            color_and_scale.get(
+                self.db_handler.get_stress_level(
+                    self.user_name, self.sunday_date.date()
+                ),
+                0,
+            )
+        )
 
         bar_height = 44
         bar_width = 40
@@ -187,18 +257,8 @@ class History:
         left_gap = 120
         bottom_gap = 75
 
-        scale_and_color = {
-            10: "#BE0808",
-            9: "#922D05",
-            8: "#A83304",
-            7: "#C55206",
-            6: "#E75E04",
-            5: "#F77119",
-            4: "#F88A41",
-            3: "#F79757",
-            2: "#F9BB93",
-            1: "#F8D5BE",
-        }
+        # Inverted version of the color_and_scale dict.
+        scale_and_color = dict([(value, key) for key, value in color_and_scale.items()])
 
         for x, y in enumerate(stress_levels):
             x0 = x * (bar_gap + bar_width) + left_gap
