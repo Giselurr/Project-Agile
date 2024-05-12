@@ -7,6 +7,7 @@ from tkinter import (
     Frame,
     Label,
     PhotoImage,
+    Radiobutton,
     Spinbox,
     StringVar,
     Tk,
@@ -185,14 +186,37 @@ class DailyScheduele:
         stop_minute.place(x=520, y=50)
         Label(
             add_task_frame,
-            text="Add task: ",
+            text="Choose Break or Task:",
             bg="#040B20",
             fg="#FFFFFF",
             font=("Arial", 14),
         ).place(x=20, y=100)
+        breathe_task = StringVar(value="BREATHE")
+        Radiobutton(
+            add_task_frame,
+            variable=breathe_task,
+            value="BREATHE",
+            text="Add break",
+            activebackground="#040B20",  # Not a perfect solution, but still better.
+            highlightthickness=0,
+            font=("Arial", 12),
+            bg="#040B20",
+            fg="red",
+        ).place(x=20, y=142)
+        Radiobutton(
+            add_task_frame,
+            variable=breathe_task,
+            value="TASK",
+            text="Add task: ",
+            activebackground="#040B20",  # Not a perfect solution, but still better.
+            highlightthickness=0,
+            font=("Arial", 12),
+            bg="#040B20",
+            fg="red",
+        ).place(x=190, y=142)
         task = StringVar()
-        Entry(add_task_frame, textvariable=task, font=("Arial", 16), width=39).place(
-            x=120, y=100
+        Entry(add_task_frame, textvariable=task, font=("Arial", 16), width=25).place(
+            x=290, y=140
         )
         Button(
             add_task_frame,
@@ -206,7 +230,7 @@ class DailyScheduele:
                 self, add_task_frame, "SCHEDULE", self.user_name, None
             ),
             pady=0,
-        ).place(x=180, y=150)
+        ).place(x=180, y=200)
         Button(
             add_task_frame,
             image=self.save_img,
@@ -216,16 +240,32 @@ class DailyScheduele:
             bd=0,
             padx=0,
             command=lambda: self.save_task(
-                add_task_frame, start_hour, start_minute, stop_hour, stop_minute, task
+                add_task_frame,
+                start_hour,
+                start_minute,
+                stop_hour,
+                stop_minute,
+                task,
+                breathe_task,
             ),
             pady=0,
-        ).place(x=320, y=150)
+        ).place(x=320, y=200)
 
-    def save_task(self, frame, start_hour, start_minute, stop_hour, stop_minute, task):
+    def save_task(
+        self,
+        frame,
+        start_hour,
+        start_minute,
+        stop_hour,
+        stop_minute,
+        task,
+        breathe_task,
+    ):
         start_hour = int(start_hour.get())
         start_minute = int(start_minute.get())
         stop_hour = int(stop_hour.get())
         stop_minute = int(stop_minute.get())
+        breathe_task = breathe_task.get()
 
         start = datetime.now().replace(
             hour=start_hour, minute=start_minute, second=0, microsecond=0
@@ -233,9 +273,13 @@ class DailyScheduele:
         stop = datetime.now().replace(
             hour=stop_hour, minute=stop_minute, second=0, microsecond=0
         )
-        task = task.get()
 
-        success = self.db_handler.add_task(self.user_name, start, stop, task)
+        if breathe_task == "BREATHE":
+            task = "BREATHE"
+            success = self.db_handler.add_task(self.user_name, start, stop, task)
+        else:
+            task = task.get()
+            success = self.db_handler.add_task(self.user_name, start, stop, task)
 
         if success:
             messagebox.showinfo("Success", f"Successfully saved your task. {start}")
@@ -252,6 +296,6 @@ class DailyScheduele:
 
 if __name__ == "__main__":
     main_window = Tk()
-    d_s = DailyScheduele(main_window, "Pernilla", datetime.now)
-    d_s.daily_schedule_gui()
+    d_s = DailyScheduele(main_window, "Pernilla", datetime.now, None)
+    d_s.add_task()
     main_window.mainloop()

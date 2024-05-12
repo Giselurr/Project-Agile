@@ -18,7 +18,11 @@ class User:
         self.window = window
         self.window.title("Breathe")
         self.window.iconbitmap("account\images\Breathe_icon.ico")
-        self.reminder_obj = reminder.Reminder(self.user_name)
+        self.user_frame = Frame(self.window, bg="#040B20")
+        self.user_frame.pack()
+        self.reminder_obj = reminder.Reminder(
+            window, self.user_frame, self.user_name, reminder.Reminder
+        )
         threading.Thread(
             target=self.reminder_obj.checks_for_reminders, daemon=True
         ).start()
@@ -37,23 +41,21 @@ class User:
             history_img = PhotoImage(file="account\images/history.png")
             sign_out_img = PhotoImage(file="account\images\sign_out.png")
             user_settings_img = PhotoImage(file="account\images/user_settings.png")
-            user_frame = Frame(self.window)
-            user_frame.configure(bg="#040B20")
             left_buttons = Frame(self.window, bg="#FFFFFF")
             Label(
-                user_frame,
+                self.user_frame,
                 text="Welcome " + self.user_name + "!",
                 bg="#040B20",
                 fg="#FFFFFF",
                 font=("Arial", 20),
             ).grid(row=0, column=0)
-            Label(user_frame, image=background, border=0).grid(row=1, column=0)
+            Label(self.user_frame, image=background, border=0).grid(row=1, column=0)
             Button(
                 left_buttons,
                 image=sign_out_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: self.sign_out(user_frame, left_buttons),
+                command=lambda: self.sign_out(self.user_frame, left_buttons),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -65,7 +67,7 @@ class User:
                 activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect_to_user_settings(
-                    user_frame, left_buttons
+                    self.user_frame, left_buttons
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -73,14 +75,14 @@ class User:
                 pady=0,
             ).pack()
             left_buttons.place(x=1, y=50)
-            Label(user_frame, image=background, border=0).grid(row=1, column=0)
+            Label(self.user_frame, image=background, border=0).grid(row=1, column=0)
             Button(
-                user_frame,
+                self.user_frame,
                 image=breathe_img,
                 activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect_to_main(
-                    user_frame, "BREATHE", left_buttons
+                    self.user_frame, "BREATHE", left_buttons
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -88,12 +90,12 @@ class User:
                 pady=0,
             ).place(x=70, y=60)
             Button(
-                user_frame,
+                self.user_frame,
                 image=scheduel_img,
                 activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect_to_main(
-                    user_frame, "SCHEDULE", left_buttons
+                    self.user_frame, "SCHEDULE", left_buttons
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -101,26 +103,26 @@ class User:
                 pady=0,
             ).place(x=82, y=360)
             Button(
-                user_frame,
+                self.user_frame,
                 image=stresslevel_img,
                 activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect_to_main(
-                    user_frame, "STRESS_LEVEL", left_buttons
+                    self.user_frame, "STRESS_LEVEL", left_buttons
                 ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
                 pady=0,
             ).place(x=221, y=360)
-            Label(user_frame, bg="#040B20", text="").grid(row=6)
+            Label(self.user_frame, bg="#040B20", text="").grid(row=6)
             Button(
-                user_frame,
+                self.user_frame,
                 image=calendar_img,
                 activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect_to_main(
-                    user_frame, "CALENDAR", left_buttons
+                    self.user_frame, "CALENDAR", left_buttons
                 ),
                 highlightthickness=0,
                 bd=0,
@@ -128,36 +130,41 @@ class User:
                 pady=0,
             ).place(x=82, y=500)
             Button(
-                user_frame,
+                self.user_frame,
                 image=history_img,
                 activebackground="#040B20",
                 borderwidth=0,
                 command=lambda: self.redirect_to_main(
-                    user_frame, "STRESS_HISTORY", left_buttons
+                    self.user_frame, "STRESS_HISTORY", left_buttons
                 ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
                 pady=0,
             ).place(x=221, y=500)
-            user_frame.pack()
+            self.user_frame.pack()
         else:
-            user_frame = Frame(self.window, bg="#040B20")
-            Label(user_frame, bg="#040B20", text="").grid(row=0)
+            self.user_frame = Frame(self.window, bg="#040B20")
+            Label(self.user_frame, bg="#040B20", text="").grid(row=0)
             Label(
-                user_frame,
+                self.user_frame,
                 text="Please go back and login to your accout ",
                 bg="#AFB5D6",
                 fg="#040B20",
                 font=("Arial", 18),
             ).grid(row=1, column=0, columnspan=4)
-            user_frame.pack()
+            self.user_frame.pack()
         self.window.mainloop()
 
     def redirect_to_main(self, user_frame, choise, left_buttons):
         left_buttons.destroy()
         main.Main.manager_menu_choice(
-            self, user_frame, choise, self.user_name, datetime.now(), self.reminder_obj
+            self,
+            self.user_frame,
+            choise,
+            self.user_name,
+            datetime.now(),
+            self.reminder_obj,
         )
 
     def sign_out(self, user_frame, left_buttons):
@@ -182,7 +189,7 @@ class User:
             image=self.no_img,
             activebackground="#040B20",
             borderwidth=0,
-            command=lambda: self.return_to_user_page(user_frame, True),
+            command=lambda: self.return_to_user_page(self.user_frame, True),
             highlightthickness=0,
             bd=0,
             padx=0,
@@ -193,7 +200,9 @@ class User:
             image=self.yes_img,
             activebackground="#040B20",
             borderwidth=0,
-            command=lambda: self.return_to_main_page(user_frame, left_buttons, True),
+            command=lambda: self.return_to_main_page(
+                self.user_frame, left_buttons, True
+            ),
             highlightthickness=0,
             bd=0,
             padx=0,

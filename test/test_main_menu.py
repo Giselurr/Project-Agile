@@ -11,7 +11,6 @@ class TestMainMenu(unittest.TestCase):
 
     def setUp(self):
         self.mock_window = MagicMock()
-        self.mock_user_frame = MagicMock()
         self.main_menu = main_menu.MainMenu(self.mock_window)
         self.main_menu.window = MagicMock()
 

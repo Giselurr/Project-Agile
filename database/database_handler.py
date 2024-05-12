@@ -82,7 +82,7 @@ class DatabaseHandler:
     def get_daily_schedule(self, user_name):
         """Checks and retreives the daily schedule for a user."""
         query = (
-            "SELECT start_time, stop_time, task FROM daily_schedule"
+            "SELECT start_time, stop_time, task FROM daily_schedule "
             "WHERE user_user_name = %s"
         )
         values = (user_name,)

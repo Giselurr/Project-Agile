@@ -20,7 +20,7 @@ from database import database_connection, database_handler
 class Scale:
     """This class will handle the user GUI whe he/she is not logged in."""
 
-    def __init__(self, window, user_name, date):
+    def __init__(self, window, user_name, date, reminder):
         """Initiate the window."""
         self.window = window
         self.user = user_name
@@ -29,6 +29,7 @@ class Scale:
         self.database = database_connection.DatabaseConnection()
         self.window.title("Breathe")
         self.window.iconbitmap("schedule\images\Breathe_icon.ico")
+        self.reminder = reminder
 
     def scale_gui(self):
         """User interface with scale."""
@@ -131,7 +132,7 @@ class Scale:
             borderwidth=0,
             highlightthickness=0,
             activebackground="#040B20",
-            command=lambda: self.return_to_user_page(scale_frame, False),
+            command=lambda: self.return_to_user_page(scale_frame, False, self.reminder),
         ).grid(row=7, column=0, columnspan=10, pady=40, sticky="W")
 
         scale_frame.pack()
@@ -142,7 +143,7 @@ class Scale:
         if close_popup:
             self.top.destroy()
         main.Main.manager_menu_choice(
-            self, scale_frame, "USER_MENU", self.user, self.date
+            self, scale_frame, "USER_MENU", self.user, self.date, self.reminder
         )
 
     def check_entry(

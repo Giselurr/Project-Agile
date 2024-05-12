@@ -35,8 +35,10 @@ class Main:
             user_redirect = user.User(True, user_name, self.window)
             user_redirect.user_gui()
         elif menu_choice == "BREATHE":
-            breath_redirect = boxbreathing.DisplayExercise(self.window, user_name)
-            breath_redirect.display_imagery()
+            breath_redirect = boxbreathing.DisplayExercise(
+                self.window, user_name, reminder
+            )
+            (breath_redirect.display_imagery(),)
         elif menu_choice == "SCHEDULE":
             schedule = daily_schedule.DailyScheduele(
                 self.window, user_name, date, reminder
@@ -44,7 +46,7 @@ class Main:
             schedule.daily_schedule_gui()
             # print("SCHEDULE")
         elif menu_choice == "STRESS_LEVEL":
-            stress_level_redirect = scale.Scale(self.window, user_name, date)
+            stress_level_redirect = scale.Scale(self.window, user_name, date, reminder)
             stress_level_redirect.scale_gui()
         elif menu_choice == "CALENDAR":
             # Redirect to calendar.
