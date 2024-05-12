@@ -8,7 +8,11 @@ from database import database_handler
 
 
 class History:
+    """The class handeles the creation and functionality
+    of the barchart and notes page."""
+
     def __init__(self, window, user_name):
+        """Init the history class"""
         self.user_name = user_name
         self.db_handler = database_handler.DatabaseHandler()
         self.window = window
@@ -34,6 +38,7 @@ class History:
         self.sunday_date = None
 
     def calculate_current_week(self):
+        """Calculates the dates of the current week."""
         self.monday_date = self.current_date
         self.monday_date -= timedelta(days=self.current_date.isoweekday() - 1)
 
@@ -52,6 +57,7 @@ class History:
         self.sunday_date += timedelta(days=6)
 
     def calculate_next_week(self):
+        """Calculates the dates for the next week."""
         self.monday_date += timedelta(days=7)
         self.tuesday_date += timedelta(days=7)
         self.wednesday_date += timedelta(days=7)
@@ -61,6 +67,7 @@ class History:
         self.sunday_date += timedelta(days=7)
 
     def calculate_previous_week(self):
+        """Calculates the dates for the previous week."""
         self.monday_date -= timedelta(days=7)
         self.tuesday_date -= timedelta(days=7)
         self.wednesday_date -= timedelta(days=7)
@@ -70,6 +77,7 @@ class History:
         self.sunday_date -= timedelta(days=7)
 
     def change_week(self, change, page):
+        """Changes the weeks in the barchart or notes."""
         self.barchart_canvas.delete("all")
         self.notes_canvas.delete("all")
 
@@ -87,6 +95,7 @@ class History:
                 self.draw_notes_page(False)
 
     def draw_buttons(self):
+        """Draws all the buttons on the barchart page."""
         next_img = ImageTk.PhotoImage(Image.open("schedule\images\Right_arrow.png"))
         previous_img = ImageTk.PhotoImage(Image.open("schedule\images\Left_arrow.png"))
         return_img = ImageTk.PhotoImage(Image.open("schedule\images\Return.png"))
@@ -140,6 +149,7 @@ class History:
         self.window.mainloop()
 
     def draw_current_week_text(self):
+        """Draws the text for the current week."""
         text = f"Week of {self.monday_date.strftime('%B %d, %Y')}"
 
         self.barchart_canvas.create_text(
@@ -151,6 +161,7 @@ class History:
         )
 
     def draw_day_text(self):
+        """Draws the text for the days under the barchart."""
         days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
         for i, day in enumerate(days):
@@ -163,6 +174,7 @@ class History:
             )
 
     def draw_scale_text(self):
+        """Draws the text for the scale and lines in the barchart."""
         x = 90
         for i, number in enumerate(range(1, 11), start=0):
             y = 592 - i * 44
@@ -179,6 +191,7 @@ class History:
             )  # Remove "* 61" in text to remove lines.
 
     def draw_barchart(self):
+        """Draws the barchart."""
         color_and_scale = {
             "#BE0808": 10,
             "#922D05": 9,
@@ -271,6 +284,7 @@ class History:
             self.barchart_canvas.create_rectangle(x0, y0, x1, y1, fill=color)
 
     def draw_notes_dates(self):
+        """Draws the dates in the note page."""
         dates_for_days = [
             self.monday_date,
             self.tuesday_date,
@@ -296,6 +310,7 @@ class History:
             )
 
     def draw_notes_buttons(self, draw_note_frame):
+        """Draws the buttons and images in the note page."""
         return_img = ImageTk.PhotoImage(Image.open("schedule\images\Return.png"))
         next_img = ImageTk.PhotoImage(Image.open("schedule\images\Right_arrow.png"))
         previous_img = ImageTk.PhotoImage(Image.open("schedule\images\Left_arrow.png"))
@@ -432,6 +447,7 @@ class History:
         self.window.mainloop()
 
     def draw_note_text(self, date):
+        """Draws all the text in the note, including stress level and date."""
         # Border around the text is located in draw_notes_buttons since
         # all custom images have to be in mainloop.
         self.notes_canvas.delete("all")
@@ -495,6 +511,7 @@ class History:
         self.draw_notes_page(True)
 
     def draw_click_button_text(self):
+        """Draws the text that prompts the user to press a button."""
         self.notes_canvas.create_text(
             320,
             375,
@@ -504,25 +521,27 @@ class History:
         )
 
     def return_to_barchart(self):
+        """Closes the notes page and draws redirects to the barchart page."""
         self.notes_canvas.delete("all")
         self.notes_canvas.pack_forget()
         self.barchart_canvas.pack()
         self.draw_stress_history()
 
     def prepare_notes_page(self):
+        """Prepares the notes page for when it is drawn from the barchart page."""
         self.barchart_canvas.pack_forget()
         self.notes_canvas.pack()
         self.draw_notes_page(False)
 
     def draw_notes_page(self, draw_frame):
-        """Stops showing the barchart page and creates and shows the notes page."""
+        """Draws the note page."""
         self.draw_notes_dates()
         if not draw_frame:
             self.draw_click_button_text()
         self.draw_notes_buttons(draw_frame)
 
     def draw_stress_history(self):
-        """Displays the barchart page."""
+        """Draws the barchart page."""
         if self.current_date == datetime.now():
             self.calculate_current_week()
         self.draw_scale_text()
