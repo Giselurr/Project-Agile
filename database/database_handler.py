@@ -47,7 +47,6 @@ class DatabaseHandler:
         try:
             curser.execute(query, values)
             result = curser.fetchall()
-            print(result)
             for calender_id, db_date in result:
                 db_dates = db_date.strftime("%Y-%m-%d")
                 if db_dates == new_date:
