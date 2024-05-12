@@ -69,16 +69,6 @@ class History:
         self.saturday_date -= timedelta(days=7)
         self.sunday_date -= timedelta(days=7)
 
-    def temp_print_dates_for_testing(self):
-        print(self.monday_date)
-        print(self.tuesday_date)
-        print(self.wednesday_date)
-        print(self.thursday_date)
-        print(self.friday_date)
-        print(self.saturday_date)
-        print(self.sunday_date)
-        print()
-
     def change_week(self, change, page):
         self.barchart_canvas.delete("all")
         self.notes_canvas.delete("all")
