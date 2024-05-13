@@ -107,7 +107,7 @@ class User:
                 image=calendar_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: self.redirect("view your calender", user_frame),
+                command=lambda: self.redirect_to_calendar(user_frame),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -155,6 +155,12 @@ class User:
     def redirect_to_scale(self, user_frame):
         main.Main.manager_menu_choice(
             self, user_frame, "STRESS_LEVEL", self.user_name, datetime.now()
+        )
+
+    def redirect_to_calendar(self, user_frame):
+        date = datetime.now().strftime("%Y-%m-%d")
+        main.Main(self.window).manager_menu_choice(
+            user_frame, "CALENDAR", self.user_name, date
         )
 
     def sign_out(self, user_frame, left_buttons):

@@ -6,7 +6,7 @@ from tkinter import Tk
 from account import login, main_menu, register, settings, user
 
 # from breathing import boxbreathing
-from schedule import scale  # calander, clock, dailynote,
+from schedule import calendar, scale  # calander, clock, dailynote,
 
 
 class Main:
@@ -50,13 +50,17 @@ class Main:
         elif menu_choice == "SCHEDULE":
             # Redirect to schedule.
             print("SCHEDULE")
+
         elif menu_choice == "STRESS_LEVEL":
             frame.pack_forget()
             stress_level_redirect = scale.Scale(self.window, user_name, date)
             stress_level_redirect.scale_gui()
+
         elif menu_choice == "CALENDAR":
-            # Redirect to calendar.
-            print("CALENDAR")
+            frame.pack_forget()
+            calendar_redirect = calendar.CalendarInt(self.window, user_name, date)
+            calendar_redirect.calendar_gui()
+
         elif menu_choice == "STRESS_HISTORY":
             # Redirect to stress history.
             print("STRESS_HISTORY")
