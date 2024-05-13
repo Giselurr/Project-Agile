@@ -86,6 +86,7 @@ class DailyScheduele:
             for i, (start, stop, task) in enumerate(self.events):
                 start_time = start.time()
                 stop_time = stop.time()
+                self.reminder_obj.add_tasks(start, task)
                 Label(
                     schedule_frame,
                     text=start_time.strftime("%H:%M"),
@@ -282,7 +283,7 @@ class DailyScheduele:
             success = self.db_handler.add_task(self.user_name, start, stop, task)
 
         if success:
-            messagebox.showinfo("Success", f"Successfully saved your task. {start}")
+            messagebox.showinfo("Success", "Successfully saved your task.")
 
             self.reminder_obj.add_tasks(start, task)
             main.Main.manager_menu_choice(

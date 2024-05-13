@@ -20,7 +20,11 @@ class Reminder:
     def add_tasks(self, start, task):
         """Adds tasks to to the task list."""
         with self.lock:
-            self.tasks.append((start, task))
+            if (
+                start,
+                task,
+            ) not in self.tasks and start.time() >= datetime.now().time():
+                self.tasks.append((start, task))
 
     def checks_for_reminders(self):
         while True:
