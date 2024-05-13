@@ -218,6 +218,7 @@ class TestHistory(unittest.TestCase):
     ):
         """Test draw_stress_history with current date being datetime.now()"""
         history = stress_history.History(self.mock_user, self.mock_window)
+        history.current_date = datetime.now()
         history.draw_stress_history()
 
         mock_draw_buttons.assert_called_once()
