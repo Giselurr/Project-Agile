@@ -5,7 +5,7 @@ from tkinter import Tk
 
 from account import login, main_menu, register, settings, user
 from breathing import boxbreathing
-from schedule import scale  # calander, clock, dailynote,
+from schedule import scale, stress_history  # calander, clock, dailynote,
 
 
 class Main:
@@ -49,9 +49,8 @@ class Main:
             # Add name or date in user_menu if needed.
             print("CALENDAR")
         elif menu_choice == "STRESS_HISTORY":
-            # Redirect to stress history.
-            # Add name or date in user_menu if needed.
-            print("STRESS_HISTORY")
+            stress_history_redirect = stress_history.History(self.window, user_name)
+            stress_history_redirect.draw_stress_history()
         elif menu_choice == "USER_SETTINGS":
             user_settings_redirect = settings.UserSettings(True, user_name, self.window)
             user_settings_redirect.user_setting_gui()
