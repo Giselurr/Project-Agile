@@ -72,7 +72,7 @@ class CalendarInt:
         ).days
 
     def return_to_user_page(self):
-        self.window.destroy()  # Close current window
+        self.calendar_frame.destroy()  # Close current window
         main.Main.manager_menu_choice(
             self, self.calendar_frame, "USER_MENU", self.user, self.date
         )
