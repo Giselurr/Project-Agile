@@ -7,7 +7,8 @@ import main
 
 
 class Reminder:
-    """This class will hold the reminder for the user."""
+    """This class will hold the reminder for the user. Adds tasks
+    to a list and keep track of the reminders when they are going to remind the user."""
 
     def __init__(self, window, frame, username, reminder_obj):
         self.window = window
@@ -18,7 +19,8 @@ class Reminder:
         self.reminder_obj = reminder_obj
 
     def add_tasks(self, start, task):
-        """Adds tasks to to the task list."""
+        """Adds tasks to to the task list.
+        If it isnt already in the list."""
         with self.lock:
             if (
                 start,
@@ -27,6 +29,9 @@ class Reminder:
                 self.tasks.append((start, task))
 
     def checks_for_reminders(self):
+        """Checks continously (every minute) if the time is the same as the starttime.
+        It also checks if the task is to take a BREATHE it redirects the user to the
+        breating page."""
         while True:
             now = datetime.now()
             with self.lock:
@@ -48,4 +53,4 @@ class Reminder:
                         else:
                             messagebox.showinfo("REMINDER!", f"{task}")
                             self.tasks.remove((start, task))
-            time.sleep(10)
+            time.sleep(60)

@@ -42,6 +42,7 @@ class DailyScheduele:
         self.reminder_obj = reminder
 
     def daily_schedule_gui(self):
+        """The GUI for the daily schedule."""
         self.return_img = PhotoImage(file="schedule\images\\return_small_light.png")
         self.save_img = PhotoImage(file="schedule\images\Save.png")
         Label(
@@ -141,6 +142,7 @@ class DailyScheduele:
         ).pack()
 
     def add_task(self):
+        """This is a GUI for the user to add a task."""
         self.calendar_frame.pack_forget()
         add_task_frame = Frame(self.window, bg="#040B20")
         add_task_frame.pack(fill="both", expand=True, padx=10, pady=10)
@@ -262,6 +264,7 @@ class DailyScheduele:
         task,
         breathe_task,
     ):
+        """This saves all the tasks to the db."""
         start_hour = int(start_hour.get())
         start_minute = int(start_minute.get())
         stop_hour = int(stop_hour.get())
