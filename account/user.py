@@ -125,7 +125,9 @@ class User:
                 image=calendar_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: self.redirect_to_calendar(self.user_frame),
+                command=lambda: self.redirect_to_calendar(
+                    self.user_frame, left_buttons
+                ),
                 highlightthickness=0,
                 bd=0,
                 padx=0,
@@ -169,10 +171,11 @@ class User:
             self.reminder_obj,
         )
 
-    def redirect_to_calendar(self, user_frame):
+    def redirect_to_calendar(self, user_frame, left_buttons):
+        left_buttons.destroy()
         date = datetime.now().strftime("%Y-%m-%d")
         main.Main(self.window).manager_menu_choice(
-            user_frame, "CALENDAR", self.user_name, date
+            user_frame, "CALENDAR", self.user_name, date, self.reminder_obj
         )
 
     def sign_out(self, user_frame, left_buttons):
@@ -221,20 +224,24 @@ class User:
         """Button action for return to the user page."""
         if close_popup:
             self.top.destroy()
-        main.Main.manager_menu_choice(self, frame, "USER_MENU", self.user_name, None)
+        main.Main.manager_menu_choice(
+            self, frame, "USER_MENU", self.user_name, None, self.reminder_obj
+        )
 
     def return_to_main_page(self, frame, left_buttons, close_popup):
         """Return to the main menu."""
         left_buttons.place_forget()
         if close_popup:
             self.top.destroy()
-        main.Main.manager_menu_choice(self, frame, "MAIN_MENU", self.user_name, None)
+        main.Main.manager_menu_choice(
+            self, frame, "MAIN_MENU", self.user_name, None, self.reminder_obj
+        )
 
     def redirect_to_user_settings(self, frame, left_buttons):
         """Redirects to the user settings page."""
         left_buttons.place_forget()
         main.Main.manager_menu_choice(
-            self, frame, "USER_SETTINGS", self.user_name, None
+            self, frame, "USER_SETTINGS", self.user_name, None, self.reminder_obj
         )
 
 

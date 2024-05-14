@@ -5,13 +5,14 @@ import main
 
 
 class CalendarInt:
-    def __init__(self, window, user_name, date):
+    def __init__(self, window, user_name, date, reminder):
         self.window = window
         self.user = user_name
         self.date = datetime.datetime.strptime(date, "%Y-%m-%d")
         self.window.title("Breathe")
         self.window.iconbitmap("schedule\images\Breathe_icon.ico")
         self.calendar_frame = None
+        self.reminder = reminder
 
     def calendar_gui(self):
         self.calendar_frame = Frame(self.window)
@@ -74,7 +75,7 @@ class CalendarInt:
     def return_to_user_page(self):
         self.calendar_frame.destroy()  # Close current window
         main.Main.manager_menu_choice(
-            self, self.calendar_frame, "USER_MENU", self.user, self.date
+            self, self.calendar_frame, "USER_MENU", self.user, self.date, self.reminder
         )
 
     def select_day(self, day):

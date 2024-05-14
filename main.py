@@ -5,8 +5,12 @@ from tkinter import Tk
 
 from account import login, main_menu, register, settings, user
 from breathing import boxbreathing
-
-from schedule import daily_schedule, scale, calendar  # calander, clock, dailynote
+from schedule import (
+    calendar,
+    daily_schedule,
+    scale,
+    stress_history,
+)
 
 
 class Main:
@@ -51,11 +55,11 @@ class Main:
             stress_level_redirect.scale_gui()
 
         elif menu_choice == "CALENDAR":
-
             frame.pack_forget()
-            calendar_redirect = calendar.CalendarInt(self.window, user_name, date, reminder)
+            calendar_redirect = calendar.CalendarInt(
+                self.window, user_name, date, reminder
+            )
             calendar_redirect.calendar_gui()
-
 
         elif menu_choice == "STRESS_HISTORY":
             stress_history_redirect = stress_history.History(self.window, user_name)
