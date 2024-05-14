@@ -11,7 +11,7 @@ class History:
     """The class handeles the creation and functionality
     of the barchart and notes page."""
 
-    def __init__(self, window, user_name):
+    def __init__(self, window, user_name, reminder):
         """Init the history class"""
         self.user_name = user_name
         self.db_handler = database_handler.DatabaseHandler()
@@ -36,6 +36,7 @@ class History:
         self.friday_date = None
         self.saturday_date = None
         self.sunday_date = None
+        self.reminder = reminder
 
     def calculate_current_week(self):
         """Calculates the dates of the current week."""
@@ -127,7 +128,12 @@ class History:
             image=return_img,
             activebackground="#040B20",
             command=lambda: main.Main.manager_menu_choice(
-                self, self.barchart_canvas, "USER_MENU", self.user_name, None
+                self,
+                self.barchart_canvas,
+                "USER_MENU",
+                self.user_name,
+                None,
+                self.reminder,
             ),
             borderwidth=0,
             highlightthickness=0,

@@ -62,7 +62,9 @@ class Main:
             calendar_redirect.calendar_gui()
 
         elif menu_choice == "STRESS_HISTORY":
-            stress_history_redirect = stress_history.History(self.window, user_name)
+            stress_history_redirect = stress_history.History(
+                self.window, user_name, reminder
+            )
             stress_history_redirect.draw_stress_history()
         elif menu_choice == "USER_SETTINGS":
             user_settings_redirect = settings.UserSettings(True, user_name, self.window)

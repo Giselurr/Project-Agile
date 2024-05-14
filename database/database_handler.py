@@ -122,3 +122,29 @@ class DatabaseHandler:
 
         finally:
             curser.close()
+
+    def get_stress_level(self, user_name, date):
+        """Retreives the stress level from the database."""
+        query = "SELECT stress_level FROM stress_calender \
+        WHERE user_user_name = %s AND date = %s"
+        values = (user_name, date)
+        curser = self.db.connect()
+        try:
+            curser.execute(query, values)
+            result = curser.fetchone()
+            return result[0] if result else 0
+        finally:
+            curser.close()
+
+    def get_note(self, user_name, date):
+        """Retreives the note from the database."""
+        query = "SELECT note FROM stress_calender \
+        WHERE user_user_name = %s AND date = %s"
+        values = (user_name, date)
+        curser = self.db.connect()
+        try:
+            curser.execute(query, values)
+            result = curser.fetchone()
+            return result[0] if result else "No note"
+        finally:
+            curser.close()
