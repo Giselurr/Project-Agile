@@ -230,7 +230,12 @@ class DailyScheduele:
             bd=0,
             padx=0,
             command=lambda: main.Main.manager_menu_choice(
-                self, add_task_frame, "SCHEDULE", self.user_name, None
+                self,
+                add_task_frame,
+                "SCHEDULE",
+                self.user_name,
+                None,
+                self.reminder_obj,
             ),
             pady=0,
         ).place(x=180, y=200)
@@ -277,24 +282,28 @@ class DailyScheduele:
         stop = datetime.now().replace(
             hour=stop_hour, minute=stop_minute, second=0, microsecond=0
         )
+        if datetime.now() <= start:
+            if breathe_task == "BREATHE":
+                task = "BREATHE"
+                success = self.db_handler.add_task(self.user_name, start, stop, task)
+            else:
+                task = task.get()
+                success = self.db_handler.add_task(self.user_name, start, stop, task)
 
-        if breathe_task == "BREATHE":
-            task = "BREATHE"
-            success = self.db_handler.add_task(self.user_name, start, stop, task)
-        else:
-            task = task.get()
-            success = self.db_handler.add_task(self.user_name, start, stop, task)
+            if success:
+                messagebox.showinfo("Success", "Successfully saved your task.")
 
-        if success:
-            messagebox.showinfo("Success", "Successfully saved your task.")
-
-            self.reminder_obj.add_tasks(start, task)
-            main.Main.manager_menu_choice(
-                self, frame, "SCHEDULE", self.user_name, None, self.reminder_obj
-            )
+                self.reminder_obj.add_tasks(start, task)
+                main.Main.manager_menu_choice(
+                    self, frame, "SCHEDULE", self.user_name, None, self.reminder_obj
+                )
+            else:
+                messagebox.showinfo(
+                    "Error", "Your task has not been saved, please try again."
+                )
         else:
             messagebox.showinfo(
-                "Error", "Your task has not been saved, please try again"
+                "Error", "You can not put a time that has allready been."
             )
 
 
