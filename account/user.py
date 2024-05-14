@@ -16,6 +16,9 @@ class User:
         self.is_logged_in = logged_in
         self.user_name = user_name
         self.window = window
+        self.window.geometry("640x700")
+        self.window.resizable(height=True, width=False)
+        self.window.config(bg="#040B20")
         self.window.title("Breathe")
         self.window.iconbitmap("account\images\Breathe_icon.ico")
         self.user_frame = Frame(self.window, bg="#040B20")
@@ -32,6 +35,7 @@ class User:
         self.window.geometry("640x700")
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#040B20")
+        self.user_frame.config(width=640, height=700)
         if self.is_logged_in:
             background = PhotoImage(file="account\images\Background.png")
             breathe_img = PhotoImage(file="account\images/Breathe_Lungs_Icon.png")
@@ -121,9 +125,8 @@ class User:
                 image=calendar_img,
                 activebackground="#040B20",
                 borderwidth=0,
-
-                command=lambda: self.redirect_to_calendar(user_frame),
-ghtthickness=0,
+                command=lambda: self.redirect_to_calendar(self.user_frame),
+                highlightthickness=0,
                 bd=0,
                 padx=0,
                 pady=0,
