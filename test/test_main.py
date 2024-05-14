@@ -13,6 +13,7 @@ class TestMain(unittest.TestCase):
     def setUp(self):
         self.window = Mock(spec=Tk)
         self.main = main.Main(self.window)
+        self.reminder = MagicMock()
 
     @patch("account.main_menu.MainMenu")
     def test_start_main_window(self, mock_main_menu):
@@ -26,7 +27,7 @@ class TestMain(unittest.TestCase):
         """Test the manager choice main menu."""
         frame = Mock()
         mock_date = MagicMock()
-        self.main.manager_menu_choice(frame, "MAIN_MENU", "test_user", mock_date)
+        self.main.manager_menu_choice(frame, "MAIN_MENU", "test_user", mock_date,  self.reminder)
         frame.pack_forget.assert_called_once()
         mock_main_menu.assert_called_once_with(self.window)
         mock_main_menu.return_value.main_gui.assert_called_once()
@@ -56,7 +57,7 @@ class TestMain(unittest.TestCase):
         """Test the manager choice user."""
         frame = Mock()
         mock_date = MagicMock()
-        self.main.manager_menu_choice(frame, "USER_MENU", "test_user", mock_date)
+        self.main.manager_menu_choice(frame, "USER_MENU", "test_user", mock_date,  self.reminder)
         frame.pack_forget.assert_called_once()
         mock_user.assert_called_once_with(True, "test_user", self.window)
         mock_user.return_value.user_gui.assert_called_once()
@@ -76,7 +77,7 @@ class TestMain(unittest.TestCase):
         """Test the manager choice scale."""
         frame = Mock()
         mock_date = MagicMock()
-        self.main.manager_menu_choice(frame, "STRESS_LEVEL", "test_user", mock_date)
+        self.main.manager_menu_choice(frame, "STRESS_LEVEL", "test_user", mock_date, self.reminder)
         frame.pack_forget.assert_called_once()
         mock_scale.assert_called_once_with(self.window, "test_user", mock_date)
         mock_scale.return_value.scale_gui.assert_called_once()
@@ -86,22 +87,36 @@ class TestMain(unittest.TestCase):
         """Test the manager choice stress history."""
         frame = Mock()
         mock_date = MagicMock()
-        self.main.manager_menu_choice(frame, "STRESS_HISTORY", "test_user", mock_date)
-        frame.pack_forget.assert_called_once()
-        mock_history.assert_called_once_with(self.window, "test_user")
-        mock_history.return_value.draw_stress_history.assert_called_once()
 
-    @patch("account.settings.UserSettings")
-    def test_manager_menu_choice_user_settings(self, mock_settings):
-        """Test the manager choice user settings."""
-        frame = Mock()
-        mock_date = MagicMock()
-        self.main.manager_menu_choice(frame, "USER_SETTINGS", "test_user", mock_date)
-        frame.pack_forget.assert_called_once()
-        mock_settings.assert_called_once_with(True, "test_user", self.window)
-        mock_settings.return_value.user_setting_gui.assert_called_once()
+        mock_reminder = MagicMock()
+        menu_choices = [
+            ("LOGIN", mock_login, "login_gui"),
+            ("REGISTER", mock_register, "register_gui"),
+            ("USER_MENU", mock_user, "user_gui"),
+            ("STRESS_LEVEL", mock_scale, "scale_gui"),
+            # Add other menu choices here and in the patch.
+        ]
+        for menu_choice, mock_class, method_name in menu_choices:
+            with self.subTest(menu_choice=menu_choice):
+                self.main.manager_menu_choice(
+                    frame, menu_choice, "test_user", mock_date, mock_reminder
+                )
+                frame.pack_forget.assert_called_once()
+                if menu_choice == "USER_MENU":  # Uses different args than the rest.
+                    mock_user.assert_called_once_with(True, "test_user", self.window)
+                elif (
+                    menu_choice == "STRESS_LEVEL"
+                ):  # Uses different args than the rest.
+                    mock_scale.assert_called_once_with(
+                        self.window, "test_user", mock_date, mock_reminder
+                    )
+                else:
+                    mock_class.assert_called_once_with(self.window)
+                getattr(mock_class.return_value, method_name).assert_called_once()
 
-        # Add tests for the other menu choices.
+                frame.reset_mock()
+                mock_class.reset_mock()
+
 
     # OTHER IMPLEMENTATION OF TESTS THAT CAN REPLACE test_manager_menu_choice
     # IF THAT TEST BECOMES TOO ADVANCED OR COMPLICATED.

@@ -138,7 +138,7 @@ class Register:
                 finally:
                     self.cursor.close()
                     main.Main.manager_menu_choice(
-                        self, register_frame, "LOGIN", user_name, None
+                        self, register_frame, "LOGIN", user_name, None, None
                     )
             else:
                 Label(

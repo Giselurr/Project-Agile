@@ -5,7 +5,9 @@ from tkinter import Tk
 
 from account import login, main_menu, register, settings, user
 from breathing import boxbreathing
-from schedule import scale, stress_history  # calander, clock, dailynote,
+
+from schedule import daily_schedule, scale  # calander, clock, dailynote,
+
 
 
 class Main:
@@ -18,7 +20,7 @@ class Main:
         main_window = main_menu.MainMenu(self.window)
         main_window.main_gui()
 
-    def manager_menu_choice(self, frame, menu_choice, user_name, date):
+    def manager_menu_choice(self, frame, menu_choice, user_name, date, reminder):
         """Handles all the redirects and frame forgets for all windows."""
         if frame is not None:
             frame.pack_forget()
@@ -35,14 +37,18 @@ class Main:
             user_redirect = user.User(True, user_name, self.window)
             user_redirect.user_gui()
         elif menu_choice == "BREATHE":
-            breath_redirect = boxbreathing.DisplayExercise(self.window, user_name)
-            breath_redirect.display_imagery()
+            breath_redirect = boxbreathing.DisplayExercise(
+                self.window, user_name, reminder
+            )
+            (breath_redirect.display_imagery(),)
         elif menu_choice == "SCHEDULE":
-            # Redirect to schedule.
-            # Add name or date in user_menu if needed.
-            print("SCHEDULE")
+            schedule = daily_schedule.DailyScheduele(
+                self.window, user_name, date, reminder
+            )
+            schedule.daily_schedule_gui()
+            # print("SCHEDULE")
         elif menu_choice == "STRESS_LEVEL":
-            stress_level_redirect = scale.Scale(self.window, user_name, date)
+            stress_level_redirect = scale.Scale(self.window, user_name, date, reminder)
             stress_level_redirect.scale_gui()
         elif menu_choice == "CALENDAR":
             # Redirect to calendar.

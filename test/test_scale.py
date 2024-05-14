@@ -14,7 +14,10 @@ class TestScale(TestCase):
         self.scale_frame.pack()
         self.mock_user_name = MagicMock()
         self.mock_date = MagicMock()
-        self.reg = scale.Scale(self.root, self.mock_user_name, self.mock_date)
+        self.mock_remider = MagicMock()
+        self.reg = scale.Scale(
+            self.root, self.mock_user_name, self.mock_date, self.mock_remider
+        )
 
     def tearDown(self):
         self.scale_frame.destroy()
@@ -24,7 +27,9 @@ class TestScale(TestCase):
         """Test so that the class is being instanciated."""
         mock_window = MagicMock()
         mock_date = MagicMock()
-        ref = scale.Scale(mock_window, self.mock_user_name, mock_date)
+        ref = scale.Scale(
+            mock_window, self.mock_user_name, mock_date, self.mock_remider
+        )
         self.assertIsInstance(ref, scale.Scale)
 
     @patch("main.Main")

@@ -108,6 +108,7 @@ class TestRegister(unittest.TestCase):
         mock_check_username.return_value = True
         mock_check_password.return_value = True
         mock_check_user_name.return_value = False
+        mock_reminder = MagicMock()
 
         self.reg.register_user(
             mock_user, mock_user, mock_user, mock_user, self.register_frame

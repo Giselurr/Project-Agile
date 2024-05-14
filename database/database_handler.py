@@ -1,8 +1,10 @@
 """This modules handles mysql statements."""
 
+import datetime
+
 import bcrypt
 
-from database import database_connection
+import database.database_connection as database_connection
 
 
 class DatabaseHandler:
@@ -78,28 +80,45 @@ class DatabaseHandler:
         hashed = bcrypt.hashpw(password, salt)
         return hashed
 
-    def get_stress_level(self, user_name, date):
-        """Retreives the stress level from the database."""
-        query = "SELECT stress_level FROM stress_calender \
-        WHERE user_user_name = %s AND date = %s"
-        values = (user_name, date)
+    def get_daily_schedule(self, user_name):
+        """Checks and retreives the daily schedule for a user."""
+        query = (
+            "SELECT start_time, stop_time, task FROM daily_schedule "
+            "WHERE user_user_name = %s"
+        )
+        values = (user_name,)
         curser = self.db.connect()
+        self.events = []
         try:
             curser.execute(query, values)
-            result = curser.fetchone()
-            return result[0] if result else 0
+            result = curser.fetchall()
+            if result:
+                for start, stop, task in result:
+                    if start.date() == datetime.date.today():
+                        to_add = (start, stop, task)
+                        self.events.append(to_add)
+                return self.events
+            else:
+                self.events = [()]
+                return self.events
         finally:
             curser.close()
 
-    def get_note(self, user_name, date):
-        """Retreives the note from the database."""
-        query = "SELECT note FROM stress_calender \
-        WHERE user_user_name = %s AND date = %s"
-        values = (user_name, date)
+    def add_task(self, user_name, start, stop, task):
+        """Adds new tasks into the database."""
+        query = (
+            "INSERT INTO daily_schedule (user_user_name, start_time, stop_time, task)"
+            "VALUES (%s, %s, %s, %s)"
+        )
+        values = (user_name, start, stop, task)
         curser = self.db.connect()
         try:
             curser.execute(query, values)
-            result = curser.fetchone()
-            return result[0] if result else "No note"
+            if curser.rowcount == 1:
+                self.db.commit()
+                return True
+            else:
+                return False
+
         finally:
             curser.close()
