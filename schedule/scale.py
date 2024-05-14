@@ -132,7 +132,7 @@ class Scale:
             borderwidth=0,
             highlightthickness=0,
             activebackground="#040B20",
-            command=lambda: self.return_to_user_page(scale_frame, False, self.reminder),
+            command=lambda: self.return_to_user_page(scale_frame, False),
         ).grid(row=7, column=0, columnspan=10, pady=40, sticky="W")
 
         scale_frame.pack()
