@@ -20,7 +20,7 @@ from database import database_connection, database_handler
 class Scale:
     """This class will handle the user GUI whe he/she is not logged in."""
 
-    def __init__(self, window, user_name, date):
+    def __init__(self, window, user_name, date, reminder):
         """Initiate the window."""
         self.window = window
         self.user = user_name
@@ -29,6 +29,7 @@ class Scale:
         self.database = database_connection.DatabaseConnection()
         self.window.title("Breathe")
         self.window.iconbitmap("schedule\images\Breathe_icon.ico")
+        self.reminder = reminder
 
     def scale_gui(self):
         """User interface with scale."""
@@ -112,6 +113,7 @@ class Scale:
             font=("Arial", 14),
         )
         note.insert("1.0", "(Max 300 characters)")
+        note.bind("<Button-1>", lambda _: self.clicked(note))
         note.grid(row=5, column=1, columnspan=10, pady=(0, 40))
 
         Button(
@@ -137,12 +139,17 @@ class Scale:
         scale_frame.pack()
         self.window.mainloop()
 
+    def clicked(self, note):
+        notes = note.get("1.0", "end-1c").strip()
+        if notes == "(Max 300 characters)":
+            note.delete(1.0, END)
+
     def return_to_user_page(self, scale_frame, close_popup):
         """Button action for return."""
         if close_popup:
             self.top.destroy()
         main.Main.manager_menu_choice(
-            self, scale_frame, "USER_MENU", self.user, self.date
+            self, scale_frame, "USER_MENU", self.user, self.date, self.reminder
         )
 
     def check_entry(
@@ -151,7 +158,9 @@ class Scale:
         """Check if stress level exist for the date. If it should override old\
               data in database."""
         colour = colour.get()
-        notes = note.get(1.0, END)
+        notes = note.get("1.0", "end-1c")
+        if notes == "(Max 300 characters)":
+            notes = ""
         result = self.db_handler.check_date(self.user, self.date)
         if colour == "1":
             Label(

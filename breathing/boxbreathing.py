@@ -2,24 +2,23 @@ import tkinter as tk
 
 from PIL import Image, ImageTk
 
-from account import user
+import main
 
 
 class DisplayExercise:
-    def __init__(self, window, user):
+    def __init__(self, window, user, reminder):
         self.window = window
-        self.window.geometry("640x700")
-        self.window.resizable(height=True, width=False)
-        self.window.config(bg="#040B20")
         self.is_not_running = True
         self.user = user
         self.window.title("Breathe")
         self.window.iconbitmap("breathing\images\Breathe_icon.ico")
+        self.box_brathing_frame = tk.Frame(self.window, bg="#040B20")
+        self.box_brathing_frame.pack()
+        self.reminder = reminder
 
     def display_imagery(self):
         # starting all the frames
-        self.box_brathing_frame = tk.Frame(self.window, bg="#040B20")
-        self.box_brathing_frame.pack()
+
         self.button_frame = tk.Frame(self.window, bg="#040B20")
         self.button_frame.pack()
         self.start_frame = tk.Frame(self.button_frame, bg="#040B20")
@@ -107,11 +106,11 @@ class DisplayExercise:
         self.loop = self.window.after(50, self.animate)
 
     def cancel(self):
-        self.box_brathing_frame.pack_forget()
         self.button_frame.pack_forget()
         self.button_frame.place_forget()
-        user_redirect = user.User(True, self.user, self.window)
-        user_redirect.user_gui()
+        main.Main.manager_menu_choice(
+            self, self.box_brathing_frame, "USER_MENU", self.user, None, self.reminder
+        )
 
     def stop(self):
         self.stop_frame.pack_forget()

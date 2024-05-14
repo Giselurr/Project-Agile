@@ -95,6 +95,46 @@ class TestDatabaseHandler(TestCase):
         db_h.update_row(mock_colour, mock_note, mock_id)
         mock_cursor.execute.assert_called_once()
 
+    @patch("mysql.connector.connect")
+    def test_get_stress_level(self, mock_connect):
+        """Test that the execute works to get stress level."""
+        mock_conn = mock.Mock()
+        mock_cursor = mock.Mock()
+        mock_date = MagicMock()
+        mock_connect.return_value = mock_conn
+        mock_conn.cursor.return_value = mock_cursor
+        mock_cursor.fetchone.return_value = ("stress_level",)
+
+        db_h = database_handler.DatabaseHandler()
+        result = db_h.get_stress_level("user", mock_date)
+
+        self.assertEqual(result, "stress_level")
+        mock_cursor.execute.assert_called_once_with(
+            "SELECT stress_level FROM stress_calender \
+        WHERE user_user_name = %s AND date = %s",
+            ("user", mock_date),
+        )
+
+    @patch("mysql.connector.connect")
+    def test_get_note(self, mock_connect):
+        """Test that the execute works to get note."""
+        mock_conn = mock.Mock()
+        mock_cursor = mock.Mock()
+        mock_date = MagicMock()
+        mock_connect.return_value = mock_conn
+        mock_conn.cursor.return_value = mock_cursor
+        mock_cursor.fetchone.return_value = ("note",)
+
+        db_h = database_handler.DatabaseHandler()
+        result = db_h.get_note("user", mock_date)
+
+        self.assertEqual(result, "note")
+        mock_cursor.execute.assert_called_once_with(
+            "SELECT note FROM stress_calender \
+        WHERE user_user_name = %s AND date = %s",
+            ("user", mock_date),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -12,7 +12,7 @@ class TestUser(TestCase):
     def setUp(self):
         self.mock_user = MagicMock()
         self.mock_window = MagicMock()
-        self.mock_user_frame = MagicMock()
+        self.mock_user.user_frame = MagicMock()
 
     def test_user_init(self):
         """Test so that the class is being instanciated."""
