@@ -121,10 +121,9 @@ class User:
                 image=calendar_img,
                 activebackground="#040B20",
                 borderwidth=0,
-                command=lambda: self.redirect_to_main(
-                    self.user_frame, "CALENDAR", left_buttons
-                ),
-                highlightthickness=0,
+
+                command=lambda: self.redirect_to_calendar(user_frame),
+ghtthickness=0,
                 bd=0,
                 padx=0,
                 pady=0,
@@ -165,6 +164,12 @@ class User:
             self.user_name,
             datetime.now(),
             self.reminder_obj,
+        )
+
+    def redirect_to_calendar(self, user_frame):
+        date = datetime.now().strftime("%Y-%m-%d")
+        main.Main(self.window).manager_menu_choice(
+            user_frame, "CALENDAR", self.user_name, date
         )
 
     def sign_out(self, user_frame, left_buttons):
