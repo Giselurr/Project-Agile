@@ -470,7 +470,7 @@ class History:
         stress_level = scale_and_color.get(stress_level_color, "No score")
 
         note_text = self.db_handler.get_note(self.user_name, date.date())
-        if note_text == "(Max 300 characters)\n":  # Remove if this gets fixed in scale.
+        if note_text == "":  # Remove if this gets fixed in scale.
             note_text = "No note"
 
         self.notes_canvas.create_text(
