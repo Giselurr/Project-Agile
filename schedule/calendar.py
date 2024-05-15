@@ -1,5 +1,5 @@
 import datetime
-from tkinter import Button, Frame, Label, PhotoImage, Tk
+from tkinter import CENTER, Button, Frame, Label, PhotoImage, Tk
 
 import main
 from database import database_handler
@@ -10,6 +10,7 @@ class CalendarInt:
         self.window = window
         self.user = user_name
         self.date = datetime.datetime.strptime(date, "%Y-%m-%d")
+        self.date_today = datetime.datetime.now()
         self.db_handler = database_handler.DatabaseHandler()
         self.events = self.db_handler.get_daily_schedule(user_name)
         self.window.title("Breathe")
@@ -26,17 +27,20 @@ class CalendarInt:
             image=self.return_image,
             borderwidth=0,
             highlightthickness=0,
+            anchor=CENTER,
             activebackground="#040B20",
             command=self.return_to_user_page,
-        ).grid(row=8, column=0, columnspan=10, pady=10, sticky="W")
+        ).grid(row=8, column=1, columnspan=5, pady=10)
 
+        month_year_text = self.date_today.strftime("%B %Y")
         Label(
             self.calendar_frame,
-            text="Calendar",
-            font=("Arial", 14),
+            text=month_year_text,
+            font=("Arial", 18),
+            anchor=CENTER,
             bg="#040B20",
             fg="#AFB5D6",
-        ).grid(row=0, column=1, columnspan=10, pady=40)
+        ).grid(row=0, column=1, columnspan=5, pady=40)
 
         self.create_calendar(self.calendar_frame)
 
@@ -44,7 +48,6 @@ class CalendarInt:
         self.window.mainloop()
 
     def create_calendar(self, parent):
-        today = datetime.datetime.now()
         days_in_month = self.days_in_month(self.date.year, self.date.month)
         start_day = datetime.datetime(self.date.year, self.date.month, 1)
         start_day -= datetime.timedelta(days=start_day.isoweekday() - 1)
@@ -65,7 +68,7 @@ class CalendarInt:
                 day_button.grid(row=i + 2, column=j, padx=5, pady=5)
                 current_day += datetime.timedelta(days=1)
                 # No clue why but +1day fixed problem of the current day being wrong.
-                if current_day < today:
+                if current_day < self.date_today:
                     day_button["state"] = "disabled"
 
     def days_in_month(self, year, month):
@@ -83,9 +86,6 @@ class CalendarInt:
             self, self.calendar_frame, "USER_MENU", self.user, self.date, self.reminder
         )
 
-    def select_day(self, day):
-        print("Selected Day:", day)
-
     def task_gui(self, day):
         self.calendar_frame.pack_forget()
         task_frame = Frame(self.window, bg="#040B20")
@@ -99,7 +99,7 @@ class CalendarInt:
             font=("Arial", 14),
             bg="#040B20",
             fg="#AFB5D6",
-        ).place(x=200, y=200)
+        ).place(x=320, y=20, anchor=CENTER)
 
         Button(
             task_frame,
@@ -111,11 +111,9 @@ class CalendarInt:
             bd=0,
             padx=0,
             pady=0,
-        ).place(x=205, y=585)
+        ).place(x=320, y=585, anchor=CENTER)
 
         for start, stop, task in self.events:
-            print(start.date())
-            print(day.date())
             if start.date() == day.date():
                 print(f"Task: {task}\nStart time: {start}\nEnd time: {stop}")
 
