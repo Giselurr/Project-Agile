@@ -36,7 +36,7 @@ class UserSettings:
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#040B20")
         self.setting_frame = Frame(self.window, bg="#040B20")
-        return_button = PhotoImage(file=r"account\images\Return.png")
+        return_button = PhotoImage(file=r"account\images\return_small.png")
         Label(
             self.setting_frame,
             text="USER SETTINGS",
@@ -146,7 +146,7 @@ class UserSettings:
             command=lambda: main.Main.manager_menu_choice(
                 self, self.setting_frame, "USER_MENU", self.user_name, None, None
             ),
-        ).grid(row=12, column=1, sticky=E)
+        ).grid(row=12, column=1, pady=40, sticky=E)
 
         self.setting_frame.pack()
 
