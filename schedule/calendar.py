@@ -52,10 +52,19 @@ class CalendarInt:
         days_in_month = self.days_in_month(self.date.year, self.date.month)
         start_day = datetime.datetime(self.date.year, self.date.month, 1)
         start_day -= datetime.timedelta(days=start_day.isoweekday() - 1)
-
+        foreground = "white"
         for i in range(6):
             for j in range(7):
                 current_day = start_day + datetime.timedelta(days=(i * 7) + j)
+
+                if (
+                    current_day.month == self.date.month
+                    and not current_day.day < self.date_today.day
+                ):
+                    foreground = "white"
+                else:
+                    foreground = "#808080"
+
                 day_button = Button(
                     parent,
                     text=str(current_day.day),
@@ -63,14 +72,12 @@ class CalendarInt:
                     height=2,
                     relief="flat",
                     bg="#1E2749" if current_day.month == self.date.month else "#040B20",
-                    fg="#FFFFFF" if current_day.month == self.date.month else "#808080",
+                    fg=foreground,
                     command=lambda day=current_day: self.task_gui(day),
                 )
                 day_button.grid(row=i + 2, column=j, padx=5, pady=5)
-                current_day += datetime.timedelta(days=1)
-                # No clue why but +1day fixed problem of the current day being wrong.
-                if current_day < self.date_today:
-                    day_button["state"] = "disabled"
+                # if current_day.day < self.date_today.day:
+                #     day_button["state"] = "disabled"
 
     def days_in_month(self, year, month):
         if month == 12:
