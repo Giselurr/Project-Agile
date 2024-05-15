@@ -13,6 +13,7 @@ class CalendarInt:
         self.date_today = datetime.datetime.now()
         self.db_handler = database_handler.DatabaseHandler()
         self.events = self.db_handler.get_daily_schedule(user_name)
+        self.sorted_events = sorted(self.events, key=lambda x: x[0])
         self.window.title("Breathe")
         self.window.iconbitmap("schedule\images\Breathe_icon.ico")
         self.calendar_frame = None
@@ -92,14 +93,14 @@ class CalendarInt:
         task_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
         str_day = day.strftime("%d").lstrip("0")
-        date_and_month = day.strftime(f"%a, %b, {str_day}")
+        date_and_month = day.strftime(f"%a %b {str_day}")
         Label(
             task_frame,
             text=f"Tasks for: {date_and_month}",
-            font=("Arial", 14),
+            font=("Arial", 18, "bold"),
             bg="#040B20",
             fg="#AFB5D6",
-        ).place(x=320, y=20, anchor=CENTER)
+        ).place(x=320, y=30, anchor=CENTER)
 
         Button(
             task_frame,
@@ -113,9 +114,23 @@ class CalendarInt:
             pady=0,
         ).place(x=320, y=585, anchor=CENTER)
 
-        for start, stop, task in self.events:
+        y = 100
+        number_of_tasks = 0
+        for start, stop, task in self.sorted_events:
             if start.date() == day.date():
-                print(f"Task: {task}\nStart time: {start}\nEnd time: {stop}")
+                start_time = start.strftime("%H:%M")
+                stop_time = stop.strftime("%H:%M")
+                Label(
+                    task_frame,
+                    text=f"{task}:  {start_time} - {stop_time}",
+                    font=("Arial", 13, "bold"),
+                    bg="#040B20",
+                    fg="#AFB5D6",
+                ).place(x=320, y=y, anchor=CENTER)
+                y += 40
+                number_of_tasks += 1
+                if number_of_tasks == 11:
+                    break
 
     def return_to_calendar_gui(self, task_frame):
         task_frame.destroy()
