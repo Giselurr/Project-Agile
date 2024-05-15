@@ -1,3 +1,5 @@
+"""Module that handles the calendar."""
+
 import datetime
 from tkinter import CENTER, Button, Frame, Label, PhotoImage, Tk
 
@@ -6,7 +8,10 @@ from database import database_handler
 
 
 class CalendarInt:
+    """Class that handles the creation and displaying of the calendar."""
+
     def __init__(self, window, user_name, date, reminder):
+        """Init CalendarInt."""
         self.window = window
         self.user = user_name
         self.date = datetime.datetime.strptime(date, "%Y-%m-%d")
@@ -23,6 +28,7 @@ class CalendarInt:
         self.calendar_frame.configure(bg="#040B20")
 
     def calendar_gui(self):
+        """The gui for the calendar page."""
         Button(
             self.calendar_frame,
             image=self.return_image,
@@ -49,6 +55,7 @@ class CalendarInt:
         self.window.mainloop()
 
     def create_calendar(self, parent):
+        """Creation and displaying of the calendar."""
         days_in_month = self.days_in_month(self.date.year, self.date.month)
         start_day = datetime.datetime(self.date.year, self.date.month, 1)
         start_day -= datetime.timedelta(days=start_day.isoweekday() - 1)
@@ -89,12 +96,14 @@ class CalendarInt:
         ).days
 
     def return_to_user_page(self):
-        self.calendar_frame.destroy()  # Close current window
+        """Closes the calendar and redirects to the user menu."""
+        self.calendar_frame.destroy()
         main.Main.manager_menu_choice(
             self, self.calendar_frame, "USER_MENU", self.user, self.date, self.reminder
         )
 
     def task_gui(self, day):
+        """The gui for the task page."""
         self.calendar_frame.pack_forget()
         task_frame = Frame(self.window, bg="#040B20")
         task_frame.pack(fill="both", expand=True, padx=10, pady=10)
@@ -140,6 +149,7 @@ class CalendarInt:
                     break
 
     def return_to_calendar_gui(self, task_frame):
+        """Closes the task page and redirects back to the calendar page."""
         task_frame.destroy()
         self.calendar_frame.pack()
         self.calendar_gui()
