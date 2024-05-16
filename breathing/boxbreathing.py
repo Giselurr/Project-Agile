@@ -36,7 +36,9 @@ class DisplayExercise:
 
         self.current_frame = 0
         self.gif_label = tk.Label(
-            self.box_brathing_frame, image=self.gif_objects[self.current_frame]
+            self.box_brathing_frame,
+            image=self.gif_objects[self.current_frame],
+            borderwidth=0,
         )
         self.gif_label.pack(side="top", pady=70)
 

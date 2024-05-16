@@ -6,6 +6,7 @@ from tkinter import (
     Entry,
     Frame,
     Label,
+    PhotoImage,
     StringVar,
     Tk,
     messagebox,
@@ -33,6 +34,7 @@ class UserSettings:
         self.window.resizable(height=True, width=False)
         self.window.config(bg="#040B20")
         self.setting_frame = Frame(self.window, bg="#040B20")
+        return_button = PhotoImage(file=r"account\images\return_small.png")
         Label(
             self.setting_frame,
             text="USER SETTINGS",
@@ -133,6 +135,17 @@ class UserSettings:
             command=lambda: self.delete_account(self.setting_frame, self.password),
         ).grid(row=11, column=1, sticky=E)
 
+        Button(
+            self.setting_frame,
+            image=return_button,
+            borderwidth=0,
+            highlightthickness=0,
+            activebackground="#040B20",
+            command=lambda: main.Main.manager_menu_choice(
+                self, self.setting_frame, "USER_MENU", self.user_name, None, None
+            ),
+        ).grid(row=12, column=1, pady=40, sticky=E)
+
         self.setting_frame.pack()
 
         self.window.mainloop()
@@ -171,7 +184,7 @@ class UserSettings:
             finally:
                 self.cursor.close()
                 main.Main.manager_menu_choice(
-                    self, setting_frame, "USER_MENU", self.user_name, None
+                    self, setting_frame, "USER_MENU", self.user_name, None, None
                 )
         else:
             messagebox.showinfo("Error!", "Old password is not correct!")
@@ -194,7 +207,7 @@ class UserSettings:
                         "Success!", "Your account has successfully been deleted."
                     )
                     main.Main.manager_menu_choice(
-                        self, setting_frame, "MAIN_MENU", None, None
+                        self, setting_frame, "MAIN_MENU", None, None, None
                     )
                 else:
                     messagebox.showinfo(

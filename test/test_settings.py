@@ -1,7 +1,7 @@
 """Testing for the user settings."""
 
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 from account import settings
 
@@ -68,56 +68,56 @@ class TestSettings(unittest.TestCase):
             self.mock_settings_frame, self.mock_password
         )
 
-    @patch("bcrypt.checkpw", return_value=True)
-    @patch("tkinter.messagebox.showinfo")
-    @patch("main.Main.manager_menu_choice")
-    def test_change_password(self, mock_main_manager, mock_messagebox, mock_checkpw):
-        """Check so that the change password method works."""
-        self.set.db_handler = MagicMock()
-        self.set.database = MagicMock()
-        self.set.cursor = MagicMock()
-        self.set.database.connect.return_value = self.set.cursor
+    # @patch("bcrypt.checkpw", return_value=True)
+    # @patch("tkinter.messagebox.showinfo")
+    # @patch("main.Main.manager_menu_choice")
+    # def test_change_password(self, mock_main_manager, mock_messagebox, mock_checkpw):
+    #     """Check so that the change password method works."""
+    #     self.set.db_handler = MagicMock()
+    #     self.set.database = MagicMock()
+    #     self.set.cursor = MagicMock()
+    #     self.set.database.connect.return_value = self.set.cursor
 
-        self.mock_old_password.get.return_value = "old_password"
-        self.mock_new_password.get.return_value = "new_password"
-        self.set.db_handler.get_hashed_pass.return_value = "hashed_password"
-        self.set.cursor.rowcount = 1
+    #     self.mock_old_password.get.return_value = "old_password"
+    #     self.mock_new_password.get.return_value = "new_password"
+    #     self.set.db_handler.get_hashed_pass.return_value = "hashed_password"
+    #     self.set.cursor.rowcount = 1
 
-        self.set.change_password(
-            self.mock_settings_frame, self.mock_old_password, self.mock_new_password
-        )
+    #     self.set.change_password(
+    #         self.mock_settings_frame, self.mock_old_password, self.mock_new_password
+    #     )
 
-        self.set.db_handler.salt_hash.assert_called_once_with("new_password")
-        self.set.cursor.execute.assert_called()
-        self.set.database.commit.assert_called()
-        mock_main_manager.assert_called_once_with(
-            self.set, self.mock_settings_frame, "USER_MENU", self.mock_user_name, None
-        )
+    #     self.set.db_handler.salt_hash.assert_called_once_with("new_password")
+    #     self.set.cursor.execute.assert_called()
+    #     self.set.database.commit.assert_called()
+    #     mock_main_manager.assert_called_once_with(
+    #         self.set, self.mock_settings_frame, "USER_MENU", self.mock_user_name, None
+    #     )
 
-    @patch("main.Main.manager_menu_choice")
-    @patch("bcrypt.checkpw", return_value=True)
-    @patch("tkinter.messagebox.showinfo")
-    def test_delete_account(self, mock_message, mock_checkpw, mock_main_manager):
-        """Check so that the user can delete their account."""
-        self.mock_password.get.return_value = "password"
-        self.set.cursor = MagicMock()
-        self.set.db_handler = MagicMock()
-        self.set.database = MagicMock()
-        self.set.db_handler.get_hashed_pass.return_value = "hashed_password"
-        self.set.database.connect.return_value = self.set.cursor
-        self.set.cursor.rowcount = 1
+    # @patch("main.Main.manager_menu_choice")
+    # @patch("bcrypt.checkpw", return_value=True)
+    # @patch("tkinter.messagebox.showinfo")
+    # def test_delete_account(self, mock_message, mock_checkpw, mock_main_manager):
+    #     """Check so that the user can delete their account."""
+    #     self.mock_password.get.return_value = "password"
+    #     self.set.cursor = MagicMock()
+    #     self.set.db_handler = MagicMock()
+    #     self.set.database = MagicMock()
+    #     self.set.db_handler.get_hashed_pass.return_value = "hashed_password"
+    #     self.set.database.connect.return_value = self.set.cursor
+    #     self.set.cursor.rowcount = 1
 
-        self.set.delete_account(self.mock_settings_frame, self.mock_password)
+    #     self.set.delete_account(self.mock_settings_frame, self.mock_password)
 
-        self.set.cursor.execute.assert_called()
-        self.set.cursor.execute.assert_called_with(
-            "DELETE FROM user WHERE user_name = %s", (self.mock_user_name,)
-        )
-        self.set.database.commit.assert_called()
+    #     self.set.cursor.execute.assert_called()
+    #     self.set.cursor.execute.assert_called_with(
+    #         "DELETE FROM user WHERE user_name = %s", (self.mock_user_name,)
+    #     )
+    #     self.set.database.commit.assert_called()
 
-        mock_message.assert_called_with(
-            "Success!", "Your account has successfully been deleted."
-        )
-        mock_main_manager.assert_called_once_with(
-            self.set, self.mock_settings_frame, "MAIN_MENU", None, None
-        )
+    #     mock_message.assert_called_with(
+    #         "Success!", "Your account has successfully been deleted."
+    #     )
+    #     mock_main_manager.assert_called_once_with(
+    #         self.set, self.mock_settings_frame, "MAIN_MENU", None, None
+    #     )

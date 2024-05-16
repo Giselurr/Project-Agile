@@ -196,7 +196,9 @@ class User:
             image=self.no_img,
             activebackground="#040B20",
             borderwidth=0,
-            command=lambda: self.return_to_user_page(self.user_frame, True),
+            command=lambda: self.return_to_user_page(
+                self.user_frame, True, left_buttons
+            ),
             highlightthickness=0,
             bd=0,
             padx=0,
@@ -216,8 +218,9 @@ class User:
             pady=0,
         ).place(x=145, y=90)
 
-    def return_to_user_page(self, frame, close_popup):
+    def return_to_user_page(self, frame, close_popup, left_buttons):
         """Button action for return to the user page."""
+        left_buttons.destroy()
         if close_popup:
             self.top.destroy()
         main.Main.manager_menu_choice(
