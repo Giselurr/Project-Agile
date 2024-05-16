@@ -11,8 +11,12 @@ class MainMenu:
     def __init__(self, window):
         """Initiates the window."""
         self.window = window
-        self.window.geometry("640x700")
-        self.window.resizable(height=True, width=False)
+        self.window.resizable(height=False, width=False)
+        screen_width = self.window.winfo_screenwidth()
+        screen_height = self.window.winfo_screenheight()
+        x = (screen_width - 640) // 2
+        y = (screen_height - 700) // 2
+        self.window.geometry(f"640x700+{x}+{y}")
         self.window.configure(bg="#040B20")
         self.window.title("Breathe")
         self.window.iconbitmap("account\images\Breathe_icon.ico")
@@ -33,7 +37,7 @@ class MainMenu:
             main_frame,
             image=register,
             command=lambda: main.Main.manager_menu_choice(
-                self, main_frame, "REGISTER", None, None
+                self, main_frame, "REGISTER", None, None, None
             ),
             activebackground="#040B20",
             border=0,

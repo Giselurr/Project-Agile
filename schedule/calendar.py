@@ -9,8 +9,6 @@ class CalendarInt:
         self.window = window
         self.user = user_name
         self.date = datetime.datetime.strptime(date, "%Y-%m-%d")
-        self.window.title("Breathe")
-        self.window.iconbitmap("schedule\images\Breathe_icon.ico")
         self.calendar_frame = None
         self.reminder = reminder
 
