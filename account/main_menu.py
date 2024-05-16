@@ -33,7 +33,7 @@ class MainMenu:
             main_frame,
             image=register,
             command=lambda: main.Main.manager_menu_choice(
-                self, main_frame, "REGISTER", None, None
+                self, main_frame, "REGISTER", None, None, None
             ),
             activebackground="#040B20",
             border=0,
