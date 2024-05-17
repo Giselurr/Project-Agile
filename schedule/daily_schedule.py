@@ -27,18 +27,12 @@ class DailyScheduele:
         self.date = date
         self.user_name = user_name
         self.window = window
-        screen_width = self.window.winfo_screenwidth()
-        screen_height = self.window.winfo_screenheight()
-        x = (screen_width - 640) // 2
-        y = (screen_height - 700) // 2
-        self.window.geometry(f"640x700+{x}+{y}")
         self.db_handler = database.database_handler.DatabaseHandler()
         self.database = database.database_connection.DatabaseConnection()
-        self.window.title("Breathe")
-        self.window.iconbitmap("schedule\images\Breathe_icon.ico")
         self.calendar_frame = Frame(self.window, bg="#040B20")
         self.calendar_frame.pack(fill="both", expand=True, padx=10, pady=10)
         self.events = self.db_handler.get_daily_schedule(self.user_name)
+        self.sorted_events = sorted(self.events, key=lambda x: x[0])
         self.reminder_obj = reminder
 
     def daily_schedule_gui(self):
@@ -84,7 +78,7 @@ class DailyScheduele:
                 fg="#FFFFFF",
                 font=("Arial", 15),
             ).pack()
-            for i, (start, stop, task) in enumerate(self.events):
+            for i, (start, stop, task) in enumerate(self.sorted_events):
                 start_time = start.time()
                 stop_time = stop.time()
                 self.reminder_obj.add_tasks(start, task)
@@ -200,7 +194,7 @@ class DailyScheduele:
             variable=breathe_task,
             value="BREATHE",
             text="Add break",
-            activebackground="#040B20",  # Not a perfect solution, but still better.
+            activebackground="#040B20",
             highlightthickness=0,
             font=("Arial", 12),
             bg="#040B20",
@@ -211,7 +205,7 @@ class DailyScheduele:
             variable=breathe_task,
             value="TASK",
             text="Add task: ",
-            activebackground="#040B20",  # Not a perfect solution, but still better.
+            activebackground="#040B20",
             highlightthickness=0,
             font=("Arial", 12),
             bg="#040B20",
@@ -276,35 +270,51 @@ class DailyScheduele:
         stop_minute = int(stop_minute.get())
         breathe_task = breathe_task.get()
 
-        start = datetime.now().replace(
-            hour=start_hour, minute=start_minute, second=0, microsecond=0
-        )
-        stop = datetime.now().replace(
-            hour=stop_hour, minute=stop_minute, second=0, microsecond=0
-        )
-        if datetime.now() <= start:
-            if breathe_task == "BREATHE":
-                task = "BREATHE"
-                success = self.db_handler.add_task(self.user_name, start, stop, task)
-            else:
-                task = task.get()
-                success = self.db_handler.add_task(self.user_name, start, stop, task)
+        if self.check_text_lenght(breathe_task):
+            start = datetime.now().replace(
+                hour=start_hour, minute=start_minute, second=0, microsecond=0
+            )
+            stop = datetime.now().replace(
+                hour=stop_hour, minute=stop_minute, second=0, microsecond=0
+            )
+            if datetime.now() <= start:
+                if breathe_task == "BREATHE":
+                    task = "BREATHE"
+                    success = self.db_handler.add_task(
+                        self.user_name, start, stop, task
+                    )
+                else:
+                    task = task.get()
+                    success = self.db_handler.add_task(
+                        self.user_name, start, stop, task
+                    )
 
-            if success:
-                messagebox.showinfo("Success", "Successfully saved your task.")
+                if success:
+                    messagebox.showinfo("Success", "Successfully saved your task.")
 
-                self.reminder_obj.add_tasks(start, task)
-                main.Main.manager_menu_choice(
-                    self, frame, "SCHEDULE", self.user_name, None, self.reminder_obj
-                )
+                    self.reminder_obj.add_tasks(start, task)
+                    main.Main.manager_menu_choice(
+                        self, frame, "SCHEDULE", self.user_name, None, self.reminder_obj
+                    )
+                else:
+                    messagebox.showinfo(
+                        "Error", "Your task has not been saved, please try again."
+                    )
             else:
                 messagebox.showinfo(
-                    "Error", "Your task has not been saved, please try again."
+                    "Error", "You can not put a time that has allready been."
                 )
         else:
             messagebox.showinfo(
-                "Error", "You can not put a time that has allready been."
+                "Error", "The lenght of task must not succeed 50 characters."
             )
+
+    def check_text_lenght(self, task):
+        """Checks the lenght of the entry text."""
+        if len(task) <= 50:
+            return True
+        else:
+            return False
 
 
 if __name__ == "__main__":

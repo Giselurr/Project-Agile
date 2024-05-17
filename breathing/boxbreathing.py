@@ -10,8 +10,6 @@ class DisplayExercise:
         self.window = window
         self.is_not_running = True
         self.user = user
-        self.window.title("Breathe")
-        self.window.iconbitmap("breathing\images\Breathe_icon.ico")
         self.box_brathing_frame = tk.Frame(self.window, bg="#040B20")
         self.box_brathing_frame.pack()
         self.reminder = reminder

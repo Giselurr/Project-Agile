@@ -16,11 +16,6 @@ class User:
         self.is_logged_in = logged_in
         self.user_name = user_name
         self.window = window
-        self.window.geometry("640x700")
-        self.window.resizable(height=True, width=False)
-        self.window.config(bg="#040B20")
-        self.window.title("Breathe")
-        self.window.iconbitmap("account\images\Breathe_icon.ico")
         self.user_frame = Frame(self.window, bg="#040B20")
         self.user_frame.pack()
         self.reminder_obj = reminder.Reminder(
@@ -161,6 +156,7 @@ class User:
         self.window.mainloop()
 
     def redirect_to_main(self, user_frame, choise, left_buttons):
+        """Redirects the user the correct page."""
         left_buttons.destroy()
         main.Main.manager_menu_choice(
             self,

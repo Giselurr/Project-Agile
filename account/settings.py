@@ -27,8 +27,6 @@ class UserSettings:
         self.window = window
         self.db_handler = database_handler.DatabaseHandler()
         self.database = database_connection.DatabaseConnection()
-        self.window.title("Breathe")
-        self.window.iconbitmap("account\images\Breathe_icon.ico")
 
     def user_setting_gui(self):
         """The user settings interface."""
@@ -161,6 +159,7 @@ class UserSettings:
             self.delete_account(self.setting_frame, self.password)
 
     def change_password(self, setting_frame, old_password, new_password):
+        """This method will allow the user to change their password."""
         old_password = old_password.get()
         new_password = new_password.get()
         new_password.encode("utf-8")
@@ -191,6 +190,8 @@ class UserSettings:
             messagebox.showinfo("Error!", "Old password is not correct!")
 
     def delete_account(self, setting_frame, password):
+        """After the user confirms with their password,
+        they will delete their account."""
         password = password.get()
         self.cursor = self.database.connect()
         hashed = self.db_handler.get_hashed_pass(self.user_name)

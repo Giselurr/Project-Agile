@@ -19,8 +19,6 @@ class CalendarInt:
         self.db_handler = database_handler.DatabaseHandler()
         self.events = self.db_handler.get_daily_schedule(user_name)
         self.sorted_events = sorted(self.events, key=lambda x: x[0])
-        self.window.title("Breathe")
-        self.window.iconbitmap("schedule\images\Breathe_icon.ico")
         self.calendar_frame = None
         self.reminder = reminder
         self.return_image = PhotoImage(file=r"schedule\images\Return.png")
