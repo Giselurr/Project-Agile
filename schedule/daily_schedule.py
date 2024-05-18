@@ -82,7 +82,7 @@ class DailyScheduele:
                 font=("Arial", 15),
             ).pack()
             for i, (start, stop, task) in enumerate(self.sorted_events):
-                if start.date() == datetime.date.today():
+                if start.date() == datetime.now():
                     start_time = start.time()
                     stop_time = stop.time()
                     self.reminder_obj.add_tasks(start, task)
