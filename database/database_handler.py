@@ -1,7 +1,5 @@
 """This modules handles mysql statements."""
 
-import datetime
-
 import bcrypt
 
 import database.database_connection as database_connection
@@ -94,12 +92,11 @@ class DatabaseHandler:
             result = curser.fetchall()
             if result:
                 for start, stop, task in result:
-                    if start.date() == datetime.date.today():
-                        to_add = (start, stop, task)
-                        self.events.append(to_add)
+                    to_add = (start, stop, task)
+                    self.events.append(to_add)
                 return self.events
             else:
-                self.events = [()]
+                self.events = []
                 return self.events
         finally:
             curser.close()

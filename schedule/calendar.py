@@ -18,7 +18,10 @@ class CalendarInt:
         self.date_today = datetime.datetime.now()
         self.db_handler = database_handler.DatabaseHandler()
         self.events = self.db_handler.get_daily_schedule(user_name)
-        self.sorted_events = sorted(self.events, key=lambda x: x[0])
+        if not all(self.events):
+            pass
+        else:
+            self.sorted_events = sorted(self.events, key=lambda x: x[0])
         self.calendar_frame = None
         self.reminder = reminder
         self.return_image = PhotoImage(file=r"schedule\images\Return.png")
@@ -130,21 +133,24 @@ class CalendarInt:
 
         y = 100
         number_of_tasks = 0
-        for start, stop, task in self.sorted_events:
-            if start.date() == day.date():
-                start_time = start.strftime("%H:%M")
-                stop_time = stop.strftime("%H:%M")
-                Label(
-                    task_frame,
-                    text=f"{task}:  {start_time} - {stop_time}",
-                    font=("Arial", 13, "bold"),
-                    bg="#040B20",
-                    fg="#AFB5D6",
-                ).place(x=320, y=y, anchor=CENTER)
-                y += 40
-                number_of_tasks += 1
-                if number_of_tasks == 11:
-                    break
+        if not all(self.sorted_events):
+            pass
+        else:
+            for start, stop, task in self.sorted_events:
+                if start.date() == day.date():
+                    start_time = start.strftime("%H:%M")
+                    stop_time = stop.strftime("%H:%M")
+                    Label(
+                        task_frame,
+                        text=f"{task}:  {start_time} - {stop_time}",
+                        font=("Arial", 13, "bold"),
+                        bg="#040B20",
+                        fg="#AFB5D6",
+                    ).place(x=320, y=y, anchor=CENTER)
+                    y += 40
+                    number_of_tasks += 1
+                    if number_of_tasks == 11:
+                        break
 
     def return_to_calendar_gui(self, task_frame):
         """Closes the task page and redirects back to the calendar page."""

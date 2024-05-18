@@ -32,7 +32,10 @@ class DailyScheduele:
         self.calendar_frame = Frame(self.window, bg="#040B20")
         self.calendar_frame.pack(fill="both", expand=True, padx=10, pady=10)
         self.events = self.db_handler.get_daily_schedule(self.user_name)
-        self.sorted_events = sorted(self.events, key=lambda x: x[0])
+        if not all(self.events):
+            pass
+        else:
+            self.sorted_events = sorted(self.events, key=lambda x: x[0])
         self.reminder_obj = reminder
 
     def daily_schedule_gui(self):
@@ -79,37 +82,38 @@ class DailyScheduele:
                 font=("Arial", 15),
             ).pack()
             for i, (start, stop, task) in enumerate(self.sorted_events):
-                start_time = start.time()
-                stop_time = stop.time()
-                self.reminder_obj.add_tasks(start, task)
-                Label(
-                    schedule_frame,
-                    text=start_time.strftime("%H:%M"),
-                    bg="#040B20",
-                    fg="#FFFFFF",
-                    font=("Arial", 15),
-                ).grid(row=i, column=0)
-                Label(
-                    schedule_frame,
-                    text=" - ",
-                    bg="#040B20",
-                    fg="#FFFFFF",
-                    font=("Arial", 15),
-                ).grid(row=i, column=1)
-                Label(
-                    schedule_frame,
-                    text=stop_time.strftime("%H:%M"),
-                    bg="#040B20",
-                    fg="#FFFFFF",
-                    font=("Arial", 15),
-                ).grid(row=i, column=1)
-                Label(
-                    schedule_frame,
-                    text=task,
-                    bg="#040B20",
-                    fg="#FFFFFF",
-                    font=("Arial", 13),
-                ).grid(row=i, column=2, columnspan=3, padx=10, pady=10, sticky="W")
+                if start.date() == datetime.date.today():
+                    start_time = start.time()
+                    stop_time = stop.time()
+                    self.reminder_obj.add_tasks(start, task)
+                    Label(
+                        schedule_frame,
+                        text=start_time.strftime("%H:%M"),
+                        bg="#040B20",
+                        fg="#FFFFFF",
+                        font=("Arial", 15),
+                    ).grid(row=i, column=0)
+                    Label(
+                        schedule_frame,
+                        text=" - ",
+                        bg="#040B20",
+                        fg="#FFFFFF",
+                        font=("Arial", 15),
+                    ).grid(row=i, column=1)
+                    Label(
+                        schedule_frame,
+                        text=stop_time.strftime("%H:%M"),
+                        bg="#040B20",
+                        fg="#FFFFFF",
+                        font=("Arial", 15),
+                    ).grid(row=i, column=1)
+                    Label(
+                        schedule_frame,
+                        text=task,
+                        bg="#040B20",
+                        fg="#FFFFFF",
+                        font=("Arial", 13),
+                    ).grid(row=i, column=2, columnspan=3, padx=10, pady=10, sticky="W")
         Button(
             self.calendar_frame,
             text="ADD ITEM",
